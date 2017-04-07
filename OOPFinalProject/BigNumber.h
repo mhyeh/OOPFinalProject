@@ -45,6 +45,8 @@ public:
 	friend BigNumber& operator /(const BigNumber&, const BigNumber&);
 	friend BigNumber& operator -(const BigNumber&);
 
+	friend bool operator ==(const BigNum&, const BigNum&);
+
 	friend BigNum& ADD(const BigNum&, const BigNum&, bool&, bool&);
 	friend BigNum& SUB(const BigNum&, const BigNum&, bool&, bool&);
 	friend BigNum& MUL(const BigNum&, const BigNum&);

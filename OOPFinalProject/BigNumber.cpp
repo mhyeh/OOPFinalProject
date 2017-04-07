@@ -108,6 +108,18 @@ BigNumber& operator -(const BigNumber& _num) {
 }
 
 
+bool operator ==(const BigNum& _num1, const BigNum& _num2) {
+	if(_num1.size() != _num2.size())
+		return false;
+
+	for (int i = 0; i < _num1.size(); i++) 
+		if(_num1[i] != _num2[i])
+			return false;
+	
+	return true;
+}
+
+
 BigNum& ADD(const BigNum& _num1, const BigNum& _num2, bool& _num1Sign, bool& _num2Sign) {
 	BigNum num1 = _num1;
 	BigNum num2 = _num2;
