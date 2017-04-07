@@ -1,6 +1,6 @@
 // Name: Yeh, MinHsuan
 // Date: April 6, 2017 
-// Last Update: April 6, 2017 
+// Last Update: April 7, 2017 
 // Problem statement: OOP final project main file
 
 #include <iostream>
@@ -21,8 +21,8 @@ int main() {
 			f.calculate();
 			f.print();
 		} 
-		catch (const string str) {
-			cout << str << endl;
+		catch (const char* errorMsg) {
+			cout << errorMsg << endl;
 		}
 	}
 
