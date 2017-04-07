@@ -8,8 +8,14 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <cmath>
 
+#define MAX_INT 10000000000
+#define MAX_DIGIT 10
+
+using std::pow;
 using std::sort;
+using std::swap;
 using std::reverse;
 using std::string;
 using std::vector;
@@ -29,8 +35,8 @@ private:
 
 public:
 	BigNumber() : numerator(), denominator(), sign(false) {};
-	BigNumber(string&);
-	BigNumber(BigNum& _numerator, BigNum& _denominator, bool _sign) : numerator(_numerator), denominator(_denominator), sign(_sign) {};
+	BigNumber(const string&);
+	BigNumber(const BigNum& _numerator, const BigNum& _denominator, bool _sign) : numerator(_numerator), denominator(_denominator), sign(_sign) {};
 	~BigNumber();
 
 	friend BigNumber& operator +(const BigNumber&, const BigNumber&);
@@ -39,8 +45,8 @@ public:
 	friend BigNumber& operator /(const BigNumber&, const BigNumber&);
 	friend BigNumber& operator -(const BigNumber&);
 
-	friend BigNum& ADD(BigNum&, BigNum&, bool&, bool&);
-	friend BigNum& SUB(BigNum&, BigNum&, bool&, bool&);
-	friend BigNum& MUL(BigNum&, BigNum&);
+	friend BigNum& ADD(const BigNum&, const BigNum&, bool&, bool&);
+	friend BigNum& SUB(const BigNum&, const BigNum&, bool&, bool&);
+	friend BigNum& MUL(const BigNum&, const BigNum&);
 };
 
