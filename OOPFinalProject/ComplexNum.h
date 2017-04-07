@@ -29,6 +29,6 @@ public:
 	friend ComplexNum& operator -(const ComplexNum&, const ComplexNum&);
 	friend ComplexNum& operator *(const ComplexNum&, const ComplexNum&);
 	friend ComplexNum& operator /(const ComplexNum&, const ComplexNum&);
-	friend ComplexNum& operator -(ComplexNum&);
+	friend ComplexNum& operator -(const ComplexNum&);
 };
 

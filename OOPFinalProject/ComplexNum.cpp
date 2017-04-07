@@ -1,13 +1,28 @@
+// Name: Yeh, MinHsuan
+// Date: April 6, 2017 
+// Last Update: April 7, 2017 
+// Problem statement: The details of ComplexNum class
+
 #include "ComplexNum.h"
 
 
 ComplexNum::ComplexNum(string& _numStr) : realPart(), imagePart() {
 	if (_numStr.back() == 'i') {
 		_numStr.pop_back();
-		imagePart = BigNumber(_numStr);
+		try {
+			this->imagePart = BigNumber(_numStr);
+		}
+		catch (const char* errorMsg) {
+			throw errorMsg;
+		}
 	}
 	else {
-		realPart = BigNumber(_numStr);
+		try {
+			this->realPart = BigNumber(_numStr);
+		}
+		catch (const char* errorMsg) {
+			throw errorMsg;
+		}
 	}
 }
 
@@ -44,7 +59,7 @@ ComplexNum& operator /(const ComplexNum& _num1, const ComplexNum& _num2) {
 	return ComplexNum(realPart, imagePart);
 }
 
-ComplexNum& operator -(ComplexNum& _num) {
+ComplexNum& operator -(const ComplexNum& _num) {
 	BigNumber realPart = -_num.realPart;
 	BigNumber imagePart = -_num.imagePart;
 
