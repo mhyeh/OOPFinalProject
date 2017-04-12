@@ -119,12 +119,30 @@ Integer& operator -(const Integer& _num1, const Integer& _num2) {
 }
 
 Integer& operator *(const Integer& _num1, const Integer& _num2) {
-	BigNum num1 = _num1.number;
-	BigNum num2 = _num2.number;
+	Integer num1 = _num1;
+	Integer num2 = _num2;
 	BigNum ans;
 	bool sign;
+	long long int carry = 0;
+	long long int num = 0;
 
-	//TODO: Caculate _num1 * _num2 and return
+	for(int i = 0; i < num1.number.size(); i++) {
+		for(int j = 0; j < num2.number.size(); j++) {
+			num = num1.number[i] * num2.member[j] + carry;
+			if(i + j >= ans.size()) {
+				ans.push_back(num % MAX_INT);
+				carry = num / MAX_INT;
+			} else {
+				ans[i + j] += num % MAX_INT;
+				carry = (num + ans[i + j]) / MAX_INT;
+				ans[i + j] %= MAX_INT;
+			}
+		}
+	}
+	if(carry)
+		ans.push_back(carry);
+
+	sign = num1.sign ^ num2.sign;
 
 	return Integer(ans, sign);
 }

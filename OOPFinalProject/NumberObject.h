@@ -8,7 +8,7 @@
 #include <regex>
 
 #define MAX_DIGIT 8
-#define MAX_INT std::pow(10, MAX_DIGIT)
+#define MAX_INT ((long long int)std::pow(10, MAX_DIGIT))
 
 using std::string;
 using std::istream;

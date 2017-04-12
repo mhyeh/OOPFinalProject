@@ -13,6 +13,7 @@ using std::endl;
 using std::string;
 
 int main() {
+
 	string inputStr;
 	
 	while (cin >> inputStr) {
