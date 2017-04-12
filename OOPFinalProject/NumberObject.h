@@ -22,8 +22,8 @@ using std::reverse;
 typedef vector<long long int> BigNum;
 
 class NumberObject {
-private:
-	virtual void strToNum(const string&);
+protected:
+	virtual void strToNum(const string&) {};
 
 public:
 	NumberObject();
@@ -39,8 +39,7 @@ public:
 	friend virtual NumberObject& operator /(const NumberObject&, const NumberObject&);
 	friend virtual NumberObject& operator -(const NumberObject&);
 
+	virtual friend istream& operator >>(istream&, NumberObject&);
 	virtual friend ostream& operator <<(ostream&, const NumberObject&);
-	*/
-	void operator =(const string&);
-	friend istream& operator >>(istream&, NumberObject&);
+	*/	
 };

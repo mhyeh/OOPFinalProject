@@ -142,9 +142,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BigNumber.h" />
     <ClInclude Include="Complex.h" />
-    <ClInclude Include="ComplexNum.h" />
     <ClInclude Include="Decimal.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Integer.h" />
@@ -153,9 +151,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BigNumber.cpp" />
     <ClCompile Include="Complex.cpp" />
-    <ClCompile Include="ComplexNum.cpp" />
     <ClCompile Include="Decimal.cpp" />
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="Integer.cpp" />

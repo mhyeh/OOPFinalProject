@@ -9,7 +9,7 @@ NumberObject::NumberObject() {
 NumberObject::~NumberObject() {
 }
 
-
+/*
 NumberObject::NumberObject(string _str) {
 	try {
 		this->strToNum(_str);
@@ -38,4 +38,4 @@ istream& operator >>(istream& _istream, NumberObject& _num) {
 
 	return _istream;
 }
-
+*/

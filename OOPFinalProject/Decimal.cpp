@@ -56,12 +56,13 @@ bool Decimal::getSign() {
 }
 
 
+/*
 Decimal::operator Complex() {
 	return Complex(*this, Decimal("0"));
 }
+*/
 
 
-/*
 void Decimal::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);
@@ -70,7 +71,6 @@ void Decimal::operator =(const string& _str) {
 		throw errorMsg;
 	}
 }
-*/
 
 
 Decimal& operator +(const Decimal& _num1, const Decimal& _num2) {
@@ -144,17 +144,17 @@ Decimal& operator -(const Decimal& _num) {
 }
 
 
-/*
 istream& operator >>(istream& _istream, Decimal& _num) {
-string str;
+	string str;
 
-_istream >> str;
-_num.strToNum(str);
+	_istream >> str;
+	_num.strToNum(str);
 
-return _istream;
+	return _istream;
 }
-*/
 
 ostream& operator <<(ostream& _ostream, const Decimal& _num) {
 	//TODO: Output _num
+
+	return _ostream;
 }

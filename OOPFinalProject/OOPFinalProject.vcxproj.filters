@@ -27,12 +27,6 @@
     <ClInclude Include="Formula.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="BigNumber.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="ComplexNum.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="Complex.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
@@ -54,12 +48,6 @@
       <Filter>原始程式檔</Filter>
     </ClCompile>
     <ClCompile Include="Formula.cpp">
-      <Filter>原始程式檔</Filter>
-    </ClCompile>
-    <ClCompile Include="BigNumber.cpp">
-      <Filter>原始程式檔</Filter>
-    </ClCompile>
-    <ClCompile Include="ComplexNum.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
     <ClCompile Include="Complex.cpp">

@@ -27,7 +27,6 @@ void Complex::strToNum(const string& _str) {
 }
 
 
-/*
 void Complex::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);
@@ -36,7 +35,6 @@ void Complex::operator =(const string& _str) {
 		throw errorMsg;
 	}
 }
-*/
 
 
 Complex& operator +(const Complex& _num1, const Complex& _num2) {
@@ -99,16 +97,14 @@ Complex& operator -(const Complex& _num) {
 }
 
 
-/*
 istream& operator >>(istream& _istream, Complex& _num) {
-string str;
+	string str;
 
-_istream >> str;
-_num.strToNum(str);
+	_istream >> str;
+	_num.strToNum(str);
 
-return _istream;
+	return _istream;
 }
-*/
 
 ostream& operator <<(ostream& _ostream, const Complex& _num) {
 	Complex num = _num;

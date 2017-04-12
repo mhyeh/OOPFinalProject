@@ -50,6 +50,7 @@ void Integer::setSign(bool _sign) {
 }
 
 
+/*
 Integer::operator Decimal() {
 	return Decimal(this->number, "1");
 }
@@ -57,9 +58,9 @@ Integer::operator Decimal() {
 Integer::operator Complex() {
 	return Complex((Decimal)*this, Decimal("0"));
 }
+*/
 
 
-/*
 void Integer::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);
@@ -68,7 +69,6 @@ void Integer::operator =(const string& _str) {
 		throw errorMsg;
 	}
 }
-*/
 
 
 Integer& operator +(const Integer& _num1, const Integer& _num2) {
@@ -130,11 +130,25 @@ Integer& operator -(const Integer& _num1, const Integer& _num2) {
 }
 
 Integer& operator *(const Integer& _num1, const Integer& _num2) {
+	BigNum num1 = _num1.number;
+	BigNum num2 = _num2.number;
+	BigNum ans;
+	bool sign;
+
 	//TODO: Caculate _num1 * _num2 and return
+
+	return Integer(ans, sign);
 }
 
 Integer& operator /(const Integer& _num1, const Integer& _num2) {
+	BigNum num1 = _num1.number;
+	BigNum num2 = _num2.number;
+	BigNum ans;
+	bool sign;
+
 	//TODO: Caculate _num1 / _num2 and return
+
+	return Integer(ans, sign);
 }
 
 Integer& operator -(const Integer& _num) {
@@ -144,7 +158,7 @@ Integer& operator -(const Integer& _num) {
 	return Integer(num, sign);
 }
 
-/*
+
 istream& operator >>(istream& _istream, Integer& _num) {
 	string str;
 
@@ -153,7 +167,6 @@ istream& operator >>(istream& _istream, Integer& _num) {
 
 	return _istream;
 }
-*/
 
 ostream& operator <<(ostream& _ostream, const Integer& _num) {
 	Integer num = _num;
