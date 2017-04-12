@@ -2,40 +2,40 @@
 
 
 
-NumberObject Computer::getVar(const string& _vaName) {
+NumberObject Computer::getVar(const string& _varName) {
     string varName = _varName;
-    auto it = this->varableSet.find(varName);
+    auto it = this->variableSet.find(varName);
 
-    if(it == this->varableSet.end())
+    if(it == this->variableSet.end())
         throw "varable not found";
     
-    return this->varableSet[varName];
+    return this->variableSet[varName];
 }
 
 void Computer::setVar(const string& _varName) {
     string varName = _varName;
     NumberObject varVal = NumberObject();
 
-    this->varableSet[varName] = varVal;
+    this->variableSet[varName] = varVal;
 }
 
 void Computer::setVar(const string& _varName, const string& _varVal) {
     string varName = _varName;
-    auto it = this->varableSet.find(varName);
+    auto it = this->variableSet.find(varName);
 
     string varVal = _varVal;
 
     this->setFormula(varVal);
-    this->calculate();
+    this->caculate();
     NumberObject number = this->result;
-    this->varableSet[varName] = number;
+    this->variableSet[varName] = number;
 }
 
 void Computer::setVar(const string& _varName, const NumberObject& _varVal) {
     string varName = _varName;
     NumberObject varVal = _varVal;
 
-    this->varableSet[varName] = varVal;
+    this->variableSet[varName] = varVal;
 }
 
 

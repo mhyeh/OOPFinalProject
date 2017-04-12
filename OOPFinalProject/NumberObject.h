@@ -29,17 +29,18 @@ public:
 	NumberObject();
 	NumberObject(string);
 	~NumberObject();
+	
+	void operator =(const string&) {};
 
 	/*
-	virtual void operator =(const string&);
+	friend NumberObject& operator +(const NumberObject&, const NumberObject&) {};
+	friend NumberObject& operator -(const NumberObject&, const NumberObject&) {};
+	friend NumberObject& operator *(const NumberObject&, const NumberObject&) {};
+	friend NumberObject& operator /(const NumberObject&, const NumberObject&) {};
+	friend NumberObject& operator -(const NumberObject&) {};
 
-	friend virtual NumberObject& operator +(const NumberObject&, const NumberObject&);
-	friend virtual NumberObject& operator -(const NumberObject&, const NumberObject&);
-	friend virtual NumberObject& operator *(const NumberObject&, const NumberObject&);
-	friend virtual NumberObject& operator /(const NumberObject&, const NumberObject&);
-	friend virtual NumberObject& operator -(const NumberObject&);
-
-	virtual friend istream& operator >>(istream&, NumberObject&);
-	virtual friend ostream& operator <<(ostream&, const NumberObject&);
-	*/	
+	friend istream& operator >>(istream&, NumberObject&) {};
+	friend ostream& operator <<(ostream&, const NumberObject&) {};
+	*/
+	friend virtual ostream& operator <<(ostream& _ostream, const NumberObject&) { return _ostream}; //TODO: fix
 };

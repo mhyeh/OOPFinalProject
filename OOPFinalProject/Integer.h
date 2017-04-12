@@ -13,6 +13,7 @@ protected:
 public:
 	Integer() : number(BigNum(0)), sign(false) {};
 	Integer(string);
+	Integer(int);
 	Integer(BigNum _number, bool _sign) : number(_number), sign(_sign) {};
 	~Integer();
 
@@ -31,5 +32,9 @@ public:
 	friend ostream& operator <<(ostream&, const Integer&);
 
 	friend bool operator ==(const Integer&, const Integer&);
+	friend bool operator <(const Integer&, const Integer&);
+	friend bool operator <=(const Integer&, const Integer&);
+	friend bool operator >(const Integer&, const Integer&);
+	friend bool operator >=(const Integer&, const Integer&);
 };
 

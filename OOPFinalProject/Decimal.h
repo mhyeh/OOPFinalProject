@@ -15,6 +15,9 @@ protected:
 public:
 	Decimal() : numerator(Integer()), denominator("1") {};
 	Decimal(string);
+	Decimal(int);
+	Decimal(float);
+	Decimal(double);
 	Decimal(Integer _numerator) : numerator(_numerator), denominator(Integer()) {};
 	Decimal(Integer _numerator, Integer _denominator) : numerator(_numerator), denominator(_denominator) {};
 	~Decimal();

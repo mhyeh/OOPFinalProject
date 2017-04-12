@@ -12,7 +12,8 @@ protected:
 
 public:
 	Complex() : realPart(Decimal()), imagePart(Decimal()) {};
-	Complex(string _str);
+	Complex(string);
+	Complex(int);
 	Complex(Integer _realPart) : realPart(_realPart), imagePart(Decimal()) {};
 	Complex(Decimal _realPart) : realPart(_realPart), imagePart(Decimal()) {};
 	Complex(Decimal _realPart, Decimal _imagePart) : realPart(_realPart), imagePart(_imagePart) {};

@@ -128,7 +128,7 @@ Integer& operator *(const Integer& _num1, const Integer& _num2) {
 
 	for(int i = 0; i < num1.number.size(); i++) {
 		for(int j = 0; j < num2.number.size(); j++) {
-			num = num1.number[i] * num2.member[j] + carry;
+			num = num1.number[i] * num2.number[j] + carry;
 			if(i + j >= ans.size()) {
 				ans.push_back(num % MAX_INT);
 				carry = num / MAX_INT;
@@ -203,6 +203,59 @@ bool operator ==(const Integer& _num1, const Integer& _num2) {
 	for (int i = 0; i < num1.number.size(); i++) 
 		if(num1.number[i] != num2.number[i])
 			return false;
+
+	return true;
+}
+
+bool operator <(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1.sign && !num2.sign)
+		return true;
+
+	if(!num1.sign && num1.number.size() < num2.number.size())
+		return true;
+
+	if(num1.sign && num1.number.size() > num2.number.size())
+		return true;
+
+	for (int i = num1.number.size() - 1; i >= 0; i--) {
+		if(!num1.sign && num1.number[i] < num2.number[i])
+			return true;
+		else if(num1.sign && num1.number[i] > num2.number[i])
+			return true;
+	}
+		
+	return false;
+}
+
+bool operator <=(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1 < num2 || num1 == num2)
+		return true;
+
+	return false;
+}
+
+bool operator >(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1 <= num2)
+		return false;
+
+	return true;
+}
+
+bool operator >=(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1 < num2)
+		return false;
 
 	return true;
 }
