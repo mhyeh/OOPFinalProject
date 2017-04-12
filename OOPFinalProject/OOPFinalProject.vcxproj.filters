@@ -27,10 +27,16 @@
     <ClInclude Include="Formula.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="BigNumber.h">
+    <ClInclude Include="Complex.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="ComplexNum.h">
+    <ClInclude Include="NumberObject.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Decimal.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="Integer.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,10 +50,16 @@
     <ClCompile Include="Formula.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
-    <ClCompile Include="BigNumber.cpp">
+    <ClCompile Include="Complex.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
-    <ClCompile Include="ComplexNum.cpp">
+    <ClCompile Include="Decimal.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="Integer.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
+    <ClCompile Include="NumberObject.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>

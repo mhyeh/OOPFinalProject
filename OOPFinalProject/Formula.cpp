@@ -6,12 +6,15 @@
 #include "Formula.h"
 
 
-Formula::Formula(string _formulaStr) {
+Formula::Formula(const string& _str) {
 	//TODO: analyze the string and divide numbers and operators into different vector
 }
 
 Formula::~Formula() {
 }
+
+
+void Formula::operator =(const string& _str)
 
 
 void Formula::calculate() {

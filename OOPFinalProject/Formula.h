@@ -8,7 +8,9 @@
 
 #include <string>
 #include <vector>
-#include "ComplexNum.h"
+#include "Integer.h"
+#include "Decimal.h"
+#include "Complex.h"
 
 using std::string;
 using std::vector;
@@ -16,12 +18,15 @@ using std::vector;
 class Formula {
 private:
 	string formulaStr;
-	ComplexNum answer;
+	NumberObject answer;
 
 public:
-	Formula(string);
+	Formula(const string& _formulaStr) formulaStr(_formulaStr), answer() {};
 	~Formula();
 
+	void operator =(const string&);
+
+	void seteFormula(const string&);
 	void calculate();
 	void print();
 };

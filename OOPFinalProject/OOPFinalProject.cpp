@@ -13,8 +13,9 @@ using std::endl;
 using std::string;
 
 int main() {
-	string inputStr;
 
+	string inputStr;
+	
 	while (cin >> inputStr) {
 		try {
 			Formula f(inputStr);
@@ -25,6 +26,7 @@ int main() {
 			cout << errorMsg << endl;
 		}
 	}
+	
 
     return 0;
 }
