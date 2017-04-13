@@ -16,15 +16,6 @@ using std::string;
 using std::vector;
 
 class Formula {
-private:
-	string formulaStr;
-	NumberObject answer;
 
-public:
-	Formula(string);
-	~Formula();
-
-	void calculate();
-	void print();
 };
 

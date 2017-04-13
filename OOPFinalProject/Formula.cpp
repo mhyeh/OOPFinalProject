@@ -5,20 +5,3 @@
 
 #include "Formula.h"
 
-
-Formula::Formula(string _formulaStr) {
-	//TODO: analyze the string and divide numbers and operators into different vector
-}
-
-Formula::~Formula() {
-}
-
-
-void Formula::calculate() {
-	//TODO: calculate the formula
-}
-
-
-void Formula::print() {
-	//TODO: print the answer of formula
-}

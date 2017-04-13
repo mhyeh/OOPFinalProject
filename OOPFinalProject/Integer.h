@@ -1,8 +1,6 @@
 #pragma once
 
 #include "NumberObject.h"
-//#include "Complex.h"
-//#include "Decimal.h"
 
 class Integer : public NumberObject {
 private:
@@ -15,14 +13,12 @@ protected:
 public:
 	Integer() : number(BigNum(0)), sign(false) {};
 	Integer(string);
+	Integer(int);
 	Integer(BigNum _number, bool _sign) : number(_number), sign(_sign) {};
 	~Integer();
 
 	bool getSign();
 	void setSign(bool);
-
-	//operator Decimal();
-	//operator Complex();
 
 	void operator =(const string&);
 
@@ -33,8 +29,12 @@ public:
 	friend Integer& operator -(const Integer&);
 
 	friend istream& operator >>(istream&, Integer&);
-	friend ostream& operator <<(ostream&, const Integer&);
+	friend ostream& operator <<(ostream&, const Integer&) override;
 
 	friend bool operator ==(const Integer&, const Integer&);
+	friend bool operator <(const Integer&, const Integer&);
+	friend bool operator <=(const Integer&, const Integer&);
+	friend bool operator >(const Integer&, const Integer&);
+	friend bool operator >=(const Integer&, const Integer&);
 };
 
