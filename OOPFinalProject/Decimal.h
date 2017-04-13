@@ -33,6 +33,6 @@ public:
 	friend Decimal& operator -(const Decimal&);
 
 	friend istream& operator >>(istream&, Decimal&);
-	friend ostream& operator <<(ostream&, const Decimal&) override;
+	friend ostream& operator <<(ostream&, const Decimal&);
 };
 

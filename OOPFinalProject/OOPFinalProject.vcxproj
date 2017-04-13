@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -20,10 +20,10 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{C39BBA3F-0BBA-43B6-B96B-476641EA621B}</ProjectGuid>
+    <ProjectGuid>{F1652A0E-B0A6-44A4-AFD3-6AEC31205726}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OOPFinalProject</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -143,19 +143,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Complex.h" />
+    <ClInclude Include="Computer.h" />
     <ClInclude Include="Decimal.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="NumberObject.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Decimal.cpp" />
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="Integer.cpp" />
     <ClCompile Include="NumberObject.cpp" />
     <ClCompile Include="OOPFinalProject.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+</Project>
