@@ -16,7 +16,8 @@ int main() {
 
 	string inputStr;
 
-
+	Integer a;
+	a = "1";
 	
 	while (cin >> inputStr) {
 		try {

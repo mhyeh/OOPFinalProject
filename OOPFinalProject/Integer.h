@@ -13,7 +13,7 @@ protected:
 	void strToNum(const string&) override;
 
 public:
-	Integer() : number(BigNum(0)), sign(false) {};
+	Integer() : number(BigNum()), sign(false) {};
 	Integer(string);
 	Integer(BigNum _number, bool _sign) : number(_number), sign(_sign) {};
 	~Integer();
