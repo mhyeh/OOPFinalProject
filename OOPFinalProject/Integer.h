@@ -11,7 +11,7 @@ protected:
 	void strToNum(const string&) override;
 
 public:
-	Integer() : number(BigNum(0)), sign(false) {};
+	Integer() : number(BigNum()), sign(false) {};
 	Integer(string);
 	Integer(int);
 	Integer(BigNum _number, bool _sign) : number(_number), sign(_sign) {};
@@ -29,7 +29,7 @@ public:
 	friend Integer& operator -(const Integer&);
 
 	friend istream& operator >>(istream&, Integer&);
-	friend ostream& operator <<(ostream&, const Integer&) override;
+	friend ostream& operator <<(ostream&, const Integer&);
 
 	friend bool operator ==(const Integer&, const Integer&);
 	friend bool operator <(const Integer&, const Integer&);
