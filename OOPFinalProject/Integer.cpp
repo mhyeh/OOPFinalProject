@@ -50,17 +50,6 @@ void Integer::setSign(bool _sign) {
 }
 
 
-/*
-Integer::operator Decimal() {
-	return Decimal(this->number, "1");
-}
-
-Integer::operator Complex() {
-	return Complex((Decimal)*this, Decimal("0"));
-}
-*/
-
-
 void Integer::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);
@@ -130,12 +119,30 @@ Integer& operator -(const Integer& _num1, const Integer& _num2) {
 }
 
 Integer& operator *(const Integer& _num1, const Integer& _num2) {
-	BigNum num1 = _num1.number;
-	BigNum num2 = _num2.number;
+	Integer num1 = _num1;
+	Integer num2 = _num2;
 	BigNum ans;
 	bool sign;
+	long long int carry = 0;
+	long long int num = 0;
 
-	//TODO: Caculate _num1 * _num2 and return
+	for(int i = 0; i < num1.number.size(); i++) {
+		for(int j = 0; j < num2.number.size(); j++) {
+			num = num1.number[i] * num2.number[j] + carry;
+			if(i + j >= ans.size()) {
+				ans.push_back(num % MAX_INT);
+				carry = num / MAX_INT;
+			} else {
+				ans[i + j] += num % MAX_INT;
+				carry = (num + ans[i + j]) / MAX_INT;
+				ans[i + j] %= MAX_INT;
+			}
+		}
+	}
+	if(carry)
+		ans.push_back(carry);
+
+	sign = num1.sign ^ num2.sign;
 
 	return Integer(ans, sign);
 }
@@ -196,6 +203,59 @@ bool operator ==(const Integer& _num1, const Integer& _num2) {
 	for (int i = 0; i < num1.number.size(); i++) 
 		if(num1.number[i] != num2.number[i])
 			return false;
+
+	return true;
+}
+
+bool operator <(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1.sign && !num2.sign)
+		return true;
+
+	if(!num1.sign && num1.number.size() < num2.number.size())
+		return true;
+
+	if(num1.sign && num1.number.size() > num2.number.size())
+		return true;
+
+	for (int i = num1.number.size() - 1; i >= 0; i--) {
+		if(!num1.sign && num1.number[i] < num2.number[i])
+			return true;
+		else if(num1.sign && num1.number[i] > num2.number[i])
+			return true;
+	}
+		
+	return false;
+}
+
+bool operator <=(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1 < num2 || num1 == num2)
+		return true;
+
+	return false;
+}
+
+bool operator >(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1 <= num2)
+		return false;
+
+	return true;
+}
+
+bool operator >=(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1 < num2)
+		return false;
 
 	return true;
 }

@@ -56,13 +56,6 @@ bool Decimal::getSign() {
 }
 
 
-/*
-Decimal::operator Complex() {
-	return Complex(*this, Decimal("0"));
-}
-*/
-
-
 void Decimal::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);

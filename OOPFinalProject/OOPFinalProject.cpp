@@ -15,10 +15,8 @@ using std::string;
 int main() {
 
 	string inputStr;
-
-	Integer a;
-	a = "1";
 	
+	/*
 	while (cin >> inputStr) {
 		try {
 			Formula f(inputStr);
@@ -29,6 +27,7 @@ int main() {
 			cout << errorMsg << endl;
 		}
 	}
+	*/
 	
 
     return 0;
