@@ -42,5 +42,5 @@ public:
 	friend istream& operator >>(istream&, NumberObject&) {};
 	friend ostream& operator <<(ostream&, const NumberObject&) {};
 	*/
-	friend virtual ostream& operator <<(ostream& _ostream, const NumberObject&) { return _ostream}; //TODO: fix
+	friend ostream& operator <<(ostream& _ostream, const NumberObject&) { return _ostream}; //TODO: fix
 };

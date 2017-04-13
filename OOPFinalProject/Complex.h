@@ -28,6 +28,6 @@ public:
 	friend Complex& operator -(const Complex&);
 
 	friend istream& operator >>(istream&, Complex&);
-	friend ostream& operator <<(ostream&, const Complex&);
+	friend ostream& operator <<(ostream&, const Complex&) override;
 };
 

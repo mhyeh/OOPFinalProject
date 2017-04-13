@@ -29,7 +29,7 @@ public:
 	friend Integer& operator -(const Integer&);
 
 	friend istream& operator >>(istream&, Integer&);
-	friend ostream& operator <<(ostream&, const Integer&);
+	friend ostream& operator <<(ostream&, const Integer&) override;
 
 	friend bool operator ==(const Integer&, const Integer&);
 	friend bool operator <(const Integer&, const Integer&);
