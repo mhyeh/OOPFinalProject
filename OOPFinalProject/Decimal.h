@@ -11,13 +11,12 @@ private:
 
 protected:
 	void strToNum(const string&) override;
+	ostream& output(ostream&) override;
 
 public:
 	Decimal() : numerator(Integer()), denominator("1") {};
 	Decimal(string);
 	Decimal(int);
-	Decimal(float);
-	Decimal(double);
 	Decimal(Integer _numerator) : numerator(_numerator), denominator(Integer()) {};
 	Decimal(Integer _numerator, Integer _denominator) : numerator(_numerator), denominator(_denominator) {};
 	~Decimal();
@@ -25,6 +24,7 @@ public:
 	bool getSign();
 
 	void operator =(const string&);
+	void operator =(const char*);
 
 	friend Decimal& operator +(const Decimal&, const Decimal&);
 	friend Decimal& operator -(const Decimal&, const Decimal&);
@@ -33,6 +33,5 @@ public:
 	friend Decimal& operator -(const Decimal&);
 
 	friend istream& operator >>(istream&, Decimal&);
-	friend ostream& operator <<(ostream&, const Decimal&);
 };
 

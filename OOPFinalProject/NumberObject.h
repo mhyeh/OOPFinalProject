@@ -23,24 +23,48 @@ typedef vector<long long int> BigNum;
 
 class NumberObject {
 protected:
-	virtual void strToNum(const string&) {};
+	virtual void strToNum(const string&) = 0;
+
+	virtual ostream& output(ostream&) = 0;
 
 public:
-	NumberObject();
-	NumberObject(string);
-	~NumberObject();
+	NumberObject() = default;
+	~NumberObject() = default;
 	
-	void operator =(const string&) {};
+	
+	void operator =(const string& _str) {
+		try {
+			this->strToNum(_str);
+		}
+		catch (const char* errorMsg) {
+			throw errorMsg;
+		}
+	};
 
+	void operator =(const char* _str) {
+		string str(_str);
+		try {
+			this->strToNum(_str);
+		}
+		catch (const char* errorMsg) {
+			throw errorMsg;
+		}
+	};
+	
+	
 	/*
-	friend NumberObject& operator +(const NumberObject&, const NumberObject&) {};
-	friend NumberObject& operator -(const NumberObject&, const NumberObject&) {};
-	friend NumberObject& operator *(const NumberObject&, const NumberObject&) {};
-	friend NumberObject& operator /(const NumberObject&, const NumberObject&) {};
-	friend NumberObject& operator -(const NumberObject&) {};
+	friend NumberObject& operator +(const NumberObject&, const NumberObject&);
+	friend NumberObject& operator -(const NumberObject&, const NumberObject&);
+	friend NumberObject& operator *(const NumberObject&, const NumberObject&);
+	friend NumberObject& operator /(const NumberObject&, const NumberObject&);
+	friend NumberObject& operator -(const NumberObject&);
 
-	friend istream& operator >>(istream&, NumberObject&) {};
-	friend ostream& operator <<(ostream&, const NumberObject&) {};
+	friend istream& operator >>(istream&, NumberObject&);
+	
 	*/
-	friend ostream& operator <<(ostream& _ostream, const NumberObject&) { return _ostream}; //TODO: fix
+	friend ostream& operator <<(ostream& _ostream, NumberObject& _num) {
+		_num.output(_ostream);
+
+		return _ostream;
+	};
 };

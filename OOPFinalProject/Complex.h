@@ -9,6 +9,7 @@ private:
 
 protected:
 	void strToNum(const string&) override;
+	ostream& output(ostream&) override;
 
 public:
 	Complex() : realPart(Decimal()), imagePart(Decimal()) {};
@@ -20,6 +21,7 @@ public:
 	~Complex();
 
 	void operator =(const string&);
+	void operator =(const char*);
 
 	friend Complex& operator +(const Complex&, const Complex&);
 	friend Complex& operator -(const Complex&, const Complex&);
@@ -28,6 +30,5 @@ public:
 	friend Complex& operator -(const Complex&);
 
 	friend istream& operator >>(istream&, Complex&);
-	friend ostream& operator <<(ostream&, const Complex&);
 };
 

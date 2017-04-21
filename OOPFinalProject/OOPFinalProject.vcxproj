@@ -143,9 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Complex.h" />
-    <ClInclude Include="Computer.h" />
     <ClInclude Include="Decimal.h" />
-    <ClInclude Include="Formula.h" />
     <ClInclude Include="Integer.h" />
     <ClInclude Include="NumberObject.h" />
     <ClInclude Include="stdafx.h" />
@@ -153,11 +151,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Complex.cpp" />
-    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Decimal.cpp" />
-    <ClCompile Include="Formula.cpp" />
     <ClCompile Include="Integer.cpp" />
-    <ClCompile Include="NumberObject.cpp" />
     <ClCompile Include="OOPFinalProject.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

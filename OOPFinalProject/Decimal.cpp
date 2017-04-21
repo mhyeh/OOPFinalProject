@@ -11,6 +11,11 @@ Decimal::Decimal(string _str) : numerator(Integer()), denominator("1") {
 	}
 }
 
+Decimal::Decimal(int _number) {
+	this->numerator = _number;
+	this->denominator = 1;
+}
+
 
 Decimal::~Decimal() {
 }
@@ -29,7 +34,7 @@ void Decimal::strToNum(const string& _str) {
 	for (int i = 0; i < str.length(); i++) {
 		if (str[i] == '.') {
 			decimalPos = i;
-			str.erase(i);
+			str.erase(str.begin() + i);
 			break;
 		}
 	}
@@ -42,6 +47,14 @@ void Decimal::strToNum(const string& _str) {
 	}
 	this->denominator = str;
 }
+
+
+ostream& Decimal::output(ostream& _ostream) {
+	Decimal num = *this;
+
+	return _ostream;
+}
+
 
 void Decimal::checkSign() {
 	if (this->denominator.getSign()) {
@@ -57,6 +70,16 @@ bool Decimal::getSign() {
 
 
 void Decimal::operator =(const string& _str) {
+	try {
+		this->strToNum(_str);
+	}
+	catch (const char* errorMsg) {
+		throw errorMsg;
+	}
+}
+
+void Decimal::operator =(const char* _str) {
+	string str(_str);
 	try {
 		this->strToNum(_str);
 	}
