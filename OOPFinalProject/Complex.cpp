@@ -11,6 +11,11 @@ Complex::Complex(string _str) : realPart(Decimal()), imagePart(Decimal()) {
 	}
 }
 
+Complex::Complex(int _number) {
+	this->realPart = _number;
+	this->imagePart = 0;
+}
+
 
 Complex::~Complex() {
 }
@@ -27,7 +32,26 @@ void Complex::strToNum(const string& _str) {
 }
 
 
+ostream& Complex::output(ostream& _ostream) {
+	Complex num = *this;
+
+	_ostream << num.realPart << (num.imagePart.getSign() ? "" : "+") << num.imagePart;
+
+	return _ostream;
+}
+
+
 void Complex::operator =(const string& _str) {
+	try {
+		this->strToNum(_str);
+	}
+	catch (const char* errorMsg) {
+		throw errorMsg;
+	}
+}
+
+void Complex::operator =(const char* _str) {
+	string str(_str);
 	try {
 		this->strToNum(_str);
 	}
@@ -104,12 +128,4 @@ istream& operator >>(istream& _istream, Complex& _num) {
 	_num.strToNum(str);
 
 	return _istream;
-}
-
-ostream& operator <<(ostream& _ostream, const Complex& _num) {
-	Complex num = _num;
-
-	_ostream << num.realPart << (num.imagePart.getSign() ? "" : "+") << num.imagePart;
-
-	return _ostream;
 }

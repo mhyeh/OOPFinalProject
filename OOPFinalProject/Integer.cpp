@@ -11,6 +11,13 @@ Integer::Integer(string _str) : number(BigNum(0)), sign(false) {
 	}
 }
 
+Integer::Integer(int _number) : sign(false) {
+	if(_number < 0)
+		sign = true;
+
+	this->number.push_back(std::labs(_number));
+}
+
 
 Integer::~Integer() {
 }
@@ -41,15 +48,6 @@ void Integer::strToNum(const string& _str) {
 }
 
 
-bool Integer::getSign() {
-	return this->sign;
-}
-
-void Integer::setSign(bool _sign) {
-	this->sign ^= _sign;
-}
-
-
 void Integer::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);
@@ -59,8 +57,69 @@ void Integer::operator =(const string& _str) {
 	}
 }
 
+void Integer::operator =(const char* _str) {
+	string str(_str);
+	try {
+		this->strToNum(_str);
+	}
+	catch (const char* errorMsg) {
+		throw errorMsg;
+	}
+}
 
-Integer& operator +(const Integer& _num1, const Integer& _num2) {
+/*
+NumberObject& Integer::add(const NumberObject&) {
+	std::cout << "int add" << std::endl;
+	return Integer();
+}
+
+NumberObject& Integer::sub(const NumberObject&) {
+	return Integer();
+}
+
+NumberObject& Integer::mul(const NumberObject&) {
+	return Integer();
+}
+
+NumberObject& Integer::div(const NumberObject&) {
+	return Integer();
+}
+
+NumberObject& Integer::minus() {
+	return Integer();
+}
+
+
+istream& Integer::input(istream& _istream) {
+	return _istream;
+}
+*/
+
+ostream& Integer::output(ostream& _ostream) {
+	Integer num = *this;
+
+	reverse(num.number.begin(), num.number.end());
+
+	if(num.sign)
+		_ostream << "-";
+
+	for(auto &i : num.number)
+		_ostream << i;
+
+	return _ostream;
+}
+
+
+bool Integer::getSign() {
+	return this->sign;
+}
+
+void Integer::setSign(bool _sign) {
+	this->sign ^= _sign;
+}
+
+
+Integer operator +(const Integer& _num1, const Integer& _num2) {
 	BigNum num1 = _num1.number;
 	BigNum num2 = _num2.number;
 	BigNum ans;
@@ -110,7 +169,7 @@ Integer& operator +(const Integer& _num1, const Integer& _num2) {
 	return Integer(ans, num1Sign);
 }
 
-Integer& operator -(const Integer& _num1, const Integer& _num2) {
+Integer operator -(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
@@ -118,7 +177,7 @@ Integer& operator -(const Integer& _num1, const Integer& _num2) {
 	return num1 + num2;
 }
 
-Integer& operator *(const Integer& _num1, const Integer& _num2) {
+Integer operator *(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 	BigNum ans;
@@ -147,7 +206,7 @@ Integer& operator *(const Integer& _num1, const Integer& _num2) {
 	return Integer(ans, sign);
 }
 
-Integer& operator /(const Integer& _num1, const Integer& _num2) {
+Integer operator /(const Integer& _num1, const Integer& _num2) {
 	BigNum num1 = _num1.number;
 	BigNum num2 = _num2.number;
 	BigNum ans;
@@ -158,7 +217,7 @@ Integer& operator /(const Integer& _num1, const Integer& _num2) {
 	return Integer(ans, sign);
 }
 
-Integer& operator -(const Integer& _num) {
+Integer operator -(const Integer& _num) {
 	BigNum num = _num.number;
 	bool sign = !_num.sign;
 
@@ -175,19 +234,6 @@ istream& operator >>(istream& _istream, Integer& _num) {
 	return _istream;
 }
 
-ostream& operator <<(ostream& _ostream, const Integer& _num) {
-	Integer num = _num;
-	
-	reverse(num.number.begin(), num.number.end());
-
-	if(num.sign)
-		_ostream << "-";
-
-	for(auto &i : num.number)
-		_ostream << i;
-
-	return _ostream;
-}
 
 
 bool operator ==(const Integer& _num1, const Integer& _num2) {

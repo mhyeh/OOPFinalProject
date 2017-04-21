@@ -24,22 +24,16 @@
     <ClInclude Include="targetver.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="Complex.h">
+    <ClInclude Include="Integer.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="Computer.h">
+    <ClInclude Include="NumberObject.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
     <ClInclude Include="Decimal.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
-    <ClInclude Include="Formula.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="Integer.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
-    <ClInclude Include="NumberObject.h">
+    <ClInclude Include="Complex.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,22 +44,13 @@
     <ClCompile Include="OOPFinalProject.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
-    <ClCompile Include="Complex.cpp">
-      <Filter>原始程式檔</Filter>
-    </ClCompile>
-    <ClCompile Include="Computer.cpp">
+    <ClCompile Include="Integer.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
     <ClCompile Include="Decimal.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
-    <ClCompile Include="Formula.cpp">
-      <Filter>原始程式檔</Filter>
-    </ClCompile>
-    <ClCompile Include="Integer.cpp">
-      <Filter>原始程式檔</Filter>
-    </ClCompile>
-    <ClCompile Include="NumberObject.cpp">
+    <ClCompile Include="Complex.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
   </ItemGroup>
