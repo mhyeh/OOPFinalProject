@@ -23,9 +23,11 @@ typedef vector<long long int> BigNum;
 
 class NumberObject {
 protected:
-	virtual void strToNum(const string&) = 0;
+	virtual void strToNum(const string&) {};
 
-	virtual ostream& output(ostream&) = 0;
+	virtual ostream& output(ostream& _ostream) {
+		return _ostream;
+	};
 
 public:
 	NumberObject() = default;
