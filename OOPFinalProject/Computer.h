@@ -4,29 +4,34 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "Formula.h"
 #include "NumberObject.h"
 
+using std::shared_ptr;
 using std::string;
 using std::vector;
 using std::map;
 using std::cout;
 
+
+typedef shared_ptr<NumberObject> NumberObjectPtr;
+
 class Computer {
 private:
-    NumberObject result;
+	NumberObjectPtr result;
     vector<Formula> f;
-    map<string, NumberObject> variableSet;
+    map<string, NumberObjectPtr> variableSet;
 
 public:
     Computer();
     ~Computer();
 
-    NumberObject getVar(const string&);
-    void setVar(const string&);
-    void setVar(const string&, const string&);
-    void setVar(const string&, const NumberObject&);
+	NumberObjectPtr getVarPtr(const string&);
+    void setVarPtr(const string&);
+    void setVarPtr(const string&, const string&);
+    void setVarPtr(const string&, const NumberObjectPtr);
 
     void setFormula(const string&);
     void caculate();

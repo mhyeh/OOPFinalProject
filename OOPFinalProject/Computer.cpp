@@ -2,7 +2,7 @@
 
 
 
-NumberObject Computer::getVar(const string& _varName) {
+NumberObjectPtr Computer::getVarPtr(const string& _varName) {
     string varName = _varName;
     auto it = this->variableSet.find(varName);
 
@@ -12,14 +12,14 @@ NumberObject Computer::getVar(const string& _varName) {
     return this->variableSet[varName];
 }
 
-void Computer::setVar(const string& _varName) {
+void Computer::setVarPtr(const string& _varName) {
     string varName = _varName;
-    NumberObject varVal = NumberObject();
+	NumberObjectPtr varVal(new NumberObject());
 
     this->variableSet[varName] = varVal;
 }
 
-void Computer::setVar(const string& _varName, const string& _varVal) {
+void Computer::setVarPtr(const string& _varName, const string& _varVal) {
     string varName = _varName;
     auto it = this->variableSet.find(varName);
 
@@ -27,13 +27,13 @@ void Computer::setVar(const string& _varName, const string& _varVal) {
 
     this->setFormula(varVal);
     this->caculate();
-    NumberObject number = this->result;
-    this->variableSet[varName] = number;
+
+    this->variableSet[varName] = this->result;
 }
 
-void Computer::setVar(const string& _varName, const NumberObject& _varVal) {
+void Computer::setVarPtr(const string& _varName, const NumberObjectPtr _varVal) {
     string varName = _varName;
-    NumberObject varVal = _varVal;
+	NumberObjectPtr varVal = _varVal;
 
     this->variableSet[varName] = varVal;
 }
@@ -47,7 +47,7 @@ void Computer::setFormula(const string&) {
 }
 
 void Computer::caculate() {
-    this->result = Integer("0");
+    this->result = NumberObjectPtr(new Integer("0"));
 
     for(int i = 0; i < f.size(); i++) {
         //TODO: calculate the formula
@@ -55,5 +55,5 @@ void Computer::caculate() {
 }
 
 void Computer::print() {
-    cout << this->result;
+    cout << *(this->result);
 }
