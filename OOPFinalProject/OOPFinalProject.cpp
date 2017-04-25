@@ -3,6 +3,7 @@
 #include <vector>
 #include "Integer.h"
 #include "Decimal.h"
+#include "Complex.h"
 
 using std::string;
 using std::vector;
@@ -11,19 +12,22 @@ using std::endl;
 
 int main()
 {
-	Decimal a, b, c;
+	Integer a = "1";
+	Integer b = "123", c, d, e;
 	vector<NumberObject*> num;
-	a = "1.1";
-	b = "2.213456";
-	c = b * 40;
+	//std::cin >> a;
+	c = a + b;
 	num.push_back(&a);
 	num.push_back(&b);
 	num.push_back(&c);
-	/*
+	d = *num[1] * *num[2];
+	e = d * d * d;
+	num.push_back(&d);
+	num.push_back(&e);
 	for (auto &i : num) {
 		cout << *i << endl;
 	}
-	*/
+	
 	
 	system("pause");
     return 0;

@@ -2,71 +2,78 @@
 
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <cmath>
 #include <regex>
+#include <memory>
+
 
 #define MAX_DIGIT 8
 #define MAX_INT ((long long int)std::pow(10, MAX_DIGIT))
 
-using std::string;
-using std::istream;
-using std::ostream;
-using std::vector;
-using std::regex;
-using std::regex_match;
-using std::swap;
-using std::reverse;
+//#define NUM_OBJ 0
+//#define INTEGER 1
+//#define DECIMAL 2
+//#define COMPLEX 3
+
+using namespace std;
 
 typedef vector<long long int> BigNum;
 
+enum NumType {
+	NUM_OBJ,
+	INTEGER,
+	DECIMAL,
+	COMPLEX
+};
+
+struct NumData {
+	BigNum rNumerator;
+	BigNum rDenominator;
+	BigNum iNumerator;
+	BigNum iDenominator;
+	int rSign;
+	int iSign;
+};
+
 class NumberObject {
 protected:
-	virtual void strToNum(const string&) {};
+	NumData numData;
+	NumType numType;
 
-	virtual ostream& output(ostream& _ostream) {
-		return _ostream;
-	};
+	virtual void strToNum(const string&) {};
+	virtual void encode() {};
+	virtual void decode() {};
+
+	virtual NumberObject add(const NumberObject&, const NumberObject&) { return NumberObject(); };
+	virtual NumberObject sub(const NumberObject&, const NumberObject&) { return NumberObject(); };
+	virtual NumberObject mul(const NumberObject&, const NumberObject&) { return NumberObject(); };
+	virtual NumberObject div(const NumberObject&, const NumberObject&) { return NumberObject(); };
+	virtual NumberObject minus(const NumberObject&) { return NumberObject(); };
+
+	virtual void input(istream&);
+	virtual void output(ostream&) {};
 
 public:
-	NumberObject() = default;
-	~NumberObject() = default;
+	NumberObject() : numType(NUM_OBJ) {};
+	NumberObject(string _numStr) : numType(NUM_OBJ) {};
+	NumberObject(const NumberObject&);
+	~NumberObject();
 	
-	
-	void operator =(const string& _str) {
-		try {
-			this->strToNum(_str);
-		}
-		catch (const char* errorMsg) {
-			throw errorMsg;
-		}
-	};
+	NumData getNumData() { return this->numData; };
+	NumType getNumType() { return this->numType; };
 
-	void operator =(const char* _str) {
-		string str(_str);
-		try {
-			this->strToNum(_str);
-		}
-		catch (const char* errorMsg) {
-			throw errorMsg;
-		}
-	};
-	
-	
-	/*
-	friend NumberObject& operator +(const NumberObject&, const NumberObject&);
-	friend NumberObject& operator -(const NumberObject&, const NumberObject&);
-	friend NumberObject& operator *(const NumberObject&, const NumberObject&);
-	friend NumberObject& operator /(const NumberObject&, const NumberObject&);
-	friend NumberObject& operator -(const NumberObject&);
+	friend NumberObject* numberFactory(int, int);
 
+	friend NumberObject operator +(const NumberObject&, const NumberObject&);
+	friend NumberObject operator -(const NumberObject&, const NumberObject&);
+	friend NumberObject operator *(const NumberObject&, const NumberObject&);
+	friend NumberObject operator /(const NumberObject&, const NumberObject&);
+	friend NumberObject operator -(const NumberObject&);
+	
 	friend istream& operator >>(istream&, NumberObject&);
-	
-	*/
-	friend ostream& operator <<(ostream& _ostream, NumberObject& _num) {
-		_num.output(_ostream);
-
-		return _ostream;
-	};
+	friend ostream& operator <<(ostream&, NumberObject&);
 };

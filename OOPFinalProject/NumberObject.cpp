@@ -1,117 +1,93 @@
 #include "NumberObject.h"
+#include "Integer.h"
+#include "Decimal.h"
+#include "Complex.h"
 
 
 
-NumberObject::NumberObject() {
+NumberObject::NumberObject(const NumberObject& _numberObject) {
+	this->numType = _numberObject.numType;
+	this->numData = _numberObject.numData;
 }
 
 
 NumberObject::~NumberObject() {
+
 }
 
 
-/*
-void NumberObject::operator =(const string& _str) {
-	this->assign(_str);
+void NumberObject::input(istream& _istream) {
+	string str;
+
+	_istream >> str;
+	this->strToNum(str);
 }
 
-void NumberObject::operator =(const char* _str) {
-	string str(_str);
-	this->assign(str);
-}
-*/
 
-void NumberObject::assign(const string& _str) {
-	this->strToNum(_str);
+
+NumberObject* numberFactory(int _type1, int _type2) {
+	int type = std::max(_type1, _type2);
+
+	switch (type) {
+	case NUM_OBJ:
+		return new NumberObject();
+		break;
+	case INTEGER:
+		return new Integer();
+		break;
+	case DECIMAL:
+		return new Decimal();
+		break;
+	case COMPLEX:
+		return new Complex();
+		break;
+	}
 }
 
-/*
-NumberObject& operator +(const NumberObject& _num1, const NumberObject& _num2) {
+
+NumberObject operator +(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
-	return num1.add(num2);
-}
-*/
-
-NumberObject& NumberObject::add(const NumberObject& _num) {
-	std::cout << "num add" << std::endl;
-	return NumberObject();
+	return numberFactory(num1.numType, num2.numType)->add(num1, num2);
 }
 
-/*
-NumberObject& operator -(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject operator -(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
-	return num1.sub(num2);
-}
-*/
-
-NumberObject& NumberObject::sub(const NumberObject& _num) {
-	return NumberObject();
+	return numberFactory(num1.numType, num2.numType)->sub(num1, num2);
 }
 
-/*
-NumberObject& operator *(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject operator *(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
-	return num1.mul(num2);
-}
-*/
-
-NumberObject& NumberObject::mul(const NumberObject& num) {
-	return NumberObject();
+	return numberFactory(num1.numType, num2.numType)->mul(num1, num2);
 }
 
-/*
-NumberObject& operator /(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject operator /(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
-	return num1.div(num2);
-}
-*/
-
-NumberObject& NumberObject::div(const NumberObject& num) {
-	return NumberObject();
+	return numberFactory(num1.numType, num2.numType)->div(num1, num2);
 }
 
-/*
-NumberObject& operator -(const NumberObject& _num) {
+NumberObject operator -(const NumberObject& _num) {
 	NumberObject num = _num;
 
-	return num.minus();
-}
-*/
-
-NumberObject& NumberObject::minus() {
-	return NumberObject();
+	return numberFactory(num.numType, 0)->minus(num);
 }
 
 
-/*
 istream& operator >>(istream& _istream, NumberObject& _num) {
-	NumberObject num = _num;
+	_num.input(_istream);
 
-	return num.input(_istream);
-}
-*/
-
-istream& NumberObject::input(istream& _istream) {
 	return _istream;
-}
+};
 
-/*
-ostream& operator <<(ostream& _ostream, const NumberObject& _num) {
-	NumberObject num = _num;
+ostream& operator <<(ostream& _ostream, NumberObject& _num) {
+	_num.output(_ostream);
 
-	return num.output(_ostream);
-}
-*/
-
-ostream& NumberObject::output(ostream& _ostream) {
 	return _ostream;
-}
-
+};

@@ -2,18 +2,42 @@
 
 
 
+Complex::Complex() : realPart(Decimal()), imagePart(Decimal()) {
+	this->numType = COMPLEX;
+}
+
+Complex::Complex(const NumberObject& _numberObject) {
+	NumberObject numberObject = _numberObject;
+	this->numType = COMPLEX;
+	this->numData = numberObject.getNumData();
+
+	this->decode();
+}
+
 Complex::Complex(string _str) : realPart(Decimal()), imagePart(Decimal()) {
+	this->numType = COMPLEX;
 	try {
 		this->strToNum(_str);
 	}
 	catch (const char* errorMsg) {
 		throw errorMsg;
 	}
+
+	this->encode();
 }
 
 Complex::Complex(int _number) {
+	this->numType = COMPLEX;
 	this->realPart = _number;
 	this->imagePart = 0;
+
+	this->encode();
+}
+
+Complex::Complex(const NumberObject& _realPart, const NumberObject& _imagePart) : realPart(_realPart), imagePart(_imagePart) {
+	this->numType = COMPLEX;
+
+	this->encode();
 }
 
 
@@ -31,14 +55,87 @@ void Complex::strToNum(const string& _str) {
 	//TODO: convert the string to Complex
 }
 
+void Complex::encode() {
+	this->numData.rNumerator = this->realPart.getNumData().rNumerator;
+	this->numData.rDenominator = this->realPart.getNumData().rDenominator;
+	this->numData.iNumerator = this->imagePart.getNumData().rNumerator;
+	this->numData.rDenominator = this->imagePart.getNumData().rDenominator;
+	this->numData.rSign = this->realPart.getNumData().rSign;
+	this->numData.iSign = this->imagePart.getNumData().rSign;
+}
 
-ostream& Complex::output(ostream& _ostream) {
+void Complex::decode() {
+	this->realPart = Decimal(Integer(this->numData.rNumerator, this->numData.rSign), Integer(this->numData.rDenominator, false));
+	this->imagePart = Decimal(Integer(this->numData.iNumerator, this->numData.iSign), Integer(this->numData.iDenominator, false));
+}
+
+
+NumberObject Complex::add(const NumberObject& _num1, const NumberObject& _num2) {
+	Complex num1 = _num1;
+	Complex num2 = _num2;
+	Decimal realPart;
+	Decimal imagePart;
+
+	realPart = num1.realPart + num2.realPart;
+	imagePart = num1.imagePart + num2.imagePart;
+
+	return Complex(realPart, imagePart);
+}
+
+NumberObject Complex::sub(const NumberObject& _num1, const NumberObject& _num2) {
+	Complex num1 = _num1;
+	Complex num2 = _num2;
+	Decimal realPart;
+	Decimal imagePart;
+
+	realPart = num1.realPart - num2.realPart;
+	imagePart = num1.imagePart - num2.imagePart;
+
+	return Complex(realPart, imagePart);
+}
+
+NumberObject Complex::mul(const NumberObject& _num1, const NumberObject& _num2) {
+	Complex num1 = _num1;
+	Complex num2 = _num2;
+	Decimal realPart;
+	Decimal imagePart;
+
+	realPart = num1.realPart * num2.realPart - num1.imagePart * num2.imagePart;
+	imagePart = num1.realPart * num2.imagePart + num1.imagePart * num2.realPart;
+
+	return Complex(realPart, imagePart);
+}
+
+NumberObject Complex::div(const NumberObject& _num1, const NumberObject& _num2) {
+	Complex num1 = _num1;
+	Complex num2 = _num2;
+	Decimal realPart;
+	Decimal imagePart;
+	Decimal denominator;
+
+	denominator = num2.realPart * num2.realPart + num2.imagePart * num2.imagePart;
+	realPart = (num1.realPart * num2.realPart + num1.imagePart * num2.imagePart) / denominator;
+	imagePart = (-num1.realPart * num2.imagePart + num1.imagePart * num2.realPart) / denominator;
+
+	return Complex(realPart, imagePart);
+}
+
+NumberObject Complex::minus(const NumberObject& _num) {
+	Complex num = _num;
+
+	Decimal realPart = -num.realPart;
+	Decimal imagePart = num.imagePart;
+
+	return Complex(realPart, imagePart);
+}
+
+
+void Complex::output(ostream& _ostream) {
 	Complex num = *this;
 
 	_ostream << num.realPart << (num.imagePart.getSign() ? "" : "+") << num.imagePart;
-
-	return _ostream;
 }
+
 
 
 void Complex::operator =(const string& _str) {
@@ -58,74 +155,4 @@ void Complex::operator =(const char* _str) {
 	catch (const char* errorMsg) {
 		throw errorMsg;
 	}
-}
-
-
-Complex& operator +(const Complex& _num1, const Complex& _num2) {
-	Complex num1 = _num1;
-	Complex num2 = _num2;
-	Decimal realPart;
-	Decimal imagePart;
-
-	realPart = num1.realPart + num2.realPart;
-	imagePart = num1.imagePart + num2.imagePart;
-
-	return Complex(realPart, imagePart);
-}
-
-Complex& operator -(const Complex& _num1, const Complex& _num2) {
-	Complex num1 = _num1;
-	Complex num2 = _num2;
-	Decimal realPart;
-	Decimal imagePart;
-
-	realPart = num1.realPart - num2.realPart;
-	imagePart = num1.imagePart - num2.imagePart;
-
-	return Complex(realPart, imagePart);
-}
-
-Complex& operator *(const Complex& _num1, const Complex& _num2) {
-	Complex num1 = _num1;
-	Complex num2 = _num2;
-	Decimal realPart;
-	Decimal imagePart;
-
-	realPart = num1.realPart * num2.realPart - num1.imagePart * num2.imagePart;
-	imagePart = num1.realPart * num2.imagePart + num1.imagePart * num2.realPart;
-
-	return Complex(realPart, imagePart);
-}
-
-Complex& operator /(const Complex& _num1, const Complex& _num2) {
-	Complex num1 = _num1;
-	Complex num2 = _num2;
-	Decimal realPart;
-	Decimal imagePart;
-	Decimal denominator;
-
-	denominator = num2.realPart * num2.realPart + num2.imagePart * num2.imagePart;
-	realPart = (num1.realPart * num2.realPart + num1.imagePart * num2.imagePart) / denominator;
-	imagePart = (-num1.realPart * num2.imagePart + num1.imagePart * num2.realPart) / denominator;
-
-	return Complex(realPart, imagePart);
-}
-
-Complex& operator -(const Complex& _num) {
-	Complex num = _num;
-
-	Decimal realPart = -num.realPart;
-	Decimal imagePart = num.imagePart;
-
-	return Complex(realPart, imagePart);
-}
-
-
-istream& operator >>(istream& _istream, Complex& _num) {
-	string str;
-
-	_istream >> str;
-	_num.strToNum(str);
-
-	return _istream;
 }

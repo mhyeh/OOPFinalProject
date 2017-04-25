@@ -2,21 +2,47 @@
 
 
 
+Integer::Integer() : number(BigNum()), sign(false) {
+	this->numType = INTEGER;
+}
+
+Integer::Integer(const NumberObject& _numberObject) : number(BigNum(0)), sign(false) {
+	NumberObject numberObject = _numberObject;
+	this->numType = INTEGER;
+	this->numData = numberObject.getNumData();
+
+	this->decode();
+}
+
 Integer::Integer(string _str) : number(BigNum(0)), sign(false) {
+	this->numType = INTEGER;
+
 	try {
 		this->strToNum(_str);
 	}
 	catch (const char* errorMsg) {
 		throw errorMsg;
 	}
+
+	this->encode();
 }
 
 Integer::Integer(int _number) : sign(false) {
+	this->numType = INTEGER;
+
 	if(_number < 0)
 		sign = true;
 
 	this->number.push_back(std::labs(_number));
+
+	this->encode();
 }
+
+Integer::Integer(BigNum& _number, bool _sign) : number(_number), sign(_sign) {
+	this->numType = INTEGER;
+
+	this->encode();
+};
 
 
 Integer::~Integer() {
@@ -47,85 +73,31 @@ void Integer::strToNum(const string& _str) {
 	}
 }
 
-
-void Integer::operator =(const string& _str) {
-	try {
-		this->strToNum(_str);
-	}
-	catch (const char* errorMsg) {
-		throw errorMsg;
-	}
+void Integer::encode() {
+	this->numData.rNumerator = this->number;
+	this->numData.rDenominator = BigNum(1,1);
+	this->numData.iNumerator = BigNum(0);
+	this->numData.rDenominator = BigNum(1,1);
+	this->numData.rSign = this->sign;
+	this->numData.iSign = false;
 }
 
-void Integer::operator =(const char* _str) {
-	string str(_str);
-	try {
-		this->strToNum(_str);
-	}
-	catch (const char* errorMsg) {
-		throw errorMsg;
-	}
-}
-
-/*
-NumberObject& Integer::add(const NumberObject&) {
-	std::cout << "int add" << std::endl;
-	return Integer();
-}
-
-NumberObject& Integer::sub(const NumberObject&) {
-	return Integer();
-}
-
-NumberObject& Integer::mul(const NumberObject&) {
-	return Integer();
-}
-
-NumberObject& Integer::div(const NumberObject&) {
-	return Integer();
-}
-
-NumberObject& Integer::minus() {
-	return Integer();
+void Integer::decode() {
+	this->number = this->getNumData().rNumerator;
+	this->sign = this->getNumData().rSign;
 }
 
 
-istream& Integer::input(istream& _istream) {
-	return _istream;
-}
-*/
 
-ostream& Integer::output(ostream& _ostream) {
-	Integer num = *this;
-
-	reverse(num.number.begin(), num.number.end());
-
-	if(num.sign)
-		_ostream << "-";
-
-	for(auto &i : num.number)
-		_ostream << i;
-
-	return _ostream;
-}
-
-
-bool Integer::getSign() {
-	return this->sign;
-}
-
-void Integer::setSign(bool _sign) {
-	this->sign ^= _sign;
-}
-
-
-Integer operator +(const Integer& _num1, const Integer& _num2) {
-	BigNum num1 = _num1.number;
-	BigNum num2 = _num2.number;
+NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) {
+	Integer integer1 = Integer(_num1);
+	Integer integer2 = Integer(_num2);
+	BigNum num1 = integer1.number;
+	BigNum num2 = integer2.number;
 	BigNum ans;
 
-	bool num1Sign = _num1.sign;
-	bool num2Sign = _num2.sign;
+	bool num1Sign = integer1.sign;
+	bool num2Sign = integer2.sign;
 
 	if (num1Sign == num2Sign) {
 		int carry = 0;
@@ -169,7 +141,7 @@ Integer operator +(const Integer& _num1, const Integer& _num2) {
 	return Integer(ans, num1Sign);
 }
 
-Integer operator -(const Integer& _num1, const Integer& _num2) {
+NumberObject Integer::sub(const NumberObject& _num1, const NumberObject& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
@@ -177,7 +149,7 @@ Integer operator -(const Integer& _num1, const Integer& _num2) {
 	return num1 + num2;
 }
 
-Integer operator *(const Integer& _num1, const Integer& _num2) {
+NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 	BigNum ans;
@@ -206,34 +178,73 @@ Integer operator *(const Integer& _num1, const Integer& _num2) {
 	return Integer(ans, sign);
 }
 
-Integer operator /(const Integer& _num1, const Integer& _num2) {
-	BigNum num1 = _num1.number;
-	BigNum num2 = _num2.number;
+NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) {
 	BigNum ans;
-	bool sign;
+	//TODO: Caculate _num1 / _num2
 
-	//TODO: Caculate _num1 / _num2 and return
-
-	return Integer(ans, sign);
+	return Integer();
 }
 
-Integer operator -(const Integer& _num) {
-	BigNum num = _num.number;
-	bool sign = !_num.sign;
+NumberObject Integer::minus(const NumberObject& _num) {
+	Integer integer = Integer(_num);
+	BigNum num = integer.number;
+	bool sign = !integer.sign;
 
 	return Integer(num, sign);
 }
 
 
-istream& operator >>(istream& _istream, Integer& _num) {
-	string str;
+void Integer::output(ostream& _ostream) {
+	Integer num = *this;
 
-	_istream >> str;
-	_num.strToNum(str);
+	reverse(num.number.begin(), num.number.end());
 
-	return _istream;
+	if(num.sign)
+		_ostream << "-";
+
+	_ostream << num.number[0];
+	for (int i = 1; i < num.number.size(); i++)
+	{
+		_ostream << setw(MAX_DIGIT) << setfill('0');
+		_ostream << num.number[i];
+	}
+
 }
 
+
+
+bool Integer::getSign() {
+	return this->sign;
+}
+
+void Integer::setSign(bool _sign) {
+	this->sign ^= _sign;
+}
+
+
+
+void Integer::operator =(const string& _str) {
+	try {
+		this->strToNum(_str);
+	}
+	catch (const char* errorMsg) {
+		throw errorMsg;
+	}
+
+	this->encode();
+}
+
+void Integer::operator =(const char* _str) {
+	string str(_str);
+	try {
+		this->strToNum(str);
+	}
+	catch (const char* errorMsg) {
+		throw errorMsg;
+	}
+
+	this->encode();
+}
 
 
 bool operator ==(const Integer& _num1, const Integer& _num2) {

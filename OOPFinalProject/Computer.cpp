@@ -2,6 +2,20 @@
 
 
 
+Computer::Computer() {
+
+}
+
+
+Computer::~Computer() {
+	this->result.reset();
+	for (auto &i : this->variableSet) {
+		i.second.reset();
+	}
+	this->variableSet.clear();
+}
+
+
 NumberObjectPtr Computer::getVarPtr(const string& _varName) {
     string varName = _varName;
     auto it = this->variableSet.find(varName);

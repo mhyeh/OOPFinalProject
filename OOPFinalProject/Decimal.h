@@ -10,28 +10,29 @@ private:
 	void checkSign();
 
 protected:
-	void strToNum(const string&) override;
-	ostream& output(ostream&) override;
+	virtual void strToNum(const string&) override;
+	virtual void encode() override;
+	virtual void decode() override;
+
+	virtual NumberObject add(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject sub(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject mul(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject div(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject minus(const NumberObject&) override;
+
+	virtual void output(ostream&) override;
 
 public:
-	Decimal() : numerator(Integer()), denominator("1") {};
+	Decimal();
+	Decimal(const NumberObject&);
 	Decimal(string);
 	Decimal(int);
-	Decimal(Integer _numerator) : numerator(_numerator), denominator(Integer()) {};
-	Decimal(Integer _numerator, Integer _denominator) : numerator(_numerator), denominator(_denominator) {};
+	Decimal(const NumberObject&,const NumberObject&);
 	~Decimal();
 
 	bool getSign();
 
 	void operator =(const string&);
 	void operator =(const char*);
-
-	friend Decimal& operator +(const Decimal&, const Decimal&);
-	friend Decimal& operator -(const Decimal&, const Decimal&);
-	friend Decimal& operator *(const Decimal&, const Decimal&);
-	friend Decimal& operator /(const Decimal&, const Decimal&);
-	friend Decimal& operator -(const Decimal&);
-
-	friend istream& operator >>(istream&, Decimal&);
 };
 
