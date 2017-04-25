@@ -12,8 +12,8 @@ NumberObject::NumberObject(const NumberObject& _numberObject) {
 
 
 NumberObject::~NumberObject() {
-
 }
+
 
 
 void NumberObject::input(istream& _istream) {

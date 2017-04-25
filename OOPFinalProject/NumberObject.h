@@ -8,16 +8,9 @@
 #include <string>
 #include <cmath>
 #include <regex>
-#include <memory>
-
 
 #define MAX_DIGIT 8
 #define MAX_INT ((long long int)std::pow(10, MAX_DIGIT))
-
-//#define NUM_OBJ 0
-//#define INTEGER 1
-//#define DECIMAL 2
-//#define COMPLEX 3
 
 using namespace std;
 

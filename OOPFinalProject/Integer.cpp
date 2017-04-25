@@ -203,8 +203,7 @@ void Integer::output(ostream& _ostream) {
 		_ostream << "-";
 
 	_ostream << num.number[0];
-	for (int i = 1; i < num.number.size(); i++)
-	{
+	for (int i = 1; i < num.number.size(); i++) {
 		_ostream << setw(MAX_DIGIT) << setfill('0');
 		_ostream << num.number[i];
 	}
