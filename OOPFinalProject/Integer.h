@@ -11,23 +11,23 @@ private:
 	bool sign;
 
 protected:
-	void strToNum(const string&) override;
-	/*
-	NumberObject& add(const NumberObject&) override;
-	NumberObject& sub(const NumberObject&) override;
-	NumberObject& mul(const NumberObject&) override;
-	NumberObject& div(const NumberObject&) override;
-	NumberObject& minus() override;
+	virtual void strToNum(const string&) override;
+	virtual void encode() override;
+	virtual void decode() override;
+	
+	virtual NumberObject add(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject sub(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject mul(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject div(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject minus(const NumberObject&) override;
 
-	istream& input(istream&) override;
-	*/
-	ostream& output(ostream&) override;
-
+	virtual void output(ostream&) override;
 public:
-	Integer() : number(BigNum()), sign(false) {};
+	Integer();
+	Integer(const NumberObject&);
 	Integer(string);
 	Integer(int);
-	Integer(BigNum& _number, bool _sign) : number(_number), sign(_sign) {};
+	Integer(BigNum& _number, bool _sign);
 	~Integer();
 
 	bool getSign();
@@ -36,13 +36,6 @@ public:
 	void operator =(const string&);
 	void operator =(const char*);
 
-	friend Integer operator +(const Integer&, const Integer&);
-	friend Integer operator -(const Integer&, const Integer&);
-	friend Integer operator *(const Integer&, const Integer&);
-	friend Integer operator /(const Integer&, const Integer&);
-	friend Integer operator -(const Integer&);
-
-	friend istream& operator >>(istream&, Integer&);
 
 	friend bool operator ==(const Integer&, const Integer&);
 	friend bool operator <(const Integer&, const Integer&);

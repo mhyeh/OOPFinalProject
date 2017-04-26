@@ -8,27 +8,27 @@ private:
 	Decimal realPart, imagePart;
 
 protected:
-	void strToNum(const string&) override;
-	ostream& output(ostream&) override;
+	virtual void strToNum(const string&) override;
+	virtual void encode() override;
+	virtual void decode() override;
+
+	virtual NumberObject add(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject sub(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject mul(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject div(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject minus(const NumberObject&) override;
+
+	virtual void output(ostream&) override;
 
 public:
-	Complex() : realPart(Decimal()), imagePart(Decimal()) {};
+	Complex();
+	Complex(const NumberObject&);
 	Complex(string);
 	Complex(int);
-	Complex(Integer _realPart) : realPart(_realPart), imagePart(Decimal()) {};
-	Complex(Decimal _realPart) : realPart(_realPart), imagePart(Decimal()) {};
-	Complex(Decimal _realPart, Decimal _imagePart) : realPart(_realPart), imagePart(_imagePart) {};
+	Complex(const NumberObject&,const NumberObject&);
 	~Complex();
 
 	void operator =(const string&);
 	void operator =(const char*);
-
-	friend Complex& operator +(const Complex&, const Complex&);
-	friend Complex& operator -(const Complex&, const Complex&);
-	friend Complex& operator *(const Complex&, const Complex&);
-	friend Complex& operator /(const Complex&, const Complex&);
-	friend Complex& operator -(const Complex&);
-
-	friend istream& operator >>(istream&, Complex&);
 };
 
