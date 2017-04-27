@@ -179,10 +179,16 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 }
 
 NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
 	BigNum ans;
-	//TODO: Caculate _num1 / _num2
+	bool sign;
+	
+	//caculate num1 / num2
 
-	return Integer();
+	sign = num1.sign ^ num2.sign;
+
+	return Integer(ans, sign);
 }
 
 NumberObject Integer::minus(const NumberObject& _num) {
@@ -270,6 +276,9 @@ bool operator <(const Integer& _num1, const Integer& _num2) {
 	if(num1.sign && !num2.sign)
 		return true;
 
+	if(!num1.sign && num2.sign)
+		return false;
+
 	if(!num1.sign && num1.number.size() < num2.number.size())
 		return true;
 
@@ -282,7 +291,7 @@ bool operator <(const Integer& _num1, const Integer& _num2) {
 		else if(num1.sign && num1.number[i] > num2.number[i])
 			return true;
 	}
-		
+	
 	return false;
 }
 
