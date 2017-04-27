@@ -25,7 +25,12 @@ void NumberObject::input(istream& _istream) {
 	string str;
 
 	_istream >> str;
-	this->strToNum(str);
+	try {
+		this->strToNum(str);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 }
 
 
@@ -75,7 +80,12 @@ NumberObject operator /(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
-	return numberFactory(num1.numType, num2.numType)->div(num1, num2);
+	try {
+		return numberFactory(num1.numType, num2.numType)->div(num1, num2);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 }
 
 NumberObject operator -(const NumberObject& _num) {
@@ -92,7 +102,12 @@ istream& operator >>(istream& _istream, NumberObject& _num) {
 };
 
 ostream& operator <<(ostream& _ostream, NumberObject& _num) {
-	_num.output(_ostream);
+	try {
+		_num.output(_ostream);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 
 	return _ostream;
 };
