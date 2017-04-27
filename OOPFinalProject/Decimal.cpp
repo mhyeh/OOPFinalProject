@@ -54,7 +54,7 @@ void Decimal::checkSign() {
 
 
 void Decimal::strToNum(const string& _str) {
-	regex reg("-?[0-9]*\.?[0-9]*");
+	regex reg("[-+]?[0-9]*\.?[0-9]*");
 	string str = _str;
 	int decimalPos = 0;
 
