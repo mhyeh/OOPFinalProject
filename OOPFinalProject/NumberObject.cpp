@@ -10,6 +10,11 @@ NumberObject::NumberObject(const NumberObject& _numberObject) {
 	this->numData = _numberObject.numData;
 }
 
+NumberObject::NumberObject(int _number) {
+	this->numType = INTEGER;
+	this->numData = Integer(_number).getNumData();
+}
+
 
 NumberObject::~NumberObject() {
 }

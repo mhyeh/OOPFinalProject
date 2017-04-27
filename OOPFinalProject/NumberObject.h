@@ -54,6 +54,7 @@ public:
 	NumberObject() : numType(NUM_OBJ) {};
 	NumberObject(string _numStr) : numType(NUM_OBJ) {};
 	NumberObject(const NumberObject&);
+	NumberObject(int);
 	~NumberObject();
 	
 	NumData getNumData() { return this->numData; };
