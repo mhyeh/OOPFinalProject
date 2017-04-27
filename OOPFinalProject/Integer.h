@@ -9,6 +9,9 @@ class Integer : public NumberObject {
 private:
 	BigNum number;
 	bool sign;
+	long long int lenght;
+
+	Integer karatsuba(const Integer&, const Integer&);
 
 protected:
 	virtual void strToNum(const string&) override;
@@ -26,16 +29,21 @@ public:
 	Integer();
 	Integer(const NumberObject&);
 	Integer(string);
-	Integer(int);
+	Integer(long long int);
 	Integer(BigNum& _number, bool _sign);
 	~Integer();
 
 	bool getSign();
 	void setSign(bool);
+	long long int getLength();
+	void setLength();
 
 	void operator =(const string&);
 	void operator =(const char*);
 
+	friend Integer rShift(const Integer&, long long int);
+	friend Integer lShift(const Integer&, long long int);
+	friend Integer abs(const Integer&);
 
 	friend bool operator ==(const Integer&, const Integer&);
 	friend bool operator <(const Integer&, const Integer&);

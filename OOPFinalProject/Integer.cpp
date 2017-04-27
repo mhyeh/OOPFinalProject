@@ -4,6 +4,7 @@
 
 Integer::Integer() : number(BigNum()), sign(false) {
 	this->numType = INTEGER;
+	this->lenght = 0;
 }
 
 Integer::Integer(const NumberObject& _numberObject) : number(BigNum(0)), sign(false) {
@@ -12,6 +13,7 @@ Integer::Integer(const NumberObject& _numberObject) : number(BigNum(0)), sign(fa
 	this->numData = numberObject.getNumData();
 
 	this->decode();
+	this->setLength();
 }
 
 Integer::Integer(string _str) : number(BigNum(0)), sign(false) {
@@ -25,23 +27,30 @@ Integer::Integer(string _str) : number(BigNum(0)), sign(false) {
 	}
 
 	this->encode();
+	this->setLength();
 }
 
-Integer::Integer(int _number) : sign(false) {
+Integer::Integer(long long int _number) : sign(false) {
 	this->numType = INTEGER;
 
-	if(_number < 0)
+	if (_number < 0) {
 		sign = true;
-
-	this->number.push_back(std::labs(_number));
+		_number = std::labs(_number);
+	}
+	
+	this->number.push_back(_number % MAX_INT);
+	if(_number / MAX_INT)
+		this->number.push_back(_number / MAX_INT);
 
 	this->encode();
+	this->setLength();
 }
 
 Integer::Integer(BigNum& _number, bool _sign) : number(_number), sign(_sign) {
 	this->numType = INTEGER;
 
 	this->encode();
+	this->setLength();
 };
 
 
@@ -49,8 +58,42 @@ Integer::~Integer() {
 }
 
 
+
+Integer Integer::karatsuba(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+	Integer tmp0, tmp1, tmp2;
+
+	if(num1 < MAX_INT && num2 < MAX_INT)
+		return num1.number[0] * num2.number[0];
+
+	long long int length = max(num1.getLength(), num2.getLength());
+	long long int length2 = length / 2;
+
+	stringstream ss;
+	string num1Str, num2Str;
+	ss << num1 << " " << num2;
+	ss >> num1Str >> num2Str;
+
+	string num1High, num1Low;
+	string num2High, num2Low;
+
+	num1High = num1Str.substr(0, length2);
+	num1Low = num1Str.substr(length2, length - length2);
+	num2High = num2Str.substr(0, length2);
+	num2Low = num2Str.substr(length2, length - length2);
+
+	tmp0 = karatsuba(num1Low, num2Low);
+	tmp1 = karatsuba((Integer(num1Low) + Integer(num1High)), (Integer(num2Low) + Integer(num2High)));
+	tmp2 = karatsuba(num1High, num2High);
+
+	return rShift(tmp2, 2 * length2) + rShift(tmp1 - tmp2 - tmp0, length2) + tmp0;
+}
+
+
+
 void Integer::strToNum(const string& _str) {
-	regex reg("-?[0-9]+");
+	regex reg("[-+]?[0-9]+");
 	string str = _str;
 	long long int num = 0;
 
@@ -63,6 +106,9 @@ void Integer::strToNum(const string& _str) {
 		str.pop_back();
 		this->sign = true;
 	}
+
+	if (str.back() == '+') 
+		str.pop_back();
 
 	for (int i = 0; i < str.length(); i++) {
 		num += (str[i] - '0') * pow(10, i % MAX_DIGIT);
@@ -145,8 +191,7 @@ NumberObject Integer::sub(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	num2.sign = !num2.sign;
-	return num1 + num2;
+	return num1 + -num2;
 }
 
 NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) {
@@ -154,24 +199,27 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num2 = _num2;
 	BigNum ans;
 	bool sign;
+	
 	long long int carry = 0;
 	long long int num = 0;
 
 	for(int i = 0; i < num1.number.size(); i++) {
 		for(int j = 0; j < num2.number.size(); j++) {
-			num = num1.number[i] * num2.number[j] + carry;
+			num = (long long int)num1.number[i] * (long long int)num2.number[j] + (long long int)carry;
 			if(i + j >= ans.size()) {
 				ans.push_back(num % MAX_INT);
 				carry = num / MAX_INT;
 			} else {
 				ans[i + j] += num % MAX_INT;
-				carry = (num + ans[i + j]) / MAX_INT;
+				carry = (num + (long long int)ans[i + j]) / MAX_INT;
 				ans[i + j] %= MAX_INT;
 			}
 		}
 	}
 	if(carry)
 		ans.push_back(carry);
+	
+	//ans = karatsuba(abs(num1), abs(num2));
 
 	sign = num1.sign ^ num2.sign;
 
@@ -184,7 +232,20 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 	BigNum ans;
 	bool sign;
 	
-	//caculate num1 / num2
+	if(num2 == 0)
+		throw "can not devided by 0";
+	if(num1 < num2)
+		return Integer(0);
+	if(num1 == num2)
+		return Integer(1);
+	if(num1 == -num2)
+		return Integer(-1);
+
+	long long int DigitNum1 = num1.getLength();
+	long long int DigitNum2 = num2.getLength() + MAX_DIGIT;
+
+	num2 = rShift(num2, DigitNum1 / DigitNum2 * DigitNum2);
+
 
 	sign = num1.sign ^ num2.sign;
 
@@ -226,6 +287,20 @@ void Integer::setSign(bool _sign) {
 	this->sign ^= _sign;
 }
 
+long long int Integer::getLength() {
+	return this->lenght;
+}
+
+void Integer::setLength() {
+	stringstream ss;
+	string back;
+	ss.clear();
+	ss << this->number.back();
+	ss >> back;
+
+	this->lenght = (this->number.size() - 1) * MAX_DIGIT + back.length();
+}
+
 
 
 void Integer::operator =(const string& _str) {
@@ -249,6 +324,45 @@ void Integer::operator =(const char* _str) {
 	}
 
 	this->encode();
+}
+
+
+Integer rShift(const Integer& _num, long long int shiftLength) {
+	Integer num = _num;
+	stringstream ss;
+	string str;
+	ss.clear();
+	ss << num;
+	ss >> str;
+
+	while (shiftLength--) 
+		str += "0";
+
+	return Integer(str);
+}
+
+Integer lShift(const Integer& _num, long long int shiftLength) {
+	Integer num = _num;
+	stringstream ss;
+	string str;
+	ss.clear();
+	ss << num;
+	ss >> str;
+
+	while (shiftLength--) {
+		if(str.back() == '0')
+			str.pop_back();
+		else
+			break;
+	}
+
+	return Integer(str);
+}
+
+Integer abs(const Integer& _num) {
+	Integer num = _num;
+
+	return Integer(num.number, false);
 }
 
 

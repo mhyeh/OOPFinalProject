@@ -14,7 +14,7 @@
 
 using namespace std;
 
-typedef vector<long long int> BigNum;
+typedef vector<int> BigNum;
 
 enum NumType {
 	NUM_OBJ,

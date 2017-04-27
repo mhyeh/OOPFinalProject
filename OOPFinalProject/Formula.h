@@ -8,7 +8,7 @@
 
 #include <string>
 #include <vector>
-#include "Computer.h"
+//#include "Computer.h"
 #include "NumberObject.h"
 
 using std::string;

@@ -10,6 +10,11 @@ Computer::~Computer() {
 }
 
 
+
+map<string, NumberObject> Computer::variableSet = map<string, NumberObject>();
+
+
+
 NumberObject Computer::getVar(const string& _varName) {
     string varName = _varName;
     auto it = variableSet.find(varName);
