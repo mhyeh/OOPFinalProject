@@ -25,10 +25,10 @@ public:
     Computer();
     ~Computer();
 
-	static NumberObject getVarPtr(const string&);
-    static void setVarPtr(const string&);
-    static void setVarPtr(const string&, const string&);
-    static void setVarPtr(const string&, const NumberObject&);
+	static NumberObject getVar(const string&);
+    static void setVar(const string&);
+    static void setVar(const string&, const string&);
+    static void setVar(const string&, const NumberObject&);
 
     void setFormula(const string&);
     void caculate();

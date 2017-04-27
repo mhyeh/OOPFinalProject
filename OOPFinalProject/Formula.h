@@ -28,5 +28,7 @@ public:
 
     string setFormula(string&);
     NumberObject caculate();
+
+	Formula operator =(const string&);
 };
 
