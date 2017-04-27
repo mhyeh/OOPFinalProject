@@ -15,23 +15,20 @@ using std::vector;
 using std::map;
 using std::cout;
 
-
-typedef shared_ptr<NumberObject> NumberObjectPtr;
-
 class Computer {
 private:
-	NumberObjectPtr result;
-    vector<Formula> f;
-    map<string, NumberObjectPtr> variableSet;
+	NumberObject result;
+    Formula f;
+    static map<string, NumberObject&> variableSet;
 
 public:
     Computer();
     ~Computer();
 
-	NumberObjectPtr getVarPtr(const string&);
-    void setVarPtr(const string&);
-    void setVarPtr(const string&, const string&);
-    void setVarPtr(const string&, const NumberObjectPtr);
+	static NumberObject getVarPtr(const string&);
+    static void setVarPtr(const string&);
+    static void setVarPtr(const string&, const string&);
+    static void setVarPtr(const string&, const NumberObject&);
 
     void setFormula(const string&);
     void caculate();
