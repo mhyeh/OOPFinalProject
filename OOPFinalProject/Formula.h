@@ -8,14 +8,25 @@
 
 #include <string>
 #include <vector>
-#include "Integer.h"
-#include "Decimal.h"
-#include "Complex.h"
+#include "Computer.h"
+#include "NumberObject.h"
 
 using std::string;
 using std::vector;
 
 class Formula {
+private:
+    string formulaStr;
 
+    void postfix();
+    NumberObject cal(string&);
+
+public:
+    Formula();
+    Formula(string&);
+    ~Formula();
+
+    string setFormula(string&);
+    NumberObject caculate();
 };
 
