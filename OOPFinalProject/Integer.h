@@ -11,8 +11,6 @@ private:
 	bool sign;
 	long long int lenght;
 
-	Integer karatsuba(const Integer&, const Integer&);
-
 protected:
 	virtual void strToNum(const string&) override;
 	virtual void encode() override;
@@ -45,6 +43,8 @@ public:
 	friend Integer lShift(const Integer&, long long int);
 	friend Integer abs(const Integer&);
 	friend Integer GCD(const Integer&, const Integer&);
+
+	friend int binSearch(const Integer&, const Integer&, int, int);
 
 	friend Integer operator %(const Integer&, const Integer&);
 

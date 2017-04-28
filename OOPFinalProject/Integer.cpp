@@ -59,39 +59,6 @@ Integer::~Integer() {
 
 
 
-Integer Integer::karatsuba(const Integer& _num1, const Integer& _num2) {
-	Integer num1 = _num1;
-	Integer num2 = _num2;
-	Integer tmp0, tmp1, tmp2;
-
-	if(num1 < MAX_INT && num2 < MAX_INT)
-		return num1.number[0] * num2.number[0];
-
-	long long int length = max(num1.getLength(), num2.getLength());
-	long long int length2 = length / 2;
-
-	stringstream ss;
-	string num1Str, num2Str;
-	ss << num1 << " " << num2;
-	ss >> num1Str >> num2Str;
-
-	string num1High, num1Low;
-	string num2High, num2Low;
-
-	num1High = num1Str.substr(0, length2);
-	num1Low = num1Str.substr(length2, length - length2);
-	num2High = num2Str.substr(0, length2);
-	num2Low = num2Str.substr(length2, length - length2);
-
-	tmp0 = karatsuba(num1Low, num2Low);
-	tmp1 = karatsuba((Integer(num1Low) + Integer(num1High)), (Integer(num2Low) + Integer(num2High)));
-	tmp2 = karatsuba(num1High, num2High);
-
-	return rShift(tmp2, 2 * length2) + rShift(tmp1 - tmp2 - tmp0, length2) + tmp0;
-}
-
-
-
 void Integer::strToNum(const string& _str) {
 	regex reg("[-+]?[0-9]+");
 	string str = _str;
@@ -110,7 +77,7 @@ void Integer::strToNum(const string& _str) {
 	if (str.back() == '+') 
 		str.pop_back();
 
-	for (int i = 0; i < str.length(); i++) {
+	for (long long int i = 0; i < str.length(); i++) {
 		num += (str[i] - '0') * pow(10, i % MAX_DIGIT);
 		if (i % MAX_DIGIT == MAX_DIGIT - 1 || i == str.length() - 1) {
 			this->number.push_back(num);
@@ -148,10 +115,10 @@ NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) 
 	if (num1Sign == num2Sign) {
 		int carry = 0;
 
-		for (int i = 0; i < std::max(num1.size(), num2.size()); i++) {
-			long long int num = (i < num1.size() ? num1[i] : 0) + (i < num2.size() ? num2[i] : 0) + carry;
+		for (long long int i = 0; i < std::max(num1.size(), num2.size()); i++) {
+			int num = (i < num1.size() ? num1[i] : 0) + (i < num2.size() ? num2[i] : 0) + carry;
 			carry = num / MAX_INT;
-			ans.push_back(num);
+			ans.push_back(num % MAX_INT);
 		}
 
 		if (carry) 
@@ -165,8 +132,8 @@ NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) 
 			swap(num1Sign, num2Sign);
 		}
 
-		for (int i = 0; i < num1.size(); i++) {
-			long long int num = (i < num1.size() ? num1[i] : 0) - (i < num2.size() ? num2[i] : 0) - borrow;
+		for (long long int i = 0; i < num1.size(); i++) {
+			int num = (i < num1.size() ? num1[i] : 0) - (i < num2.size() ? num2[i] : 0) - borrow;
 
 			if (num < 0) {
 				if (i < num1.size() - 1) 
@@ -203,8 +170,8 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	long long int carry = 0;
 	long long int num = 0;
 
-	for(int i = 0; i < num1.number.size(); i++) {
-		for(int j = 0; j < num2.number.size(); j++) {
+	for(long long int i = 0; i < num1.number.size(); i++) {
+		for(long long int j = 0; j < num2.number.size(); j++) {
 			num = (long long int)num1.number[i] * (long long int)num2.number[j] + (long long int)carry;
 			if(i + j >= ans.size()) {
 				ans.push_back(num % MAX_INT);
@@ -218,8 +185,6 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	}
 	if(carry)
 		ans.push_back(carry);
-	
-	//ans = karatsuba(abs(num1), abs(num2));
 
 	sign = num1.sign ^ num2.sign;
 
@@ -230,7 +195,10 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 	BigNum ans;
-	bool sign;
+	bool sign = num1.sign ^ num2.sign;
+
+	num1 = abs(num1);
+	num2 = abs(num2);
 	
 	if(num2 == 0)
 		throw "can not devided by 0";
@@ -238,16 +206,34 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 		return Integer(0);
 	if(num1 == num2)
 		return Integer(1);
-	if(num1 == -num2)
-		return Integer(-1);
 
 	long long int DigitNum1 = num1.getLength();
-	long long int DigitNum2 = num2.getLength() + MAX_DIGIT;
+	long long int DigitNum2 = num2.getLength();
 
-	num2 = rShift(num2, DigitNum1 / DigitNum2 * DigitNum2);
+	int maxDigit = MAX_DIGIT * 2;
+	long long int maxInt = MAX_INT * MAX_INT;
+	
+	long long int shiftLen = DigitNum1 - DigitNum2 - maxDigit;
 
+	if(shiftLen > 0) {
+		while(shiftLen % maxDigit)
+		shiftLen++;
 
-	sign = num1.sign ^ num2.sign;
+		num2 = rShift(num2, shiftLen);
+	} else
+		shiftLen = 0;
+	
+	int carry = 0;
+	for(long long int i = 0; i < shiftLen / maxDigit + 1; i++) {
+		long long int tmp = binSearch(abs(num1), abs(num2), 0, maxInt);
+		ans.push((tmp + carry) % MAX_INT);
+		carry = (tmp + carry) / MAX_INT;
+		num1 = num1 - num2 * tmp;
+		num2 = lShift(num2, maxDigit);
+	}
+	reverse(ans.begin(), ans.end());
+	if(carry)
+		ans.push_back(carry);
 
 	return Integer(ans, sign);
 }
@@ -364,6 +350,84 @@ Integer abs(const Integer& _num) {
 	Integer num = _num;
 
 	return Integer(num.number, false);
+}
+
+Integer GCD(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+	BigNum ans;
+	bool sign;
+
+	return Integer();
+}
+
+
+int binSearch(const BigNum& _num1, const BigNum& _num2, int lower, int upper) {
+	BigNum num1 = _num1;
+	BigNum num2 = _num2;
+	int m = (lower + upper) / 2;
+
+	if(num1 < num2)
+		return 0;
+	if(num1 == num2)
+		return 1;
+
+	if(lower == upper) {
+		if(num1 < num2 * lower)
+			return lower - 1;
+		return lower;
+	}
+
+	int m = (lower + upper) / 2;
+
+	if(num1 < num2 * m)
+		return binSearch(num1, num2, m + 1, upper);
+	else if(num1 > num2 * m)
+		return binSearch(num1, num2, 0, m);
+	else
+		return m;
+}
+
+
+Integer operator %(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+	BigNum ans;
+	bool sign = num1.sign ^ num2.sign;
+
+	num1 = abs(num1);
+	num2 = abs(num2);
+	
+	if(num2 == 0)
+		return _num1;
+	if(num1 < num2)
+		return Integer(num1.number, sign);
+	if(num1 == num2)
+		return 0;
+
+	long long int DigitNum1 = num1.getLength();
+	long long int DigitNum2 = num2.getLength();
+
+	int maxDigit = MAX_DIGIT * 2;
+	long long int maxInt = MAX_INT * MAX_INT;
+	
+	long long int shiftLen = DigitNum1 - DigitNum2 - maxDigit;
+
+	if(shiftLen > 0) {
+		while(shiftLen % maxDigit)
+		shiftLen++;
+
+		num2 = rShift(num2, shiftLen);
+	} else
+		shiftLen = 0;
+	
+	int carry = 0;
+	for(long long int i = 0; i < shiftLen / maxDigit + 1; i++) {
+		num1 = num1 - num2 * tmp;
+		num2 = lShift(num2, maxDigit);
+	}
+
+	return Integer(num1.number, sign);
 }
 
 
