@@ -76,8 +76,8 @@ NumberObject Complex::add(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal realPart;
 	Decimal imagePart;
 
-	realPart = Decimal::add(num1.realPart, num2.realPart);
-	imagePart = Decimal::add(num1.imagePart, num2.imagePart);
+	realPart = num1.realPart + num2.realPart;
+	imagePart = num1.imagePart + num2.imagePart;
 
 	return Complex(realPart, imagePart);
 }
@@ -88,8 +88,8 @@ NumberObject Complex::sub(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal realPart;
 	Decimal imagePart;
 
-	realPart = Decimal::sub(num1.realPart, num2.realPart);
-	imagePart =  Decimal::sub(num1.imagePart, num2.imagePart);
+	realPart = num1.realPart - num2.realPart;
+	imagePart = num1.imagePart - num2.imagePart;
 
 	return Complex(realPart, imagePart);
 }
@@ -100,8 +100,8 @@ NumberObject Complex::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal realPart;
 	Decimal imagePart;
 
-	realPart = Decimal::sub(Decimal::mul(num1.realPart, num2.realPart), Decimal::mul(num1.imagePart, num2.imagePart));
-	imagePart = Decimal::add(Decimal::mul(num1.realPart, num2.imagePart), Decimal::mul(num1.imagePart, num2.realPart));
+	realPart = num1.realPart * num2.realPart - num1.imagePart * num2.imagePart;
+	imagePart = num1.realPart * num2.imagePart + num1.imagePart * num2.realPart;
 
 	return Complex(realPart, imagePart);
 }
@@ -113,9 +113,9 @@ NumberObject Complex::div(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal imagePart;
 	Decimal denominator;
 
-	denominator = Decimal::add(Decimal::mul(num2.realPart, num2.realPart), Decimal::mul(num2.imagePart, num2.imagePart));
-	realPart = Decimal::div(Decimal::mul(Decimal::mul(num1.realPart, num2.realPart), Decimal::mul(num1.imagePart, num2.imagePart)), denominator);
-	imagePart = Decimal::div((Decimal::add(Decimal::mul(Decimal::minus(num1.realPart), num2.imagePart), Decimal::mul(num1.imagePart, num2.realPart))), denominator);
+	denominator = num2.realPart * num2.realPart + num2.imagePart * num2.imagePart;
+	realPart = (num1.realPart * num2.realPart + num1.imagePart, num2.imagePart) / denominator;
+	imagePart = (-num1.realPart * num2.imagePart + num1.imagePart * num2.realPart) / denominator;
 
 	return Complex(realPart, imagePart);
 }
@@ -123,8 +123,8 @@ NumberObject Complex::div(const NumberObject& _num1, const NumberObject& _num2) 
 NumberObject Complex::minus(const NumberObject& _num) {
 	Complex num = _num;
 
-	Decimal realPart = Decimal::minus(num.realPart);
-	Decimal imagePart = Decimal::minus(num.imagePart);
+	Decimal realPart = -num.realPart;
+	Decimal imagePart = -num.imagePart;
 
 	return Complex(realPart, imagePart);
 }

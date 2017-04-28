@@ -108,10 +108,10 @@ NumberObject Decimal::add(const NumberObject& _num1, const NumberObject& _num2) 
 
 	if (num1.denominator == num2.denominator) {
 		denominator = num1.denominator;
-		numerator = Integer::add(num1.numerator, num2.numerator);
+		numerator = num1.numerator + num2.numerator;
 	} else {
-		denominator = Integer::mul(num1.denominator, num2.denominator);
-		numerator = Integer::add(Integer::mul(num1.numerator, num2.denominator), Integer::mul(num1.denominator, num2.numerator));
+		denominator = num1.denominator * num2.denominator;
+		numerator = num1.numerator * num2.denominator + num1.denominator * num2.numerator;
 	}
 	bool sign = denominator.getSign() ^ numerator.getSign();
 
@@ -135,8 +135,8 @@ NumberObject Decimal::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	num1.checkSign();
 	num2.checkSign();
 	
-	Integer denominator = Integer::mul(num1.denominator, num2.denominator);
-	Integer numerator = Integer::mul(num1.numerator, num2.numerator);
+	Integer denominator = num1.denominator * num2.denominator;
+	Integer numerator = num1.numerator * num2.numerator;
 
 	return Decimal(numerator, denominator);
 }
@@ -148,8 +148,8 @@ NumberObject Decimal::div(const NumberObject& _num1, const NumberObject& _num2) 
 	num1.checkSign();
 	num2.checkSign();
 
-	Integer denominator = Integer::mul(num1.denominator, num2.numerator);
-	Integer numerator = Integer::mul(num1.numerator, num2.denominator);
+	Integer denominator = num1.denominator * num2.numerator;
+	Integer numerator = num1.numerator * num2.denominator;
 
 	return Decimal(numerator, denominator);
 }
@@ -159,7 +159,7 @@ NumberObject Decimal::minus(const NumberObject& _num) {
 
 	num.checkSign();
 
-	Integer numerator = Integer::minus(num.numerator);
+	Integer numerator = -num.numerator;
 	Integer denominator = num.denominator;
 
 	return Decimal(numerator, denominator);

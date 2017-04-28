@@ -146,6 +146,8 @@ NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) 
 
 			ans.push_back(num);
 		}
+		while(ans.back() == 0)
+			ans.pop_back();
 
 		if (borrow)
 			num1Sign = !num1Sign;
@@ -167,24 +169,24 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	BigNum ans;
 	bool sign;
 	
-	long long int carry = 0;
 	long long int num = 0;
 
 	for(long long int i = 0; i < num1.number.size(); i++) {
+		long long int carry = 0;
 		for(long long int j = 0; j < num2.number.size(); j++) {
-			num = (long long int)num1.number[i] * (long long int)num2.number[j] + (long long int)carry;
+			num = (long long int)num1.number[i] * (long long int)num2.number[j] + carry;
 			if(i + j >= ans.size()) {
 				ans.push_back(num % MAX_INT);
 				carry = num / MAX_INT;
 			} else {
 				ans[i + j] += num % MAX_INT;
-				carry = (num + (long long int)ans[i + j]) / MAX_INT;
+				carry = num / MAX_INT + (long long int)ans[i + j] / MAX_INT;
 				ans[i + j] %= MAX_INT;
 			}
 		}
+		if(carry)
+			ans.push_back(carry);
 	}
-	if(carry)
-		ans.push_back(carry);
 
 	sign = num1.sign ^ num2.sign;
 
@@ -223,15 +225,22 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 	} else
 		shiftLen = 0;
 	
-	int carry = 0;
 	for(long long int i = 0; i < shiftLen / maxDigit + 1; i++) {
-		long long int tmp = binSearch(abs(num1), abs(num2), 0, maxInt);
-		ans.push((tmp + carry) % MAX_INT);
-		carry = (tmp + carry) / MAX_INT;
+		long long int tmp = binSearch(num1, num2, 0, maxInt);
+		if(!ans.size())
+			ans.push_back(tmp / MAX_INT);
+		else
+			ans.insert(ans.begin(), tmp / MAX_INT);
+		ans.insert(ans.begin(), tmp % MAX_INT);
 		num1 = num1 - num2 * tmp;
 		num2 = lShift(num2, maxDigit);
 	}
-	reverse(ans.begin(), ans.end());
+	int carry = 0;
+	for (long long int i = 0; i < ans.size(); i++) {
+		int num = ans[i] + carry;
+		ans[i] = num % MAX_INT;
+		carry = num / MAX_INT;
+	}
 	if(carry)
 		ans.push_back(carry);
 
@@ -353,19 +362,24 @@ Integer abs(const Integer& _num) {
 }
 
 Integer GCD(const Integer& _num1, const Integer& _num2) {
-	Integer num1 = _num1;
-	Integer num2 = _num2;
-	BigNum ans;
-	bool sign;
+	Integer num1 = abs(_num1);
+	Integer num2 = abs(_num2);
 
-	return Integer();
+	while (isZero(num1 = num1 % num2) && isZero(num2 = num2 % num1));
+	return num1 + num2;
 }
 
 
-int binSearch(const BigNum& _num1, const BigNum& _num2, int lower, int upper) {
-	BigNum num1 = _num1;
-	BigNum num2 = _num2;
-	int m = (lower + upper) / 2;
+bool isZero(const Integer& _num) {
+	if(_num.number.size() == 1 && _num.number[0] == 0)
+		return true;
+	return false;
+}
+
+
+long long int binSearch(const Integer& _num1, const Integer& _num2, long long int lower, long long int upper) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
 
 	if(num1 < num2)
 		return 0;
@@ -378,14 +392,13 @@ int binSearch(const BigNum& _num1, const BigNum& _num2, int lower, int upper) {
 		return lower;
 	}
 
-	int m = (lower + upper) / 2;
+	long long int m = (lower + upper) / 2;
 
-	if(num1 < num2 * m)
+	if(num1 > num2 * m)
 		return binSearch(num1, num2, m + 1, upper);
-	else if(num1 > num2 * m)
-		return binSearch(num1, num2, 0, m);
-	else
-		return m;
+	if(num1 < num2 * m)
+		return binSearch(num1, num2, lower, m);
+	return m;
 }
 
 
@@ -423,6 +436,7 @@ Integer operator %(const Integer& _num1, const Integer& _num2) {
 	
 	int carry = 0;
 	for(long long int i = 0; i < shiftLen / maxDigit + 1; i++) {
+		long long int tmp = binSearch(num1, num2, 0, maxInt);
 		num1 = num1 - num2 * tmp;
 		num2 = lShift(num2, maxDigit);
 	}
@@ -454,21 +468,25 @@ bool operator <(const Integer& _num1, const Integer& _num2) {
 
 	if(num1.sign && !num2.sign)
 		return true;
-
 	if(!num1.sign && num2.sign)
 		return false;
 
 	if(!num1.sign && num1.number.size() < num2.number.size())
 		return true;
-
+	if(!num1.sign && num1.number.size() > num2.number.size())
+		return false;
 	if(num1.sign && num1.number.size() > num2.number.size())
 		return true;
+	if(num1.sign && num1.number.size() < num2.number.size())
+		return false;
 
 	for (int i = num1.number.size() - 1; i >= 0; i--) {
 		if(!num1.sign && num1.number[i] < num2.number[i])
 			return true;
-		else if(num1.sign && num1.number[i] > num2.number[i])
+		if(num1.sign && num1.number[i] > num2.number[i])
 			return true;
+		if(num1.number[i] != num2.number[i])
+			return false;
 	}
 	
 	return false;
