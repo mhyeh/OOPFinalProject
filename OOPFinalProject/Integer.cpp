@@ -59,39 +59,6 @@ Integer::~Integer() {
 
 
 
-Integer Integer::karatsuba(const Integer& _num1, const Integer& _num2) {
-	Integer num1 = _num1;
-	Integer num2 = _num2;
-	Integer tmp0, tmp1, tmp2;
-
-	if(num1 < MAX_INT && num2 < MAX_INT)
-		return num1.number[0] * num2.number[0];
-
-	long long int length = max(num1.getLength(), num2.getLength());
-	long long int length2 = length / 2;
-
-	stringstream ss;
-	string num1Str, num2Str;
-	ss << num1 << " " << num2;
-	ss >> num1Str >> num2Str;
-
-	string num1High, num1Low;
-	string num2High, num2Low;
-
-	num1High = num1Str.substr(0, length2);
-	num1Low = num1Str.substr(length2, length - length2);
-	num2High = num2Str.substr(0, length2);
-	num2Low = num2Str.substr(length2, length - length2);
-
-	tmp0 = karatsuba(num1Low, num2Low);
-	tmp1 = karatsuba((Integer(num1Low) + Integer(num1High)), (Integer(num2Low) + Integer(num2High)));
-	tmp2 = karatsuba(num1High, num2High);
-
-	return rShift(tmp2, 2 * length2) + rShift(tmp1 - tmp2 - tmp0, length2) + tmp0;
-}
-
-
-
 void Integer::strToNum(const string& _str) {
 	regex reg("[-+]?[0-9]+");
 	string str = _str;
@@ -110,7 +77,7 @@ void Integer::strToNum(const string& _str) {
 	if (str.back() == '+') 
 		str.pop_back();
 
-	for (int i = 0; i < str.length(); i++) {
+	for (long long int i = 0; i < str.length(); i++) {
 		num += (str[i] - '0') * pow(10, i % MAX_DIGIT);
 		if (i % MAX_DIGIT == MAX_DIGIT - 1 || i == str.length() - 1) {
 			this->number.push_back(num);
@@ -148,10 +115,10 @@ NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) 
 	if (num1Sign == num2Sign) {
 		int carry = 0;
 
-		for (int i = 0; i < std::max(num1.size(), num2.size()); i++) {
-			long long int num = (i < num1.size() ? num1[i] : 0) + (i < num2.size() ? num2[i] : 0) + carry;
+		for (long long int i = 0; i < std::max(num1.size(), num2.size()); i++) {
+			int num = (i < num1.size() ? num1[i] : 0) + (i < num2.size() ? num2[i] : 0) + carry;
 			carry = num / MAX_INT;
-			ans.push_back(num);
+			ans.push_back(num % MAX_INT);
 		}
 
 		if (carry) 
@@ -165,8 +132,8 @@ NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) 
 			swap(num1Sign, num2Sign);
 		}
 
-		for (int i = 0; i < num1.size(); i++) {
-			long long int num = (i < num1.size() ? num1[i] : 0) - (i < num2.size() ? num2[i] : 0) - borrow;
+		for (long long int i = 0; i < num1.size(); i++) {
+			int num = (i < num1.size() ? num1[i] : 0) - (i < num2.size() ? num2[i] : 0) - borrow;
 
 			if (num < 0) {
 				if (i < num1.size() - 1) 
@@ -179,6 +146,8 @@ NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) 
 
 			ans.push_back(num);
 		}
+		while(ans.back() == 0)
+			ans.pop_back();
 
 		if (borrow)
 			num1Sign = !num1Sign;
@@ -191,7 +160,7 @@ NumberObject Integer::sub(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	return num1 + -num2;
+	return num1 + Integer::minus(num2);
 }
 
 NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) {
@@ -200,26 +169,24 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	BigNum ans;
 	bool sign;
 	
-	long long int carry = 0;
 	long long int num = 0;
 
-	for(int i = 0; i < num1.number.size(); i++) {
-		for(int j = 0; j < num2.number.size(); j++) {
-			num = (long long int)num1.number[i] * (long long int)num2.number[j] + (long long int)carry;
+	for(long long int i = 0; i < num1.number.size(); i++) {
+		long long int carry = 0;
+		for(long long int j = 0; j < num2.number.size(); j++) {
+			num = (long long int)num1.number[i] * (long long int)num2.number[j] + carry;
 			if(i + j >= ans.size()) {
 				ans.push_back(num % MAX_INT);
 				carry = num / MAX_INT;
 			} else {
 				ans[i + j] += num % MAX_INT;
-				carry = (num + (long long int)ans[i + j]) / MAX_INT;
+				carry = num / MAX_INT + (long long int)ans[i + j] / MAX_INT;
 				ans[i + j] %= MAX_INT;
 			}
 		}
+		if(carry)
+			ans.push_back(carry);
 	}
-	if(carry)
-		ans.push_back(carry);
-	
-	//ans = karatsuba(abs(num1), abs(num2));
 
 	sign = num1.sign ^ num2.sign;
 
@@ -230,7 +197,10 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 	BigNum ans;
-	bool sign;
+	bool sign = num1.sign ^ num2.sign;
+
+	num1 = abs(num1);
+	num2 = abs(num2);
 	
 	if(num2 == 0)
 		throw "can not devided by 0";
@@ -238,16 +208,41 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 		return Integer(0);
 	if(num1 == num2)
 		return Integer(1);
-	if(num1 == -num2)
-		return Integer(-1);
 
 	long long int DigitNum1 = num1.getLength();
-	long long int DigitNum2 = num2.getLength() + MAX_DIGIT;
+	long long int DigitNum2 = num2.getLength();
 
-	num2 = rShift(num2, DigitNum1 / DigitNum2 * DigitNum2);
+	int maxDigit = MAX_DIGIT * 2;
+	long long int maxInt = MAX_INT * MAX_INT;
+	
+	long long int shiftLen = DigitNum1 - DigitNum2 - maxDigit;
 
+	if(shiftLen > 0) {
+		while(shiftLen % maxDigit)
+		shiftLen++;
 
-	sign = num1.sign ^ num2.sign;
+		num2 = rShift(num2, shiftLen);
+	} else
+		shiftLen = 0;
+	
+	for(long long int i = 0; i < shiftLen / maxDigit + 1; i++) {
+		long long int tmp = binSearch(num1, num2, 0, maxInt);
+		if(!ans.size())
+			ans.push_back(tmp / MAX_INT);
+		else
+			ans.insert(ans.begin(), tmp / MAX_INT);
+		ans.insert(ans.begin(), tmp % MAX_INT);
+		num1 = num1 - num2 * tmp;
+		num2 = lShift(num2, maxDigit);
+	}
+	int carry = 0;
+	for (long long int i = 0; i < ans.size(); i++) {
+		int num = ans[i] + carry;
+		ans[i] = num % MAX_INT;
+		carry = num / MAX_INT;
+	}
+	if(carry)
+		ans.push_back(carry);
 
 	return Integer(ans, sign);
 }
@@ -284,7 +279,8 @@ bool Integer::getSign() {
 }
 
 void Integer::setSign(bool _sign) {
-	this->sign ^= _sign;
+	this->sign = _sign;
+	this->encode();
 }
 
 long long int Integer::getLength() {
@@ -365,6 +361,128 @@ Integer abs(const Integer& _num) {
 	return Integer(num.number, false);
 }
 
+Integer GCD(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = abs(_num1);
+	Integer num2 = abs(_num2);
+
+	try {
+		while ((num1 = num1 % num2) != 0 && (num2 = num2 % num1) != 0);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
+
+	return num1 + num2;
+}
+
+Integer GCD(const Integer& _num1, const Integer& _num2, Integer& _num3, Integer& _num4) {
+	Integer num1 = abs(_num1);
+	Integer num2 = abs(_num2);
+	Integer num3 = 1;
+	Integer num4 = 0;
+	_num3 = 0;
+	_num4 = 1;
+
+	try {
+		while (true)
+		{
+			Integer q = num1 / num2;
+			Integer r = num1 % num2;
+			Integer tmp;
+
+			if (r == 0) 
+				break;
+
+			num1 = num2; 
+			num2 = r;
+
+			tmp = num3; 
+			num3 = _num3; 
+			_num3 = tmp - q * _num3;
+
+			tmp = num4; 
+			num4 = _num4; 
+			_num4 = tmp - q * _num4;
+		}
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
+
+	return num2;
+}
+
+
+long long int binSearch(const Integer& _num1, const Integer& _num2, long long int lower, long long int upper) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if(num1 < num2)
+		return 0;
+	if(num1 == num2)
+		return 1;
+
+	if(lower == upper) {
+		if(num1 < num2 * lower)
+			return lower - 1;
+		return lower;
+	}
+
+	long long int m = (lower + upper) / 2;
+
+	if(num1 > num2 * m)
+		return binSearch(num1, num2, m + 1, upper);
+	if(num1 < num2 * m)
+		return binSearch(num1, num2, lower, m);
+	return m;
+}
+
+
+Integer operator %(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+	BigNum ans;
+	bool sign = num1.sign ^ num2.sign;
+
+	if(num2 == 0)
+		throw "can not devided by 0";
+
+	num1 = abs(num1);
+	num2 = abs(num2);
+	
+	if(num2 == 0)
+		return _num1;
+	if(num1 < num2)
+		return Integer(num1.number, sign);
+	if(num1 == num2)
+		return 0;
+
+	long long int DigitNum1 = num1.getLength();
+	long long int DigitNum2 = num2.getLength();
+
+	int maxDigit = MAX_DIGIT * 2;
+	long long int maxInt = MAX_INT * MAX_INT;
+	
+	long long int shiftLen = DigitNum1 - DigitNum2 - maxDigit;
+
+	if(shiftLen > 0) {
+		while(shiftLen % maxDigit)
+		shiftLen++;
+
+		num2 = rShift(num2, shiftLen);
+	} else
+		shiftLen = 0;
+	
+	int carry = 0;
+	for(long long int i = 0; i < shiftLen / maxDigit + 1; i++) {
+		long long int tmp = binSearch(num1, num2, 0, maxInt);
+		num1 = num1 - num2 * tmp;
+		num2 = lShift(num2, maxDigit);
+	}
+
+	return Integer(num1.number, sign);
+}
+
 
 bool operator ==(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
@@ -383,27 +501,38 @@ bool operator ==(const Integer& _num1, const Integer& _num2) {
 	return true;
 }
 
+bool operator !=(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	return !(num1 == num2);
+}
+
 bool operator <(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
 	if(num1.sign && !num2.sign)
 		return true;
-
 	if(!num1.sign && num2.sign)
 		return false;
 
 	if(!num1.sign && num1.number.size() < num2.number.size())
 		return true;
-
+	if(!num1.sign && num1.number.size() > num2.number.size())
+		return false;
 	if(num1.sign && num1.number.size() > num2.number.size())
 		return true;
+	if(num1.sign && num1.number.size() < num2.number.size())
+		return false;
 
 	for (int i = num1.number.size() - 1; i >= 0; i--) {
 		if(!num1.sign && num1.number[i] < num2.number[i])
 			return true;
-		else if(num1.sign && num1.number[i] > num2.number[i])
+		if(num1.sign && num1.number[i] > num2.number[i])
 			return true;
+		if(num1.number[i] != num2.number[i])
+			return false;
 	}
 	
 	return false;
@@ -413,28 +542,19 @@ bool operator <=(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	if(num1 < num2 || num1 == num2)
-		return true;
-
-	return false;
+	return (num1 < num2 || num1 == num2);
 }
 
 bool operator >(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	if(num1 <= num2)
-		return false;
-
-	return true;
+	return !((num1 <= num2));
 }
 
 bool operator >=(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	if(num1 < num2)
-		return false;
-
-	return true;
+	return !(num1 < num2);
 }

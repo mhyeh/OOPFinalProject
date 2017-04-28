@@ -76,8 +76,13 @@ NumberObject Complex::add(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal realPart;
 	Decimal imagePart;
 
-	realPart = num1.realPart + num2.realPart;
-	imagePart = num1.imagePart + num2.imagePart;
+	try {
+		realPart = num1.realPart + num2.realPart;
+		imagePart = num1.imagePart + num2.imagePart;
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 
 	return Complex(realPart, imagePart);
 }
@@ -88,8 +93,13 @@ NumberObject Complex::sub(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal realPart;
 	Decimal imagePart;
 
-	realPart = num1.realPart - num2.realPart;
-	imagePart = num1.imagePart - num2.imagePart;
+	try {
+		realPart = num1.realPart - num2.realPart;
+		imagePart = num1.imagePart - num2.imagePart;
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 
 	return Complex(realPart, imagePart);
 }
@@ -100,8 +110,13 @@ NumberObject Complex::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal realPart;
 	Decimal imagePart;
 
-	realPart = num1.realPart * num2.realPart - num1.imagePart * num2.imagePart;
-	imagePart = num1.realPart * num2.imagePart + num1.imagePart * num2.realPart;
+	try {
+		realPart = num1.realPart * num2.realPart - num1.imagePart * num2.imagePart;
+		imagePart = num1.realPart * num2.imagePart + num1.imagePart * num2.realPart;
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 
 	return Complex(realPart, imagePart);
 }
@@ -113,9 +128,14 @@ NumberObject Complex::div(const NumberObject& _num1, const NumberObject& _num2) 
 	Decimal imagePart;
 	Decimal denominator;
 
-	denominator = num2.realPart * num2.realPart + num2.imagePart * num2.imagePart;
-	realPart = (num1.realPart * num2.realPart + num1.imagePart * num2.imagePart) / denominator;
-	imagePart = (-num1.realPart * num2.imagePart + num1.imagePart * num2.realPart) / denominator;
+	try {
+		denominator = num2.realPart * num2.realPart + num2.imagePart * num2.imagePart;
+		realPart = (num1.realPart * num2.realPart + num1.imagePart, num2.imagePart) / denominator;
+		imagePart = (-num1.realPart * num2.imagePart + num1.imagePart * num2.realPart) / denominator;
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 
 	return Complex(realPart, imagePart);
 }
@@ -124,7 +144,7 @@ NumberObject Complex::minus(const NumberObject& _num) {
 	Complex num = _num;
 
 	Decimal realPart = -num.realPart;
-	Decimal imagePart = num.imagePart;
+	Decimal imagePart = -num.imagePart;
 
 	return Complex(realPart, imagePart);
 }
