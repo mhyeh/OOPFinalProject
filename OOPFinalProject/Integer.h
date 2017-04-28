@@ -43,14 +43,14 @@ public:
 	friend Integer lShift(const Integer&, long long int);
 	friend Integer abs(const Integer&);
 	friend Integer GCD(const Integer&, const Integer&);
-
-	friend bool isZero(const Integer&);
+	friend Integer GCD(const Integer&, const Integer&, Integer&, Integer&);
 
 	friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);
 
 	friend Integer operator %(const Integer&, const Integer&);
 
 	friend bool operator ==(const Integer&, const Integer&);
+	friend bool operator !=(const Integer&, const Integer&);
 	friend bool operator <(const Integer&, const Integer&);
 	friend bool operator <=(const Integer&, const Integer&);
 	friend bool operator >(const Integer&, const Integer&);

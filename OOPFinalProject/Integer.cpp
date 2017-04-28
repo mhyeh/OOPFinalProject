@@ -365,15 +365,51 @@ Integer GCD(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = abs(_num1);
 	Integer num2 = abs(_num2);
 
-	while (isZero(num1 = num1 % num2) && isZero(num2 = num2 % num1));
+	try {
+		while ((num1 = num1 % num2) != 0 && (num2 = num2 % num1) != 0);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
+
 	return num1 + num2;
 }
 
+Integer GCD(const Integer& _num1, const Integer& _num2, Integer& _num3, Integer& _num4) {
+	Integer num1 = abs(_num1);
+	Integer num2 = abs(_num2);
+	Integer num3 = 1;
+	Integer num4 = 0;
+	_num3 = 0;
+	_num4 = 1;
 
-bool isZero(const Integer& _num) {
-	if(_num.number.size() == 1 && _num.number[0] == 0)
-		return true;
-	return false;
+	try {
+		while (true)
+		{
+			Integer q = num1 / num2;
+			Integer r = num1 % num2;
+			Integer tmp;
+
+			if (r == 0) 
+				break;
+
+			num1 = num2; 
+			num2 = r;
+
+			tmp = num3; 
+			num3 = _num3; 
+			_num3 = tmp - q * _num3;
+
+			tmp = num4; 
+			num4 = _num4; 
+			_num4 = tmp - q * _num4;
+		}
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
+
+	return num2;
 }
 
 
@@ -407,6 +443,9 @@ Integer operator %(const Integer& _num1, const Integer& _num2) {
 	Integer num2 = _num2;
 	BigNum ans;
 	bool sign = num1.sign ^ num2.sign;
+
+	if(num2 == 0)
+		throw "can not devided by 0";
 
 	num1 = abs(num1);
 	num2 = abs(num2);
@@ -462,6 +501,13 @@ bool operator ==(const Integer& _num1, const Integer& _num2) {
 	return true;
 }
 
+bool operator !=(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	return !(num1 == num2);
+}
+
 bool operator <(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
@@ -496,28 +542,19 @@ bool operator <=(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	if(num1 < num2 || num1 == num2)
-		return true;
-
-	return false;
+	return (num1 < num2 || num1 == num2);
 }
 
 bool operator >(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	if(num1 <= num2)
-		return false;
-
-	return true;
+	return !((num1 <= num2));
 }
 
 bool operator >=(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	if(num1 < num2)
-		return false;
-
-	return true;
+	return !(num1 < num2);
 }
