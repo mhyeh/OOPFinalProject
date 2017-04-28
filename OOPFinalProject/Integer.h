@@ -44,6 +44,9 @@ public:
 	friend Integer rShift(const Integer&, long long int);
 	friend Integer lShift(const Integer&, long long int);
 	friend Integer abs(const Integer&);
+	friend Integer GCD(const Integer&, const Integer&);
+
+	friend Integer operator %(const Integer&, const Integer&);
 
 	friend bool operator ==(const Integer&, const Integer&);
 	friend bool operator <(const Integer&, const Integer&);

@@ -191,7 +191,7 @@ NumberObject Integer::sub(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	return num1 + -num2;
+	return num1 + Integer::minus(num2);
 }
 
 NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) {
@@ -284,7 +284,8 @@ bool Integer::getSign() {
 }
 
 void Integer::setSign(bool _sign) {
-	this->sign ^= _sign;
+	this->sign = _sign;
+	this->encode();
 }
 
 long long int Integer::getLength() {
