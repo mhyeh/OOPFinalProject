@@ -46,7 +46,7 @@ Complex::~Complex() {
 
 
 void Complex::strToNum(const string& _str) {
-	regex reg("-?[0-9]*\.?[0-9]*+?-?([0-9]*\.?[0-9]*i)?");
+	regex reg("[-+]?[0-9]*\.?[0-9]*[-+]?([0-9]*\.?[0-9]*i)?");
 	string str = _str;
 
 	if(!regex_match(str, reg))

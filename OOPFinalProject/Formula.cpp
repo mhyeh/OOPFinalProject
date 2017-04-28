@@ -44,6 +44,7 @@ void Formula::postfix() {
 
 NumberObject Formula::cal(string& _str) {
 
+	return NumberObject();
 }
 
 

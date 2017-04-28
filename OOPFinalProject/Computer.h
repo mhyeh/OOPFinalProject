@@ -19,7 +19,7 @@ class Computer {
 private:
 	NumberObject result;
     Formula f;
-    static map<string, NumberObject&> variableSet;
+    static map<string, NumberObject> variableSet;
 
 public:
     Computer();
