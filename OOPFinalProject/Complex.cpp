@@ -140,6 +140,26 @@ NumberObject Complex::div(const NumberObject& _num1, const NumberObject& _num2) 
 	return Complex(realPart, imagePart);
 }
 
+NumberObject Complex::power(const NumberObject& _num1, const NumberObject& _num2) {
+	Complex num1 = _num1;
+	Decimal num2 = _num2;
+	Complex ans = 1;
+
+	if(num2 == 0)
+		return 1;
+	if(num2 < 0)
+		throw "can not powered by negative number";
+	if(Integer(num2.getNumData().rDenominator, false) > 1)
+		throw "can not powwered by decimal";
+
+	Integer count = Integer(num2.getNumData().rNumerator, false) / Integer(num2.getNumData().rDenominator, false);
+
+	for(; count > 0; count = count - 1)
+		ans = Complex::mul(ans, num1);
+
+	return ans;
+}
+
 NumberObject Complex::minus(const NumberObject& _num) {
 	Complex num = _num;
 

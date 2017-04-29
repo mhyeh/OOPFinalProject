@@ -16,7 +16,7 @@ protected:
 	virtual NumberObject sub(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject mul(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject div(const NumberObject&, const NumberObject&) override;
-	virtual NumberObject pow(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject power(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject minus(const NumberObject&) override;
 
 	virtual void output(ostream&) override;
