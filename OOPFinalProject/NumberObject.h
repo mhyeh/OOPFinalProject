@@ -45,6 +45,7 @@ protected:
 	virtual NumberObject sub(const NumberObject&, const NumberObject&) { return NumberObject(); };
 	virtual NumberObject mul(const NumberObject&, const NumberObject&) { return NumberObject(); };
 	virtual NumberObject div(const NumberObject&, const NumberObject&) { return NumberObject(); };
+	virtual NumberObject power(const NumberObject&, const NumberObject&) { return NumberObject(); };
 	virtual NumberObject minus(const NumberObject&) { return NumberObject(); };
 
 	virtual void input(istream&);
@@ -61,11 +62,13 @@ public:
 	NumType getNumType() { return this->numType; };
 
 	friend NumberObject* numberFactory(int, int);
+	
 
 	friend NumberObject operator +(const NumberObject&, const NumberObject&);
 	friend NumberObject operator -(const NumberObject&, const NumberObject&);
 	friend NumberObject operator *(const NumberObject&, const NumberObject&);
 	friend NumberObject operator /(const NumberObject&, const NumberObject&);
+	friend NumberObject operator ^(const NumberObject&, const NumberObject&);
 	friend NumberObject operator -(const NumberObject&);
 	
 	friend istream& operator >>(istream&, NumberObject&);

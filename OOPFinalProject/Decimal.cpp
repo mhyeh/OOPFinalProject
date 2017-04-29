@@ -147,11 +147,17 @@ NumberObject Decimal::mul(const NumberObject& _num1, const NumberObject& _num2) 
 
 	num1.checkSign();
 	num2.checkSign();
-	
-	Integer denominator = num1.denominator * num2.denominator;
-	Integer numerator = num1.numerator * num2.numerator;
 
-	return Decimal(numerator, denominator);
+	try {
+		Integer denominator = num1.denominator * num2.denominator;
+		Integer numerator = num1.numerator * num2.numerator;
+		Integer gcd = GCD(numerator, denominator);
+
+		return Decimal(numerator / gcd, denominator / gcd);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 }
 
 NumberObject Decimal::div(const NumberObject& _num1, const NumberObject& _num2) {
@@ -161,10 +167,38 @@ NumberObject Decimal::div(const NumberObject& _num1, const NumberObject& _num2) 
 	num1.checkSign();
 	num2.checkSign();
 
-	Integer denominator = num1.denominator * num2.numerator;
-	Integer numerator = num1.numerator * num2.denominator;
+	try {
+		Integer denominator = num1.denominator * num2.numerator;
+		Integer numerator = num1.numerator * num2.denominator;
+		Integer gcd = GCD(denominator, denominator);
 
-	return Decimal(numerator, denominator);
+		return Decimal(numerator / gcd, denominator / gcd);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
+}
+
+NumberObject Decimal::power(const NumberObject& _num1, const NumberObject& _num2) {
+	Decimal num1 = _num1;
+	Decimal num2 = _num2;
+	Decimal ans = 1;
+
+	if(num2.numerator == 0)
+		return 1;
+	if(num2.numerator < 0)
+		throw "can not powered by negative number";
+	if(num2.denominator > 2)
+		throw "can not powwered by decimal which denominator is larger than 2";
+
+	Integer count = num2.numerator / num2.denominator;
+
+	for(; count > 0; count = count - 1)
+		ans = Decimal::mul(ans, num1);
+	if(num2.denominator == 2)
+		ans = Decimal::mul(ans, sqrtRoot(num1));
+
+	return ans;
 }
 
 NumberObject Decimal::minus(const NumberObject& _num) {
@@ -209,4 +243,56 @@ void Decimal::operator =(const char* _str) {
 	catch (const char* errorMsg) {
 		throw errorMsg;
 	}
+}
+
+Decimal sqrtRoot(const NumberObject& _num) {
+	Decimal num = _num;
+
+	return Decimal();
+}
+
+
+bool operator ==(const Decimal& _num1, const Decimal& _num2) {
+	Decimal num1 = _num1;
+	Decimal num2 = _num2;
+
+	return num1.numerator == num2.numerator && num1.denominator == num2.denominator;
+}
+
+bool operator !=(const Decimal& _num1, const Decimal& _num2) {
+	Decimal num1 = _num1;
+	Decimal num2 = _num2;
+
+	return !(num1 == num2);
+}
+
+bool operator <(const Decimal& _num1, const Decimal& _num2) {
+	Decimal num1 = _num1;
+	Decimal num2 = _num2;
+
+	Integer tmp1, tmp2;
+	GCD(num1.denominator, num2.denominator, tmp1, tmp2);
+
+	return Integer(num1.numerator * tmp1) < Integer(num2.numerator * tmp2);
+}
+
+bool operator <=(const Decimal& _num1, const Decimal& _num2) {
+	Decimal num1 = _num1;
+	Decimal num2 = _num2;
+
+	return (num1 < num2 || num1 == num2);
+}
+
+bool operator >(const Decimal& _num1, const Decimal& _num2) {
+	Decimal num1 = _num1;
+	Decimal num2 = _num2;
+
+	return !((num1 <= num2));
+}
+
+bool operator >=(const Decimal& _num1, const Decimal& _num2) {
+	Decimal num1 = _num1;
+	Decimal num2 = _num2;
+
+	return !(num1 < num2);
 }

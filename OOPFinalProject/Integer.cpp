@@ -247,6 +247,22 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 	return Integer(ans, sign);
 }
 
+NumberObject Integer::power(const NumberObject& _num1, const NumberObject& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+	Integer ans = 1;
+
+	if(num2 < 0)
+		throw "can not powered by negative number";
+	if(num2 == 0)
+		return 1;
+
+	for(; num2 > 0; num2 = num2 - 1)
+		ans = Integer::mul(ans, num1);
+
+	return ans;
+}
+
 NumberObject Integer::minus(const NumberObject& _num) {
 	Integer integer = Integer(_num);
 	BigNum num = integer.number;
@@ -410,6 +426,17 @@ Integer GCD(const Integer& _num1, const Integer& _num2, Integer& _num3, Integer&
 	}
 
 	return num2;
+}
+
+Integer factorial(const Integer& _num) {
+	Integer num = _num;
+	Integer ans = 1;
+
+	for (; num > 0; num = num - 1) {
+		ans = ans * num;
+	}
+
+	return ans;
 }
 
 
