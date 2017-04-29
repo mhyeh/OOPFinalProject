@@ -412,6 +412,17 @@ Integer GCD(const Integer& _num1, const Integer& _num2, Integer& _num3, Integer&
 	return num2;
 }
 
+Integer factorial(const Integer& _num) {
+	Integer num = _num;
+	Integer ans = 1;
+
+	for (; num > 0; num = num - 1) {
+		ans = ans * num;
+	}
+
+	return ans;
+}
+
 
 long long int binSearch(const Integer& _num1, const Integer& _num2, long long int lower, long long int upper) {
 	Integer num1 = _num1;

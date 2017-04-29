@@ -20,6 +20,7 @@ protected:
 	virtual NumberObject sub(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject mul(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject div(const NumberObject&, const NumberObject&) override;
+	virtual NumberObject pow(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject minus(const NumberObject&) override;
 
 	virtual void output(ostream&) override;
@@ -44,6 +45,7 @@ public:
 	friend Integer abs(const Integer&);
 	friend Integer GCD(const Integer&, const Integer&);
 	friend Integer GCD(const Integer&, const Integer&, Integer&, Integer&);
+	friend Integer factorial(const Integer&);
 
 	friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);
 
