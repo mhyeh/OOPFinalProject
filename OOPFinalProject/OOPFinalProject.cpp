@@ -12,11 +12,11 @@ using std::endl;
 
 int main()
 {
-	Integer a = "5";
+	Integer a = "15252";
 	Integer b = "30", c, d, e;
 	vector<NumberObject*> num;
 	//std::cin >> a;
-	c = a ^ b;
+	c = factorial(a);
 	num.push_back(&a);
 	num.push_back(&b);
 	num.push_back(&c);
