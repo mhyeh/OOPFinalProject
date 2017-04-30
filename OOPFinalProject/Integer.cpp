@@ -146,7 +146,7 @@ NumberObject Integer::add(const NumberObject& _num1, const NumberObject& _num2) 
 
 			ans.push_back(num);
 		}
-		while(ans.back() == 0)
+		while(ans.size() > 1 && ans.back() == 0)
 			ans.pop_back();
 
 		if (borrow)
@@ -160,7 +160,7 @@ NumberObject Integer::sub(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
-	return num1 + Integer::minus(num2);
+	return Integer::add(num1, Integer::minus(num2));
 }
 
 NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) {
@@ -232,7 +232,7 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 		else
 			ans.insert(ans.begin(), tmp / MAX_INT);
 		ans.insert(ans.begin(), tmp % MAX_INT);
-		num1 = num1 - num2 * tmp;
+		num1 = Integer::sub(num1, Integer::mul(num2, tmp));
 		num2 = lShift(num2, maxDigit);
 	}
 	int carry = 0;
@@ -257,7 +257,7 @@ NumberObject Integer::power(const NumberObject& _num1, const NumberObject& _num2
 	if(num2 == 0)
 		return 1;
 
-	for(; num2 > 0; num2 = num2 - 1)
+	for(; num2 > 0; num2 = Integer::sub(num2, 1))
 		ans = Integer::mul(ans, num1);
 
 	return ans;
@@ -432,7 +432,8 @@ Integer factorial(const Integer& _num) {
 	Integer num = _num;
 	Integer ans = 1;
 
-	for (; num > 0; num = num - 1) {
+	for (int i = 0; num > 0; num = num - 1, i++) {
+		cout << i << endl;
 		ans = ans * num;
 	}
 
