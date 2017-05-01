@@ -40,6 +40,8 @@ public:
 	long long int getLength();
 	void setLength();
 
+	NumberObject sqrt();
+
 	void operator =(const string&);
 	void operator =(const char*);
 

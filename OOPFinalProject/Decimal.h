@@ -32,6 +32,7 @@ public:
 	~Decimal();
 
 	bool getSign();
+	Integer getFlotingNumber(int);
 
 	void operator =(const string&);
 	void operator =(const char*);

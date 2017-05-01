@@ -182,10 +182,12 @@ NumberObject Decimal::div(const NumberObject& _num1, const NumberObject& _num2) 
 NumberObject Decimal::power(const NumberObject& _num1, const NumberObject& _num2) {
 	Decimal num1 = _num1;
 	Decimal num2 = _num2;
-	Decimal ans = 1;
+	NumberObject ans = 1;
 
 	if(num2.numerator == 0)
 		return 1;
+	if(num2.numerator == 1)
+		return num1;
 	if(num2.numerator < 0)
 		throw "can not powered by negative number";
 	if(num2.denominator > 2)
@@ -196,7 +198,7 @@ NumberObject Decimal::power(const NumberObject& _num1, const NumberObject& _num2
 	for(; count > 0; count = count - 1)
 		ans = Decimal::mul(ans, num1);
 	if(num2.denominator == 2)
-		ans = Decimal::mul(ans, sqrtRoot(num1));
+		ans = ans * sqrtRoot(num1);
 
 	return ans;
 }
@@ -225,6 +227,11 @@ bool Decimal::getSign() {
 	return this->numerator.getSign();
 }
 
+Integer Decimal::getFlotingNumber(int _length) {
+	Integer ans = rShift(this->numerator, _length) / this->denominator;
+	return ans;
+}
+
 
 void Decimal::operator =(const string& _str) {
 	try {
@@ -248,7 +255,12 @@ void Decimal::operator =(const char* _str) {
 Decimal sqrtRoot(const NumberObject& _num) {
 	Decimal num = _num;
 
-	return Decimal();
+	NumberObject numerator = num.getFlotingNumber(30).sqrt();
+	Integer denominator = rShift(1, 15);
+
+	NumberObject ans = numerator / denominator;
+
+	return ans;
 }
 
 

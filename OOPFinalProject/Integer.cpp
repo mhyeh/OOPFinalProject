@@ -1,5 +1,5 @@
 #include "Integer.h"
-
+#include "Complex.h"
 
 
 Integer::Integer() : number(BigNum()), sign(false) {
@@ -349,6 +349,33 @@ void Integer::setLength() {
 	this->lenght = (this->number.size() - 1) * MAX_DIGIT + back.length();
 }
 
+NumberObject Integer::sqrt() {
+	Integer num = *this;
+	BigNum ans;
+	bool flag = true;
+
+	if (num < 0) {
+		num = abs(num);
+		flag = false;
+	}
+	if(num == 0)
+		return 0;
+
+	//caculate
+
+	if (!flag) {
+		Integer tmp(ans, false);
+		stringstream ss;
+		string str;
+
+		tmp.output(ss);
+		ss >> str;
+		return Complex(str + "i");
+	}
+
+	return Integer(ans, false);
+}
+
 
 
 void Integer::operator =(const string& _str) {
@@ -466,6 +493,9 @@ Integer GCD(const Integer& _num1, const Integer& _num2, Integer& _num3, Integer&
 
 Integer factorial(const Integer& _num) {
 	Integer num = _num;
+
+	if(num < 0)
+		throw "can not caculate the factorial of negative number";
 
 	if (num <= 15) {
 		long long int i = num.getNumData().rNumerator[0];
