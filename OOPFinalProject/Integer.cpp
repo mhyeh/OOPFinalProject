@@ -121,7 +121,7 @@ void Integer::encode() {
 	this->numData.rNumerator = this->number;
 	this->numData.rDenominator = BigNum(1,1);
 	this->numData.iNumerator = BigNum(0);
-	this->numData.rDenominator = BigNum(1,1);
+	this->numData.iDenominator = BigNum(1,1);
 	this->numData.rSign = this->sign;
 	this->numData.iSign = false;
 }
@@ -319,7 +319,6 @@ void Integer::output(ostream& _ostream) {
 		_ostream << setw(MAX_DIGIT) << setfill('0');
 		_ostream << num.number[i];
 	}
-
 }
 
 
@@ -378,6 +377,7 @@ NumberObject Integer::sqrt() {
 
 void Integer::operator =(const string& _str) {
 	try {
+		this->number.clear();
 		this->strToNum(_str);
 	}
 	catch (const char* errorMsg) {
@@ -390,6 +390,7 @@ void Integer::operator =(const string& _str) {
 void Integer::operator =(const char* _str) {
 	string str(_str);
 	try {
+		this->number.clear();
 		this->strToNum(str);
 	}
 	catch (const char* errorMsg) {
@@ -443,13 +444,16 @@ Integer GCD(const Integer& _num1, const Integer& _num2) {
 	Integer num2 = abs(_num2);
 
 	try {
-		while ((num1 = num1 % num2) != 0 && (num2 = num2 % num1) != 0);
+		while(num2 != 0) { 
+			Integer r = num1 % num2; 
+			num1 = num2; 
+			num2 = r; 
+		} 
+		return num1;
 	}
 	catch (const char* errMsg) {
 		throw errMsg;
 	}
-
-	return num1 + num2;
 }
 
 Integer GCD(const Integer& _num1, const Integer& _num2, Integer& _num3, Integer& _num4) {

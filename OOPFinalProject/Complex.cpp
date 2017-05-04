@@ -59,7 +59,7 @@ void Complex::encode() {
 	this->numData.rNumerator = this->realPart.getNumData().rNumerator;
 	this->numData.rDenominator = this->realPart.getNumData().rDenominator;
 	this->numData.iNumerator = this->imagePart.getNumData().rNumerator;
-	this->numData.rDenominator = this->imagePart.getNumData().rDenominator;
+	this->numData.iDenominator = this->imagePart.getNumData().rDenominator;
 	this->numData.rSign = this->realPart.getNumData().rSign;
 	this->numData.iSign = this->imagePart.getNumData().rSign;
 }

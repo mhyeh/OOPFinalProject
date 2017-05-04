@@ -85,14 +85,14 @@ void Decimal::encode() {
 	this->numData.rNumerator = this->numerator.getNumData().rNumerator;
 	this->numData.rDenominator = this->denominator.getNumData().rNumerator;
 	this->numData.iNumerator = BigNum(0);
-	this->numData.rDenominator = BigNum(1,1);
+	this->numData.iDenominator = BigNum(1,1);
 	this->numData.rSign = this->numerator.getNumData().rSign;
 	this->numData.iSign = false;
 }
 
 void Decimal::decode() {
-	this->numerator = Integer(this->numerator.getNumData().rNumerator, this->numerator.getNumData().rSign);
-	this->denominator = Integer(this->denominator.getNumData().rNumerator, false);
+	this->numerator = Integer(this->numData.rNumerator, this->numData.rSign);
+	this->denominator = Integer(this->numData.rDenominator, false);
 }
 
 
@@ -170,7 +170,7 @@ NumberObject Decimal::div(const NumberObject& _num1, const NumberObject& _num2) 
 	try {
 		Integer denominator = num1.denominator * num2.numerator;
 		Integer numerator = num1.numerator * num2.denominator;
-		Integer gcd = GCD(denominator, denominator);
+		Integer gcd = GCD(denominator, numerator);
 
 		return Decimal(numerator / gcd, denominator / gcd);
 	}
@@ -218,7 +218,28 @@ NumberObject Decimal::minus(const NumberObject& _num) {
 void Decimal::output(ostream& _ostream) {
 	Decimal num = *this;
 
-	//TODO: output the num
+	Integer numerator = num.getFlotingNumber(100);
+	BigNum tmp = numerator.getNumData().rNumerator;
+
+	reverse(tmp.begin(), tmp.end());
+
+	if(numerator.getSign())
+		_ostream << "-";
+
+	stringstream ss;
+	for (auto &i : tmp) {
+		ss << setw(MAX_DIGIT) << setfill('0');
+		ss << i;
+	}
+	string str, intPart, floatPart;
+	ss >> str;
+	intPart = str.substr(0, str.length() - 100);
+	floatPart = str.substr(str.length() - 100);
+
+	while(intPart.length() > 1 && intPart[0] == '0')
+		intPart.erase(intPart.begin());
+
+	_ostream << intPart << "." << floatPart;
 }
 
 
@@ -228,8 +249,13 @@ bool Decimal::getSign() {
 }
 
 Integer Decimal::getFlotingNumber(int _length) {
-	Integer ans = rShift(this->numerator, _length) / this->denominator;
-	return ans;
+	try {
+		Integer ans = rShift(this->numerator, _length) / this->denominator;
+		return ans;
+	}
+	catch (const char* errorMsg) {
+		throw errorMsg;
+	}
 }
 
 
@@ -255,12 +281,22 @@ void Decimal::operator =(const char* _str) {
 Decimal sqrtRoot(const NumberObject& _num) {
 	Decimal num = _num;
 
-	NumberObject numerator = num.getFlotingNumber(30).sqrt();
-	Integer denominator = rShift(1, 15);
+	try{
+		NumberObject numerator = num.getFlotingNumber(30).sqrt();
+		Integer denominator = rShift(1, 15);
 
-	NumberObject ans = numerator / denominator;
+		NumberObject ans;
 
-	return ans;
+		if (numerator.getNumType() == COMPLEX) 
+			ans = numerator / denominator;
+		else 
+			ans = Decimal(numerator, denominator);
+
+		return ans;
+	}
+	catch (const char* errorMsg) {
+		throw errorMsg;
+	}
 }
 
 

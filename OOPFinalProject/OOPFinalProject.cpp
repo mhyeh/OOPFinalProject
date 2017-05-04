@@ -12,11 +12,11 @@ using std::endl;
 
 int main()
 {
-	Integer a = "55468456465132135468546513746121594896453";
-	Integer b = "315646854621324654654135465465410", c, d, e;
+	Decimal a = "134564561235216.1564";
+	Decimal b = "13245.0", c, d, e;
 	vector<NumberObject*> num;
 	//std::cin >> a;
-	c = a * b;
+	c = a / b;
 	num.push_back(&a);
 	num.push_back(&b);
 	num.push_back(&c);
