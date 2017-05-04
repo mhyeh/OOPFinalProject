@@ -51,8 +51,6 @@ public:
 	friend Integer GCD(const Integer&, const Integer&);
 	friend Integer GCD(const Integer&, const Integer&, Integer&, Integer&);
 	friend Integer factorial(const Integer&);
-	friend Integer karatsuba(const Integer&, const Integer&);
-	friend Integer normalMul(const Integer&, const Integer&);
 
 	friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);
 
