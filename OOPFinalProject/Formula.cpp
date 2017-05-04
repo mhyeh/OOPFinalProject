@@ -27,12 +27,13 @@ Formula::~Formula() {
 
 }
 
-
-
-void Formula::postfix() {
+void Formula::check() {
 	int left = 0, right = 0;
 	bool flagContinous = false, flagSign = false;
+
 	this->formulaStr.erase(remove_if(this->formulaStr.begin(), this->formulaStr.end(), isspace), this->formulaStr.end());
+	//erase the spaces
+
 	for (auto &i : this->formulaStr) {
 		if (i == '(')
 			left += 1;
@@ -67,7 +68,23 @@ void Formula::postfix() {
 			flagContinous = false;
 		}
 	}
+	//clean out the continous operater
 
+}
+
+void Formula::postfix() {
+	bool flagContinous = false;
+	for (unsigned long long pos = 0; pos < this->formulaStr.length(); pos++) {
+		if (this->formulaStr[pos] == 'i' || (this->formulaStr[pos] >= '0'&&this->formulaStr[pos] <= '9')) {
+			if (this->formulaStr[pos + 1] != 'i' || (this->formulaStr[pos] <= '0' || this->formulaStr[pos] >= '9'))
+				this->formulaStr.insert(pos + 1, " ");
+		}
+		else {
+			if (this->formulaStr[pos + 1] == 'i' || (this->formulaStr[pos + 1] >= '0'&&this->formulaStr[pos + 1] <= '9'))
+				this->formulaStr.insert(pos + 1, " ");
+		}
+	}
+	//insert the spaces
 
 }
 

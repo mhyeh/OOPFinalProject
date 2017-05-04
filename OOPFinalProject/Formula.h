@@ -19,6 +19,7 @@ private:
     string formulaStr;
 
     void postfix();
+	void check();
     NumberObject cal(string&);
 
 public:
