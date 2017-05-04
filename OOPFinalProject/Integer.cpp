@@ -198,8 +198,9 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 	BigNum ans;
-	bool sign;
+	bool sign = num1.sign ^ num2.sign;
 	
+	/*
 	long long int num = 0;
 
 	for(long long int i = 0; i < num1.number.size(); i++) {
@@ -218,8 +219,12 @@ NumberObject Integer::mul(const NumberObject& _num1, const NumberObject& _num2) 
 		if(carry)
 			ans.push_back(carry);
 	}
+	*/
 
-	sign = num1.sign ^ num2.sign;
+	num1 = abs(num1);
+	num2 = abs(num2);
+
+	karatsuba(num1, num2);
 
 	return Integer(ans, sign);
 }
@@ -566,6 +571,69 @@ Integer factorial(const Integer& _num) {
 
 	ans = ans * factorial(x / 2);
 	return ans;
+}
+
+Integer karatsuba(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+
+	if (num1 < MAX_INT || num2 < MAX_INT)
+		return normalMul(num1, num2);
+
+	long long int len = max(num1.number.size(), num2.number.size());
+	while (log2(len) > (long long int)log2(len))
+		len++;
+
+	while (len > num1.number.size())
+		num1.number.push_back(0);
+	while (len > num2.number.size())
+		num2.number.push_back(0);
+
+	long long int len2 = len / 2;
+
+	BigNum high1, high2;
+	BigNum low1, low2;
+
+	high1 = BigNum(num1.number.begin() + len2, num1.number.end());
+	low1 = BigNum(num1.number.begin(), num1.number.begin() + len2);
+	high2 = BigNum(num2.number.begin() + len2, num2.number.end());
+	low2 = BigNum(num2.number.begin(), num2.number.begin() + len2);
+
+	Integer tmp1, tmp2, tmp3;
+
+	tmp1 = karatsuba(Integer(low1, false), Integer(low2, false));
+	tmp2 = karatsuba(Integer(low1, false) + Integer(high1, false), Integer(low2, false) + Integer(high2, false));
+	tmp3 = karatsuba(Integer(high1, false), Integer(high2, false));
+
+	return (rShift(tmp3, (2 * len2))) + rShift((tmp2 - tmp3 - tmp1), len2) + tmp1;
+}
+
+Integer normalMul(const Integer& _num1, const Integer& _num2) {
+	Integer num1 = _num1;
+	Integer num2 = _num2;
+	BigNum ans;
+	
+	long long int num = 0;
+
+	for (long long int i = 0; i < num1.number.size(); i++) {
+		long long int carry = 0;
+		for (long long int j = 0; j < num2.number.size(); j++) {
+			num = (long long int)num1.number[i] * (long long int)num2.number[j] + carry;
+			if (i + j >= ans.size()) {
+				ans.push_back(num % MAX_INT);
+				carry = num / MAX_INT;
+			}
+			else {
+				ans[i + j] += num % MAX_INT;
+				carry = num / MAX_INT + (long long int)ans[i + j] / MAX_INT;
+				ans[i + j] %= MAX_INT;
+			}
+		}
+		if (carry)
+			ans.push_back(carry);
+	}
+	
+	return Integer(ans, false);
 }
 
 
