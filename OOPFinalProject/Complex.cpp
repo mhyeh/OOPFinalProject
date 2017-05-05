@@ -51,8 +51,31 @@ void Complex::strToNum(const string& _str) {
 
 	if(!regex_match(str, reg))
 		throw "number format error";
+	
+	if(str[0] != '+' && str[0] != '-')
+		str.insert(str.begin(), '+');
+	
+	stringstream ss;
+	string tmp[2];
+	int count = 0;
+	
+	ss << str[0];
+	for(int i = 1; i < str.length(); i++) {
+		if(str[i] == '+' || str[i] != '-')
+			ss >> tmp[count++];
+		ss << str[i];
+	}
 
-	//TODO: convert the string to Complex
+	this->realPart = "0";
+	this->imagePart = "0";
+	for(int i = 0; i < count + 1; i++) {
+		if(tmp[i].back() == 'i') {
+			tmp[i].pop_back();
+			this->imagePart = tmp[i];
+		} else {
+			this->realPart = tmp[i];
+		}
+	}
 }
 
 void Complex::encode() {
