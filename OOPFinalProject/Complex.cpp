@@ -195,8 +195,16 @@ NumberObject Complex::minus(const NumberObject& _num) {
 
 void Complex::output(ostream& _ostream) {
 	Complex num = *this;
+	stringstream ss;
+	string str;
 
-	_ostream << num.realPart << (num.imagePart.getSign() ? "" : "+") << num.imagePart;
+	ss << num.realPart;
+	ss >> str;
+	_ostream << str.substr(0, str.length() - 85) << (num.imagePart.getSign() ? "" : "+");
+	
+	ss << num.imagePart;
+	ss >> str;
+	_ostream << str.substr(0, str.length() - 85);
 }
 
 
