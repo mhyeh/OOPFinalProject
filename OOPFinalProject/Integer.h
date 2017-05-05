@@ -9,7 +9,7 @@ class Integer : public NumberObject {
 private:
 	BigNum number;
 	bool sign;
-	long long int lenght;
+	long long int length;
 
 	Integer factorial2();
 	Integer factorial2(const Integer&);
@@ -49,7 +49,7 @@ public:
 	friend Integer lShift(const Integer&, long long int);
 	friend Integer abs(const Integer&);
 	friend Integer GCD(const Integer&, const Integer&);
-	friend Integer GCD(const Integer&, const Integer&, Integer&, Integer&);
+	friend Integer LCM(const Integer&, const Integer&);
 	friend Integer factorial(const Integer&);
 
 	friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);

@@ -58,17 +58,24 @@ void Complex::strToNum(const string& _str) {
 	stringstream ss;
 	string tmp[2];
 	int count = 0;
+
+	ss.str("");
+	ss.clear();
 	
 	ss << str[0];
 	for(int i = 1; i < str.length(); i++) {
-		if(str[i] == '+' || str[i] != '-')
+		if (str[i] == '+' || str[i] == '-') {
 			ss >> tmp[count++];
+			ss.str("");
+			ss.clear();
+		}
 		ss << str[i];
 	}
+	ss >> tmp[count++];
 
 	this->realPart = "0";
 	this->imagePart = "0";
-	for(int i = 0; i < count + 1; i++) {
+	for(int i = 0; i < count; i++) {
 		if(tmp[i].back() == 'i') {
 			tmp[i].pop_back();
 			this->imagePart = tmp[i];
@@ -198,13 +205,19 @@ void Complex::output(ostream& _ostream) {
 	stringstream ss;
 	string str;
 
+	ss.str("");
+	ss.clear();
+
 	ss << num.realPart;
 	ss >> str;
 	_ostream << str.substr(0, str.length() - 85) << (num.imagePart.getSign() ? "" : "+");
+
+	ss.str("");
+	ss.clear();
 	
 	ss << num.imagePart;
 	ss >> str;
-	_ostream << str.substr(0, str.length() - 85);
+	_ostream << str.substr(0, str.length() - 85) << "i";
 }
 
 
@@ -212,6 +225,7 @@ void Complex::output(ostream& _ostream) {
 void Complex::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);
+		this->encode();
 	}
 	catch (const char* errorMsg) {
 		throw errorMsg;
@@ -222,6 +236,7 @@ void Complex::operator =(const char* _str) {
 	string str(_str);
 	try {
 		this->strToNum(_str);
+		this->encode();
 	}
 	catch (const char* errorMsg) {
 		throw errorMsg;
