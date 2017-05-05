@@ -13,5 +13,3 @@ We profied:
 ## TODO List:  
 * ^ (for Decimal and Complex number)
 * sqarRoot
-* << (for Complex number)
-* string to number (for complex number)
