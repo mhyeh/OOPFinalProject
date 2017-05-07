@@ -9,7 +9,10 @@ class Integer : public NumberObject {
 private:
 	BigNum number;
 	bool sign;
-	long long int lenght;
+	long long int length;
+
+	Integer factorial2();
+	Integer factorial2(const Integer&);
 
 protected:
 	virtual void strToNum(const string&) override;
@@ -37,6 +40,8 @@ public:
 	long long int getLength();
 	void setLength();
 
+	NumberObject sqrt();
+
 	void operator =(const string&);
 	void operator =(const char*);
 
@@ -44,7 +49,7 @@ public:
 	friend Integer lShift(const Integer&, long long int);
 	friend Integer abs(const Integer&);
 	friend Integer GCD(const Integer&, const Integer&);
-	friend Integer GCD(const Integer&, const Integer&, Integer&, Integer&);
+	friend Integer LCM(const Integer&, const Integer&);
 	friend Integer factorial(const Integer&);
 
 	friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);
@@ -57,5 +62,5 @@ public:
 	friend bool operator <=(const Integer&, const Integer&);
 	friend bool operator >(const Integer&, const Integer&);
 	friend bool operator >=(const Integer&, const Integer&);
+	
 };
-

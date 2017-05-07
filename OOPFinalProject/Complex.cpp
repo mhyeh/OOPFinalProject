@@ -51,15 +51,45 @@ void Complex::strToNum(const string& _str) {
 
 	if(!regex_match(str, reg))
 		throw "number format error";
+	
+	if(str[0] != '+' && str[0] != '-')
+		str.insert(str.begin(), '+');
+	
+	stringstream ss;
+	string tmp[2];
+	int count = 0;
 
-	//TODO: convert the string to Complex
+	ss.str("");
+	ss.clear();
+	
+	ss << str[0];
+	for(int i = 1; i < str.length(); i++) {
+		if (str[i] == '+' || str[i] == '-') {
+			ss >> tmp[count++];
+			ss.str("");
+			ss.clear();
+		}
+		ss << str[i];
+	}
+	ss >> tmp[count++];
+
+	this->realPart = "0";
+	this->imagePart = "0";
+	for(int i = 0; i < count; i++) {
+		if(tmp[i].back() == 'i') {
+			tmp[i].pop_back();
+			this->imagePart = tmp[i];
+		} else {
+			this->realPart = tmp[i];
+		}
+	}
 }
 
 void Complex::encode() {
 	this->numData.rNumerator = this->realPart.getNumData().rNumerator;
 	this->numData.rDenominator = this->realPart.getNumData().rDenominator;
 	this->numData.iNumerator = this->imagePart.getNumData().rNumerator;
-	this->numData.rDenominator = this->imagePart.getNumData().rDenominator;
+	this->numData.iDenominator = this->imagePart.getNumData().rDenominator;
 	this->numData.rSign = this->realPart.getNumData().rSign;
 	this->numData.iSign = this->imagePart.getNumData().rSign;
 }
@@ -172,8 +202,22 @@ NumberObject Complex::minus(const NumberObject& _num) {
 
 void Complex::output(ostream& _ostream) {
 	Complex num = *this;
+	stringstream ss;
+	string str;
 
-	_ostream << num.realPart << (num.imagePart.getSign() ? "" : "+") << num.imagePart;
+	ss.str("");
+	ss.clear();
+
+	ss << num.realPart;
+	ss >> str;
+	_ostream << str.substr(0, str.length() - 85) << (num.imagePart.getSign() ? "" : "+");
+
+	ss.str("");
+	ss.clear();
+	
+	ss << num.imagePart;
+	ss >> str;
+	_ostream << str.substr(0, str.length() - 85) << "i";
 }
 
 
@@ -181,6 +225,7 @@ void Complex::output(ostream& _ostream) {
 void Complex::operator =(const string& _str) {
 	try {
 		this->strToNum(_str);
+		this->encode();
 	}
 	catch (const char* errorMsg) {
 		throw errorMsg;
@@ -191,6 +236,7 @@ void Complex::operator =(const char* _str) {
 	string str(_str);
 	try {
 		this->strToNum(_str);
+		this->encode();
 	}
 	catch (const char* errorMsg) {
 		throw errorMsg;
