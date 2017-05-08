@@ -181,9 +181,13 @@ NumberObject Decimal::power(const NumberObject& _num1, const NumberObject& _num2
 	Decimal num2 = _num2;
 	NumberObject ans = 1;
 
+	Integer gcd = GCD(num2.numerator, num2.denominator);
+	num2.numerator = num2.numerator / gcd;
+	num2.denominator = num2.denominator / gcd;
+
 	if(num2.numerator == 0)
 		return 1;
-	if(num2.numerator == 1)
+	if(num2.numerator == 1 && num2.denominator == 1)
 		return num1;
 	if(num2.numerator < 0)
 		throw "can not powered by negative number";
@@ -194,8 +198,14 @@ NumberObject Decimal::power(const NumberObject& _num1, const NumberObject& _num2
 
 	for(; count > 0; count = count - 1)
 		ans = Decimal::mul(ans, num1);
-	if(num2.denominator == 2)
-		ans = ans * sqrtRoot(num1);
+
+	try {
+		if(num2.denominator == 2)
+			ans = ans * sqrtRoot(num1);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
 
 	return ans;
 }
@@ -288,7 +298,7 @@ void Decimal::operator =(const char* _str) {
 	}
 }
 
-Decimal sqrtRoot(const NumberObject& _num) {
+NumberObject sqrtRoot(const NumberObject& _num) {
 	Decimal num = _num;
 
 	try{

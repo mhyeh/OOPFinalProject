@@ -355,28 +355,17 @@ void Integer::setLength() {
 NumberObject Integer::sqrt() {
 	Integer num = *this;
 	Integer ans;
-	bool flag = true;
 
-	if (num < 0) {
-		num = abs(num);
-		flag = false;
-	}
+	if (num < 0) 
+		throw "can not get the sqrt root of negative number";
 	if(num == 0)
 		return 0;
 
-	ans = rshift(ans, 30);
-	ans = binSearch(ans, 0, ans);
-
-	if (!flag) {
-		stringstream ss;
-		string str;
-
-		ss.str("");
-		ss.clear();
-
-		ans.output(ss);
-		ss >> str;
-		return Complex(str + "i");
+	if (num == rShift(1, 30)) {
+		ans = 1;
+		ans = rShift(ans, 15);
+	} else {
+		ans = binSearch(num, Integer(0), lShift(num, 15));
 	}
 
 	return ans;
@@ -604,7 +593,7 @@ Integer binSearch(const Integer& _num, Integer& lower, Integer& upper) {
 	Integer m = (lower + upper) / 2;
 
 	if(num > m * m)
-		return binSearch(num, m + 1, upper);
+		return binSearch(num, Integer(m + 1), upper);
 	if(num < m * m)
 		return binSearch(num, lower, m);
 	return m;

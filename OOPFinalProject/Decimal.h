@@ -37,7 +37,7 @@ public:
 	void operator =(const string&);
 	void operator =(const char*);
 
-	friend Decimal sqrtRoot(const NumberObject&);
+	friend NumberObject sqrtRoot(const NumberObject&);
 
 	friend bool operator ==(const Decimal&, const Decimal&);
 	friend bool operator !=(const Decimal&, const Decimal&);
