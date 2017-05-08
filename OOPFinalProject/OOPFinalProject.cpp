@@ -12,16 +12,21 @@ using std::endl;
 
 int main()
 {
-	Integer a = "-1";
-	Complex b = "3.0i", c, d, e;
-	vector<NumberObject*> num;
-	//std::cin >> a;
-	c = a + b;
-	num.push_back(&a);
-	num.push_back(&b);
-	num.push_back(&c);
-	for (auto &i : num) {
-		cout << *i << endl;
+	try {
+		Integer a = "-4";
+		Decimal b = "0.5", c, d, e;
+		vector<NumberObject*> num;
+		//std::cin >> a;
+		c = a ^ b;
+		num.push_back(&a);
+		num.push_back(&b);
+		num.push_back(&c);
+		for (auto &i : num) {
+			cout << *i << endl;
+		}
+	}
+	catch (const char *errMsg) {
+
 	}
 	
 	system("pause");
