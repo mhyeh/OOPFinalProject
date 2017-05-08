@@ -8,21 +8,28 @@
 
 #include <string>
 #include <vector>
-#include "ComplexNum.h"
+//#include "Computer.h"
+#include "NumberObject.h"
 
 using std::string;
 using std::vector;
 
 class Formula {
 private:
-	string formulaStr;
-	ComplexNum answer;
+    string formulaStr;
+
+    void postfix();
+	void check();
+    NumberObject cal(string&);
 
 public:
-	Formula(string);
-	~Formula();
+    Formula();
+    Formula(string&);
+    ~Formula();
 
-	void calculate();
-	void print();
+    string setFormula(string&);
+    NumberObject caculate();
+
+	Formula operator =(const string&);
 };
 

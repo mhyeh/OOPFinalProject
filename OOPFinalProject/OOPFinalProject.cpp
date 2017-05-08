@@ -1,31 +1,30 @@
-// Name: Yeh, MinHsuan
-// Date: April 6, 2017 
-// Last Update: April 7, 2017 
-// Problem statement: OOP final project main file
-
+#include <string>;
 #include <iostream>
-#include <string>
-#include "Formula.h"
+#include <vector>
+#include "Integer.h"
+#include "Decimal.h"
+#include "Complex.h"
 
-using std::cin;
+using std::string;
+using std::vector;
 using std::cout;
 using std::endl;
-using std::string;
 
-int main() {
-	string inputStr;
-
-	while (cin >> inputStr) {
-		try {
-			Formula f(inputStr);
-			f.calculate();
-			f.print();
-		} 
-		catch (const char* errorMsg) {
-			cout << errorMsg << endl;
-		}
+int main()
+{
+	Integer a = "-1";
+	Complex b = "3.0i", c, d, e;
+	vector<NumberObject*> num;
+	//std::cin >> a;
+	c = a + b;
+	num.push_back(&a);
+	num.push_back(&b);
+	num.push_back(&c);
+	for (auto &i : num) {
+		cout << *i << endl;
 	}
-
+	
+	system("pause");
     return 0;
 }
 
