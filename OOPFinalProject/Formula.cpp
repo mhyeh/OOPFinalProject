@@ -28,13 +28,13 @@ Formula::~Formula() {
 }
 
 void Formula::check() {
+	string str = this->formulaStr;
 	int left = 0, right = 0;
 	bool flagContinous = false, flagSign = false;
 
-	this->formulaStr.erase(remove_if(this->formulaStr.begin(), this->formulaStr.end(), isspace), this->formulaStr.end());
-	//erase the spaces
+	str.erase(remove_if(str.begin(), str.end(), ::isspace), str.end());
 
-	for (auto &i : this->formulaStr) {
+	for (auto &i : str) {
 		if (i == '(')
 			left += 1;
 		else if (i == ')')
@@ -42,49 +42,53 @@ void Formula::check() {
 	}
 	if (left != right)
 		throw "formate is illegal";
-	//left and right brackets
 
-	for (unsigned long long pos = 0; pos < this->formulaStr.length(); pos++) {
-		if (this->formulaStr[pos] == '+' || this->formulaStr[pos] == '-' || this->formulaStr[pos] == '*' || this->formulaStr[pos] == '/') {
-			bool flagcurrentSign = ((this->formulaStr[pos] == '+') ? true : false);
-			if (this->formulaStr[pos + 1] == '*' || this->formulaStr[pos + 1] == '/' || this->formulaStr[pos + 1] == ')' || this->formulaStr[pos + 1] == '!')
+	for (unsigned long long i = 0; i < str.length(); i++) {
+		if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') {
+			bool flagcurrentSign = ((str[i] == '+') ? true : false);
+			if (str[i + 1] == '*' || str[i + 1] == '/' || str[i + 1] == ')' || str[i + 1] == '!')
 				throw "format is illegal";
-			// /* management
-			if (flagContinous == false && (this->formulaStr[pos] == '+' || this->formulaStr[pos] == '-')) {
-				flagSign = ((this->formulaStr[pos] == '+') ? true : false);
+			if (flagContinous == false && (str[i] == '+' || str[i] == '-')) {
+				flagSign = ((str[i] == '+') ? true : false);
 				flagContinous = true;
 			}
 			else if (flagContinous == true) {
 				flagSign = !(flagSign^flagcurrentSign);
-				if (this->formulaStr[pos] == '+' || this->formulaStr[pos] == '-')
-					this->formulaStr.erase(this->formulaStr.begin() + pos);
-				pos -= 1;
-				if (this->formulaStr[pos + 1] != '+'&&this->formulaStr[pos + 1] != '-') {
-					this->formulaStr.replace(pos, 1, ((flagSign) ? "+" : "-"));
+				if (str[i] == '+' || str[i] == '-')
+					str.erase(str.begin() + i);
+				i -= 1;
+				if (str[i + 1] != '+'&&str[i + 1] != '-') {
+					str.replace(i, 1, ((flagSign) ? "+" : "-"));
 				}
 			}
 		}
-		if (this->formulaStr[pos] == 'i' || (this->formulaStr[pos] >= '0'&&this->formulaStr[pos] <= '9')) {
+		if (str[i] == 'i' || (str[i] >= '0'&&str[i] <= '9')) {
 			flagContinous = false;
 		}
 	}
-	//clean out the continous operater
+
+	stringstream ss;
+	ss.str("");
+	ss.clear();
+
+	for (unsigned long long i = 0; i < str.length(); i++) {
+    	if (str[i] == '(')
+        	ss << str[i] << " ";
+    	else if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' || str[i] == ')') {
+        	if (str[i - 1] == '+' || str[i - 1] == '-' || str[i - 1] == '*' || str[i - 1] == '/' || str[i - 1] == '(' || str[i - 1] == ')')
+            	ss << str[i];
+			else
+				ss << " " << str[i] << " ";
+		} else
+			ss << str[i];
+	}
+	getline(ss, this->formulaStr);
 
 }
 
 void Formula::postfix() {
-	bool flagContinous = false;
-	for (unsigned long long pos = 0; pos < this->formulaStr.length(); pos++) {
-		if (this->formulaStr[pos] == 'i' || (this->formulaStr[pos] >= '0'&&this->formulaStr[pos] <= '9')) {
-			if (this->formulaStr[pos + 1] != 'i' || (this->formulaStr[pos] <= '0' || this->formulaStr[pos] >= '9'))
-				this->formulaStr.insert(pos + 1, " ");
-		}
-		else {
-			if (this->formulaStr[pos + 1] == 'i' || (this->formulaStr[pos + 1] >= '0'&&this->formulaStr[pos + 1] <= '9'))
-				this->formulaStr.insert(pos + 1, " ");
-		}
-	}
-	//insert the spaces
+	
+
 
 }
 
