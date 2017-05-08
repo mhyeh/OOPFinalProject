@@ -354,7 +354,7 @@ void Integer::setLength() {
 
 NumberObject Integer::sqrt() {
 	Integer num = *this;
-	BigNum ans;
+	Integer ans;
 	bool flag = true;
 
 	if (num < 0) {
@@ -364,22 +364,22 @@ NumberObject Integer::sqrt() {
 	if(num == 0)
 		return 0;
 
-	//caculate
+	ans = rshift(ans, 30);
+	ans = binSearch(ans, 0, ans);
 
 	if (!flag) {
-		Integer tmp(ans, false);
 		stringstream ss;
 		string str;
 
 		ss.str("");
 		ss.clear();
 
-		tmp.output(ss);
+		ans.output(ss);
 		ss >> str;
 		return Complex(str + "i");
 	}
 
-	return Integer(ans, false);
+	return ans;
 }
 
 
@@ -589,6 +589,24 @@ long long int binSearch(const Integer& _num1, const Integer& _num2, long long in
 		return binSearch(num1, num2, m + 1, upper);
 	if(num1 < num2 * m)
 		return binSearch(num1, num2, lower, m);
+	return m;
+}
+
+Integer binSearch(const Integer& _num, Integer& lower, Integer& upper) {
+	Integer num = _num;
+
+	if(lower == upper) {
+		if(num < lower * lower)
+			return lower - 1;
+		return lower;
+	}
+
+	Integer m = (lower + upper) / 2;
+
+	if(num > m * m)
+		return binSearch(num, m + 1, upper);
+	if(num < m * m)
+		return binSearch(num, lower, m);
 	return m;
 }
 
