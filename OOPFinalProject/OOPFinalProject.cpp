@@ -1,35 +1,69 @@
-#include <string>;
 #include <iostream>
+#include <string>
+#include <sstream>
 #include <vector>
-#include "Integer.h"
-#include "Decimal.h"
-#include "Complex.h"
 
-using std::string;
-using std::vector;
-using std::cout;
-using std::endl;
+#include "Computer.h"
+
+using namespace std;
 
 int main()
 {
-	try {
-		Integer a = "-4";
-		Decimal b = "0.5", c, d, e;
-		vector<NumberObject*> num;
-		//std::cin >> a;
-		c = a ^ b;
-		num.push_back(&a);
-		num.push_back(&b);
-		num.push_back(&c);
-		for (auto &i : num) {
-			cout << *i << endl;
+	string input;
+	Computer computer;
+
+	while (1) {
+		getline(cin, input);
+
+		if(input == "Exit")
+			break;
+
+		try {
+			string op;
+			stringstream ss;
+
+			ss.str("");
+			ss.clear();
+			
+			ss << input;
+			ss >> op;
+
+			if (op == "Set") {
+				string tmp;
+				string name;
+				string value;
+
+				ss >> tmp;
+				ss >> name;
+				getline(ss, value);
+
+				Computer::setVar(name, value);
+			} else if(op == "Get"){
+				string name;
+
+				ss >> name;
+				cout << Computer::getVar(name) << endl;
+			} else {
+				string tmp;
+				
+				ss >> tmp;
+				if (tmp == "=") {
+					string value;
+
+					getline(ss, value);
+					Computer::setVar(op, value);
+				} else {
+					computer.setFormula(input);
+					computer.caculate();
+					cout << computer.getResult() << endl;
+				}
+			}
+		}
+		catch (const char *errMsg) {
+			cout << errMsg << endl;
 		}
 	}
-	catch (const char *errMsg) {
-
-	}
 	
-	system("pause");
     return 0;
 }
 
