@@ -9,11 +9,7 @@
 #include "Formula.h"
 #include "NumberObject.h"
 
-using std::shared_ptr;
-using std::string;
-using std::vector;
-using std::map;
-using std::cout;
+using namespace std;
 
 class Computer {
 private:
@@ -32,5 +28,5 @@ public:
 
     void setFormula(const string&);
     void caculate();
-    void print();
+	NumberObject getResult();
 };
