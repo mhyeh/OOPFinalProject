@@ -21,6 +21,8 @@ private:
 	void replaceSign();
 	void addSpace();
 	void inToPostfix();
+	int priority(string);
+	string changePowerFormat(string);
 
 public:
     Formula();
