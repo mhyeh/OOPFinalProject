@@ -54,17 +54,6 @@ NumberObject* numberFactory(int _type1, int _type2) {
 	}
 }
 
-NumberObject operator ^(const NumberObject& _num1, const NumberObject& _num2) {
-	NumberObject num1 = _num1;
-	NumberObject num2 = _num2;
-
-	try {
-		return numberFactory(num1.numType, num2.numType)->power(num1, num2);
-	}
-	catch (const char* errMsg) {
-		throw errMsg;
-	}
-}
 
 
 NumberObject operator +(const NumberObject& _num1, const NumberObject& _num2) {
@@ -109,6 +98,18 @@ NumberObject operator /(const NumberObject& _num1, const NumberObject& _num2) {
 
 	try {
 		return numberFactory(num1.numType, num2.numType)->div(num1, num2);
+	}
+	catch (const char* errMsg) {
+		throw errMsg;
+	}
+}
+
+NumberObject operator ^(const NumberObject& _num1, const NumberObject& _num2) {
+	NumberObject num1 = _num1;
+	NumberObject num2 = _num2;
+
+	try {
+		return numberFactory(num1.numType, num2.numType)->power(num1, num2);
 	}
 	catch (const char* errMsg) {
 		throw errMsg;

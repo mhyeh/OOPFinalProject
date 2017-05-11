@@ -5,7 +5,7 @@
 
 #include "Formula.h"
 #include "Computer.h"
-
+#include "Integer.h"
 
 Formula::Formula() {
 
@@ -243,6 +243,7 @@ Formula Formula::operator=(const string& _formulaStr) {
 
 	try {
 		this->processString();
+		return *this;
 	}
 	catch (const char* errMsg) {
 		throw errMsg;
@@ -270,10 +271,73 @@ NumberObject Formula::caculate() {
 	ss.str("");
 	ss.clear();
 	ss << this->formulaStr;
-
+	NumberObject num1, num2;
 	try {
 		while (ss >> f) {
+			if (f == "+") {
+				num1 = num.top();
+				num.pop();
 
+				if (num.size() > 0) {
+					num2 = num.top();
+					num.pop();
+				}
+				else
+					num2 = 0;
+				num.push(num1 + num2);
+			} else if (f == "-") {
+				num1 = num.top();
+				num.pop();
+
+				if (num.size() > 0) {
+					num2 = num.top();
+					num.pop();
+				}
+				else
+					num2 = 0;
+				num.push(num1 - num2);
+			}
+			else if (f == "*") {
+				num1 = num.top();
+				num.pop();
+				num2 = num.top();
+				num.pop();
+				
+				num.push(num1 * num2);
+			}
+			else if (f == "/") {
+				num1 = num.top();
+				num.pop();
+				num2 = num.top();
+				num.pop();
+
+				num.push(num1 / num2);
+			}
+			else if (f == "!") {
+				num1 = num.top();
+				num.pop();
+				num.push(factorial(num1));
+			}
+			else if (f == "@") {
+				num1 = num.top();
+				num.pop();
+				num.push(-num1);
+			}
+			else if (f == "^") {
+				num1 = num.top();
+				num.pop();
+				num2 = num.top();
+				num.pop();
+
+				num.push(num1 ^ num2);
+			}
+			else if (!isdigit(f[0])) {
+				num.push(Computer::getVar(f));
+			}
+			else
+			{
+				num.push(f);
+			}
 		}
 
 		return num.top();

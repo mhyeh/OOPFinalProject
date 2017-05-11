@@ -62,7 +62,6 @@ public:
 	NumType getNumType() { return this->numType; };
 
 	friend NumberObject* numberFactory(int, int);
-	
 
 	friend NumberObject operator +(const NumberObject&, const NumberObject&);
 	friend NumberObject operator -(const NumberObject&, const NumberObject&);
