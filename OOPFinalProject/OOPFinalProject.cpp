@@ -9,6 +9,20 @@ using namespace std;
 
 int main()
 {
+	cout << "===================================================================================================     " << endl << endl;
+	cout << "  ==========     ==============       =====      |\\\\         ||   ||          ||   |\\\\        //|   " << endl;
+	cout << "  ||        \\\\         ||          //            ||\\\\        ||   ||          ||   ||\\\\      //|| " << endl;
+	cout << "  ||         ||        ||         //             || \\\\       ||   ||          ||   || \\\\    // ||   " << endl;
+	cout << "  ||         ||        ||        //              ||  \\\\      ||   ||          ||   ||  \\\\  //  ||   " << endl;
+	cout << "  ||        //         ||       ||               ||   \\\\     ||   ||          ||   ||   \\\\//   ||   " << endl;
+	cout << "  ==========           ||       ||       ====    ||    \\\\    ||   ||          ||   ||          ||     " << endl;
+	cout << "  ||        \\\\         ||       ||          ||   ||     \\\\   ||   ||          ||   ||          ||   " << endl;
+	cout << "  ||         ||        ||        \\\\         //   ||      \\\\  ||   ||          ||   ||          ||   " << endl;
+	cout << "  ||         ||        ||         \\\\       //    ||       \\\\ ||   \\\\          //   ||          || " << endl;
+	cout << "  ||        //         ||          \\\\     //     ||        \\\\||    \\\\        //    ||          || " << endl;
+	cout << "  ==========     ==============       =====      ||         \\\\|     \\\\======//     ||          ||   " << endl << endl;
+	cout << "===================================================================================================     " << endl << endl;
+
 	string input;
 	Computer computer;
 
@@ -28,7 +42,14 @@ int main()
 			ss << input;
 			ss >> op;
 
-			if (op == "Set") {
+			if (op == "Help") {
+				cout << endl;
+				cout << "Commend:" << endl << endl;
+				cout << "set value:    Set <Number Type> <Value Name> [=] [<Value>/<Formula>]" << endl;
+				cout << "              <Value Name> = <Value Name> " << endl << endl;
+				cout << "get value:    Get <Value Name> " << endl << endl;
+				cout << "caculate:     <Formula>" << endl << endl;
+			} else if (op == "Set") {
 				string tmp;
 				string name;
 				string value;
