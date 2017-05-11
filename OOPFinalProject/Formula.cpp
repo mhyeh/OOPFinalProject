@@ -46,9 +46,71 @@ void Formula::processString() {
 
 	this->formulaStr = str;
 
+	this->formulaStr = this->changePowerFormat(this->formulaStr);
 	this->replaceSign();
 	this->addSpace();
 	this->inToPostfix();
+}
+
+string Formula::changePowerFormat(string _str) {
+	string str = _str;
+	string result = "";
+	string tmp = "";
+
+	bool isPower = false;
+	for (long long int i = 0; i < str.length(); i++) {
+		if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' || str[i] == '(' || str[i] == ')' || str[i] == '!' || str[i] == ',') {
+			isPower = (tmp == "Power");
+
+			if (isPower) {
+				if (str[i] != '(')
+					throw "format is illegal";
+
+				long long int count = 0;
+				long long int j = i + 1;
+				string s = "";
+				for (int k = 0; k < 2; k++) {
+					while (1) {
+						if (str[j] == '(')
+							count++;
+						else if (str[j] == ')')
+							count--;
+
+						if (count == 0 && k == 0 && str[j] == ',') {
+							result += "(" + changePowerFormat(s) + ")^";
+							s = "";
+							break;
+						} else if (count == -1 && k == 1) {
+							result += "(" + changePowerFormat(s) + ")";
+							s = "";
+							break;
+						} else {
+							stringstream t;
+							t << str[j];
+							t >> tmp;
+							s += tmp;
+						}
+						j++;
+					}
+					j++;
+				}
+
+				i += j - i;
+			} else
+				result += tmp;
+
+			stringstream t;
+			t << str[i];
+			t >> tmp;
+			result += tmp;
+			tmp = "";
+		} else
+			tmp += str[i];
+	}
+	result += tmp;
+	str.erase(remove(str.begin(), str.end(), '\0'), str.end());
+
+	return result;
 }
 
 void Formula::replaceSign() {
@@ -57,8 +119,8 @@ void Formula::replaceSign() {
 	bool flagSign = false;
 
 	for (unsigned long long i = 0; i < str.length(); i++) {
-		if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') {
-			if (str[i + 1] == '*' || str[i + 1] == '/' || str[i + 1] == ')' || str[i + 1] == '!')
+		if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' || str[i] == '(' || str[i] == '^') {
+			if (i != str.length() - 1 && (str[i + 1] == '*' || str[i + 1] == '/' || str[i + 1] == ')' || str[i + 1] == '!' || str[i + 1] == '^'))
 				throw "format is illegal";
 
 			bool flagcurrentSign = ((str[i] == '+') ? true : false);
@@ -66,15 +128,17 @@ void Formula::replaceSign() {
 			if (!flagContinous && (str[i] == '+' || str[i] == '-')) {
 				flagSign = ((str[i] == '+') ? true : false);
 				flagContinous = true;
-			} else if (flagContinous) {
-				if (str[i] == '+' || str[i] == '-')
-					str.erase(str.begin() + i);
+			} else if (flagContinous && (str[i] == '+' || str[i] == '-')) {
+				str.erase(str.begin() + i);
 				i--;
 
 				flagSign = !flagSign ^ flagcurrentSign;
-				if (str[i + 1] != '+'&&str[i + 1] != '-') 
-					str.replace(i, 1, ((flagSign) ? "+" : "-"));
+				str.replace(i, 1, ((flagSign) ? "+" : "-"));
 			}
+		} else if (str[i] == '!') {
+			if (i != str.length() - 1 && str[i + 1] != '+' && str[i + 1] != '-' && str[i + 1] != '*' && str[i + 1] != '/' && str[i + 1] != ')' && str[i + 1] != '!')
+				throw "format is illegal";
+			flagContinous = false;
 		} else
 			flagContinous = false;
 	}
@@ -92,22 +156,84 @@ void Formula::addSpace() {
 	for (unsigned long long i = 0; i < str.length(); i++) {
 		if (str[i] == '(')
 			ss << str[i] << " ";
-		else if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' || str[i] == ')') {
-			if (i > 0 && (str[i - 1] == '+' || str[i - 1] == '-' || str[i - 1] == '*' || str[i - 1] == '/' || str[i - 1] == '(' || str[i - 1] == ')'))
-				ss << str[i];
+		else if (str[i] == '+' || str[i] == '-') {
+			if (str[i + 1] == '(')
+				ss << " " << str[i];
 			else
 				ss << " " << str[i] << " ";
-		} else
+		} else if (str[i] == '*' || str[i] == '/' || str[i] == ')' || str[i] == '!' || str[i] == '^')
+			ss << " " << str[i] << " ";
+		else
 			ss << str[i];
 	}
 
 	getline(ss, this->formulaStr);
 }
 
+int Formula::priority(string _opr) {
+	if (_opr == ")" || _opr == "@" || _opr == "(")
+		return 6;
+	else if (_opr == "!")
+		return 5;
+	else if (_opr == "^")
+		return 4;
+	else if (_opr == "*" || _opr == "/")
+		return 3;
+	else if (_opr == "+" || _opr == "-")
+		return 2;
+}
+
 void Formula::inToPostfix() {
+	string str = this->formulaStr;
+	stringstream ss;
+	
+	ss.str("");
+	ss.clear();
+	
+	ss << str;
+	str = "";
+	
+	string tmp;
+	stack<string> op;
 
+	while (ss >> tmp) {
+		if (tmp == "-(")
+			op.push("@");
+		else if (tmp == "+(" || tmp == "(")
+			op.push("(");
+		else if (tmp == "+" || tmp == "-" || tmp == "*" || tmp == "/" || tmp == "!") {
+			while (op.size() > 0 && priority(op.top()) >= priority(tmp)) {
+				str += " " + op.top() + " ";
+				op.pop();
+			}
 
+			op.push(tmp);
+		} else if (tmp == "^") {
+			while (op.size() > 0 && priority(op.top()) > priority(tmp)) {
+				str += " " + op.top() + " ";
+				op.pop();
+			}
 
+			op.push(tmp);
+		} else if (tmp == ")") {
+			while (op.size() > 0 && (op.top() != "(" && op.top() != "@")) {
+				str += " " + op.top() + " ";
+				op.pop();
+			}
+
+			if (op.top() == "@")
+				str += " @ ";
+			op.pop();
+		} else 
+			str += " " + tmp + " ";
+	}
+
+	while (op.size() > 0) {
+		str += " " + op.top() + " ";
+		op.pop();
+	}
+
+	this->formulaStr = str;
 }
 
 
