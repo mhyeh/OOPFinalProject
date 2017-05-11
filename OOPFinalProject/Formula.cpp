@@ -157,7 +157,7 @@ void Formula::addSpace() {
 		if (str[i] == '(')
 			ss << str[i] << " ";
 		else if (str[i] == '+' || str[i] == '-') {
-			if (str[i + 1] == '(')
+			if (str[i + 1] == '(' && (str[i - 1] == '*' || str[i - 1] == '/' || str[i - 1] == '^'))
 				ss << " " << str[i];
 			else
 				ss << " " << str[i] << " ";
@@ -172,7 +172,7 @@ void Formula::addSpace() {
 
 int Formula::priority(string _opr) {
 	if (_opr == ")" || _opr == "@" || _opr == "(")
-		return 6;
+		return 1;
 	else if (_opr == "!")
 		return 5;
 	else if (_opr == "^")
@@ -275,40 +275,40 @@ NumberObject Formula::caculate() {
 	try {
 		while (ss >> f) {
 			if (f == "+") {
-				num1 = num.top();
+				num2 = num.top();
 				num.pop();
 
 				if (num.size() > 0) {
-					num2 = num.top();
+					num1 = num.top();
 					num.pop();
 				}
 				else
-					num2 = 0;
+					num1 = 0;
 				num.push(num1 + num2);
 			} else if (f == "-") {
-				num1 = num.top();
+				num2 = num.top();
 				num.pop();
 
 				if (num.size() > 0) {
-					num2 = num.top();
+					num1 = num.top();
 					num.pop();
 				}
 				else
-					num2 = 0;
+					num1 = 0;
 				num.push(num1 - num2);
 			}
 			else if (f == "*") {
-				num1 = num.top();
-				num.pop();
 				num2 = num.top();
+				num.pop();
+				num1 = num.top();
 				num.pop();
 				
 				num.push(num1 * num2);
 			}
 			else if (f == "/") {
-				num1 = num.top();
-				num.pop();
 				num2 = num.top();
+				num.pop();
+				num1 = num.top();
 				num.pop();
 
 				num.push(num1 / num2);
@@ -324,9 +324,9 @@ NumberObject Formula::caculate() {
 				num.push(-num1);
 			}
 			else if (f == "^") {
-				num1 = num.top();
-				num.pop();
 				num2 = num.top();
+				num.pop();
+				num1 = num.top();
 				num.pop();
 
 				num.push(num1 ^ num2);
