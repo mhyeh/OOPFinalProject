@@ -7,29 +7,31 @@
 #pragma once
 
 #include <string>
-#include <vector>
-//#include "Computer.h"
+#include <stack>
+
 #include "NumberObject.h"
 
-using std::string;
-using std::vector;
+using namespace std;
 
 class Formula {
 private:
     string formulaStr;
 
-    void postfix();
-	void check();
-    NumberObject cal(string&);
+	void processString();
+	void replaceSign();
+	void addSpace();
+	void inToPostfix();
+	int priority(string);
+	string changePowerFormat(string);
 
 public:
     Formula();
     Formula(string&);
     ~Formula();
 
+	Formula operator =(const string&);
+
     string setFormula(string&);
     NumberObject caculate();
-
-	Formula operator =(const string&);
 };
 

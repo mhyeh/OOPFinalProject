@@ -27,9 +27,8 @@ NumberObject Computer::getVar(const string& _varName) {
 
 void Computer::setVar(const string& _varName) {
     string varName = _varName;
-	NumberObject varVal;
 
-    variableSet[varName] = varVal;
+    variableSet[varName] = NumberObject(0);
 }
 
 void Computer::setVar(const string& _varName, const string& _varVal) {
@@ -37,9 +36,14 @@ void Computer::setVar(const string& _varName, const string& _varVal) {
     auto it = variableSet.find(varName);
     string varVal = _varVal;
 
-    Formula f(varVal);
-
-    variableSet[varName] = f.caculate();
+	try {
+		Formula f(varVal);
+		variableSet[varName] = f.caculate();
+	}
+	catch (const char* errMsg) {
+		variableSet[varName] = NumberObject(0);
+		throw errMsg;
+	}
 }
 
 void Computer::setVar(const string& _varName, const NumberObject& _varVal) {
@@ -68,6 +72,6 @@ void Computer::caculate() {
 	}
 }
 
-void Computer::print() {
-    cout << this->result;
+NumberObject Computer::getResult() {
+    return this->result;
 }

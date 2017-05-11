@@ -309,8 +309,8 @@ NumberObject Integer::minus(const NumberObject& _num) {
 }
 
 
-void Integer::output(ostream& _ostream) {
-	Integer num = *this;
+void Integer::output(const NumberObject& _num, ostream& _ostream) {
+	Integer num = _num;
 
 	reverse(num.number.begin(), num.number.end());
 
@@ -354,32 +354,21 @@ void Integer::setLength() {
 
 NumberObject Integer::sqrt() {
 	Integer num = *this;
-	BigNum ans;
-	bool flag = true;
+	Integer ans;
 
-	if (num < 0) {
-		num = abs(num);
-		flag = false;
-	}
+	if (num < 0) 
+		throw "can not get the sqrt root of negative number";
 	if(num == 0)
 		return 0;
 
-	//caculate
-
-	if (!flag) {
-		Integer tmp(ans, false);
-		stringstream ss;
-		string str;
-
-		ss.str("");
-		ss.clear();
-
-		tmp.output(ss);
-		ss >> str;
-		return Complex(str + "i");
+	if (num == rShift(1, 30)) {
+		ans = 1;
+		ans = rShift(ans, 15);
+	} else {
+		ans = binSearch(num, Integer(0), lShift(num, 15));
 	}
 
-	return Integer(ans, false);
+	return ans;
 }
 
 
@@ -422,7 +411,7 @@ Integer rShift(const Integer& _num, long long int shiftLength) {
 	ss.str("");
 	ss.clear();
 
-	ss << num;
+	ss << &num;
 	ss >> str;
 
 	while (shiftLength--) 
@@ -589,6 +578,24 @@ long long int binSearch(const Integer& _num1, const Integer& _num2, long long in
 		return binSearch(num1, num2, m + 1, upper);
 	if(num1 < num2 * m)
 		return binSearch(num1, num2, lower, m);
+	return m;
+}
+
+Integer binSearch(const Integer& _num, Integer& lower, Integer& upper) {
+	Integer num = _num;
+
+	if(lower == upper) {
+		if(num < lower * lower)
+			return lower - 1;
+		return lower;
+	}
+
+	Integer m = (lower + upper) / 2;
+
+	if(num > m * m)
+		return binSearch(num, Integer(m + 1), upper);
+	if(num < m * m)
+		return binSearch(num, lower, m);
 	return m;
 }
 

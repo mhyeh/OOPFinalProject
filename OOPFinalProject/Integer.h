@@ -26,7 +26,7 @@ protected:
 	virtual NumberObject power(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject minus(const NumberObject&) override;
 
-	virtual void output(ostream&) override;
+	virtual void output(const NumberObject&, ostream&) override;
 public:
 	Integer();
 	Integer(const NumberObject&);
@@ -53,6 +53,7 @@ public:
 	friend Integer factorial(const Integer&);
 
 	friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);
+	friend Integer binSearch(const Integer&, Integer&, Integer&);
 
 	friend Integer operator %(const Integer&, const Integer&);
 
