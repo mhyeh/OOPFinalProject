@@ -4,6 +4,26 @@
 #include "Complex.h"
 
 
+NumberObject::NumberObject(string _numStr) {
+	if (_numStr.back() == 'i') {
+		Complex complex = _numStr;
+		*this = complex;
+	} else {
+		bool flag = false;
+		for (auto &i : _numStr)
+			if (i == '.') {
+				flag = true;
+				break;
+			}
+		if (flag) {
+			Decimal decimal = _numStr;
+			*this = decimal;
+		} else {
+			Integer decimal = _numStr;
+			*this = decimal;
+		}
+	}
+}
 
 NumberObject::NumberObject(const NumberObject& _numberObject) {
 	this->numType = _numberObject.numType;
@@ -130,8 +150,10 @@ istream& operator >>(istream& _istream, NumberObject& _num) {
 };
 
 ostream& operator <<(ostream& _ostream, NumberObject& _num) {
+	NumberObject num = _num;
+
 	try {
-		_num.output(_ostream);
+		numberFactory(num.numType, NUM_OBJ)->output(num, _ostream);
 	}
 	catch (const char* errMsg) {
 		throw errMsg;

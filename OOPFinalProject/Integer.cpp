@@ -309,8 +309,8 @@ NumberObject Integer::minus(const NumberObject& _num) {
 }
 
 
-void Integer::output(ostream& _ostream) {
-	Integer num = *this;
+void Integer::output(const NumberObject& _num, ostream& _ostream) {
+	Integer num = _num;
 
 	reverse(num.number.begin(), num.number.end());
 
@@ -411,7 +411,7 @@ Integer rShift(const Integer& _num, long long int shiftLength) {
 	ss.str("");
 	ss.clear();
 
-	ss << num;
+	ss << &num;
 	ss >> str;
 
 	while (shiftLength--) 

@@ -222,8 +222,8 @@ NumberObject Decimal::minus(const NumberObject& _num) {
 }
 
 
-void Decimal::output(ostream& _ostream) {
-	Decimal num = *this;
+void Decimal::output(const NumberObject& _num, ostream& _ostream) {
+	Decimal num = _num;
 
 	Integer numerator = num.getFlotingNumber(100);
 	BigNum tmp = numerator.getNumData().rNumerator;
