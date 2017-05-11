@@ -200,8 +200,8 @@ NumberObject Complex::minus(const NumberObject& _num) {
 }
 
 
-void Complex::output(ostream& _ostream) {
-	Complex num = *this;
+void Complex::output(const NumberObject& _num, ostream& _ostream) {
+	Complex num = _num;
 	stringstream ss;
 	string str;
 

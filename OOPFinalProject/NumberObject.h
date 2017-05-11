@@ -49,11 +49,11 @@ protected:
 	virtual NumberObject minus(const NumberObject&) { return NumberObject(); };
 
 	virtual void input(istream&);
-	virtual void output(ostream&) {};
+	virtual void output(const NumberObject&, ostream&) {};
 
 public:
 	NumberObject() : numType(NUM_OBJ) {};
-	NumberObject(string _numStr) : numType(NUM_OBJ) {};
+	NumberObject(string);
 	NumberObject(const NumberObject&);
 	NumberObject(long long int);
 	~NumberObject();

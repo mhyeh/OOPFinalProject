@@ -21,7 +21,7 @@ protected:
 	virtual NumberObject power(const NumberObject&, const NumberObject&) override;
 	virtual NumberObject minus(const NumberObject&) override;
 
-	virtual void output(ostream&) override;
+	virtual void output(const NumberObject&, ostream&) override;
 
 public:
 	Decimal();

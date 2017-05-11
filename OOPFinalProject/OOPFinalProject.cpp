@@ -35,6 +35,7 @@ int main()
 
 				ss >> tmp;
 				ss >> name;
+				ss >> tmp;
 				getline(ss, value);
 
 				Computer::setVar(name, value);
