@@ -411,7 +411,7 @@ Integer rShift(const Integer& _num, long long int shiftLength) {
 	ss.str("");
 	ss.clear();
 
-	ss << &num;
+	ss << num;
 	ss >> str;
 
 	while (shiftLength--) 
