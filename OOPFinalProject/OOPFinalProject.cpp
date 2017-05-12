@@ -1,4 +1,3 @@
-/*
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -7,16 +6,10 @@
 #include "Computer.h"
 
 using namespace std;
-*/
-
-#include "MyForm.h"
-
-using namespace System;
-using namespace OOPFinalProject;
 
 int main()
 {
-	/*
+	
 	cout << "===================================================================================================     " << endl << endl;
 	cout << "  ==========     ==============       =====      |\\\\         ||   ||          ||   |\\\\        //|   " << endl;
 	cout << "  ||        \\\\         ||          //            ||\\\\        ||   ||          ||   ||\\\\      //|| " << endl;
@@ -114,11 +107,6 @@ int main()
 			cout << errMsg << endl;
 		}
 	}
-	*/
-	Application::EnableVisualStyles();
-	Application::SetCompatibleTextRenderingDefault(false);
-
-	Application::Run(gcnew MyForm());
 	
     return 0;
 }
