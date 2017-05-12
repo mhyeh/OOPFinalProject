@@ -44,26 +44,43 @@ int main()
 
 			if (op == "Help") {
 				cout << endl;
-				cout << "Commend:" << endl << endl;
-				cout << "set value:    Set <Number Type> <Value Name> [=] [<Value>/<Formula>]" << endl;
+				cout << "Usage:" << endl << endl;
+				cout << "set value:    Set <Number Type> <Value Name> [= <Value>/<Formula>]" << endl;
 				cout << "              <Value Name> = <Value Name> " << endl << endl;
 				cout << "get value:    Get <Value Name> " << endl << endl;
 				cout << "caculate:     <Formula>" << endl << endl;
+				cout << "exit:         Exit" << endl << endl;
 			} else if (op == "Set") {
-				string tmp;
-				string name;
-				string value;
+				string type, name, tmp, value;
 
-				ss >> tmp;
-				ss >> name;
-				ss >> tmp;
-				getline(ss, value);
+				ss >> type;
+				if(type != "Integer" && type != "Decimal" && type != "Complex")
+					throw "syntex error";
+
+				if (!ss.eof())
+					ss >> name;
+				else
+					throw "syntex error";
+
+				if (!ss.eof()) 
+					ss >> tmp;
+				else
+					value = "0";
+
+				if(!ss.eof())
+					getline(ss, value);
+			    else
+					value = "0";
 
 				Computer::setVar(name, value);
 			} else if(op == "Get"){
 				string name;
 
-				ss >> name;
+				if (!ss.eof())
+					ss >> name;
+				else
+					throw "syntex error";
+
 				cout << Computer::getVar(name) << endl;
 			} else {
 				string tmp;
@@ -72,7 +89,11 @@ int main()
 				if (tmp == "=") {
 					string value;
 
-					getline(ss, value);
+					if (!ss.eof())
+						getline(ss, value);
+					else
+						throw "syntex error";
+
 					Computer::setVar(op, value);
 				} else {
 					computer.setFormula(input);
