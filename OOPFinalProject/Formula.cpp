@@ -7,10 +7,8 @@ Formula::Formula() {
 }
 
 Formula::Formula(string& _formulaStr) {
-    this->formulaStr = _formulaStr;
-
 	try {
-		this->processString();
+		this->setFormula(_formulaStr);
 	}
 	catch (const char* errMsg) {
 		throw errMsg;
@@ -234,10 +232,10 @@ void Formula::inToPostfix() {
 
 
 Formula Formula::operator=(const string& _formulaStr) {
-	this->formulaStr = _formulaStr;
+	string str = _formulaStr;
 
 	try {
-		this->processString();
+		this->setFormula(str);
 		return *this;
 	}
 	catch (const char* errMsg) {
@@ -247,7 +245,7 @@ Formula Formula::operator=(const string& _formulaStr) {
 
 
 
-string Formula::setFormula(string& _formulaStr) {
+void Formula::setFormula(string& _formulaStr) {
     this->formulaStr = _formulaStr;
 
 	try {
