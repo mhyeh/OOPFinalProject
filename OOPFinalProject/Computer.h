@@ -22,6 +22,7 @@ public:
     ~Computer();
 
 	static NumberObject getVar(const string&);
+	static vector<string> getVarList();
     static void setVar(const string&);
     static void setVar(const string&, const string&);
     static void setVar(const string&, const NumberObject&);
