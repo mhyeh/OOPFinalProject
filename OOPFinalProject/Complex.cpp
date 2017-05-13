@@ -3,19 +3,19 @@
 
 
 Complex::Complex() : realPart(Decimal()), imagePart(Decimal()) {
-	this->numType = COMPLEX;
+	this->numType = COM;
 }
 
 Complex::Complex(const NumberObject& _numberObject) {
 	NumberObject numberObject = _numberObject;
-	this->numType = COMPLEX;
+	this->numType = COM;
 	this->numData = numberObject.getNumData();
 
 	this->decode();
 }
 
 Complex::Complex(string _str) : realPart(Decimal()), imagePart(Decimal()) {
-	this->numType = COMPLEX;
+	this->numType = COM;
 	try {
 		this->strToNum(_str);
 	}
@@ -27,7 +27,7 @@ Complex::Complex(string _str) : realPart(Decimal()), imagePart(Decimal()) {
 }
 
 Complex::Complex(int _number) {
-	this->numType = COMPLEX;
+	this->numType = COM;
 	this->realPart = _number;
 	this->imagePart = 0;
 
@@ -35,7 +35,7 @@ Complex::Complex(int _number) {
 }
 
 Complex::Complex(const NumberObject& _realPart, const NumberObject& _imagePart) : realPart(_realPart), imagePart(_imagePart) {
-	this->numType = COMPLEX;
+	this->numType = COM;
 
 	this->encode();
 }
@@ -224,6 +224,7 @@ void Complex::output(const NumberObject& _num, ostream& _ostream) {
 
 void Complex::operator =(const string& _str) {
 	try {
+		this->numType = COM;
 		this->strToNum(_str);
 		this->encode();
 	}
@@ -235,6 +236,7 @@ void Complex::operator =(const string& _str) {
 void Complex::operator =(const char* _str) {
 	string str(_str);
 	try {
+		this->numType = COM;
 		this->strToNum(_str);
 		this->encode();
 	}

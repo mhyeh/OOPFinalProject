@@ -25,6 +25,14 @@ NumberObject Computer::getVar(const string& _varName) {
     return variableSet[varName];
 }
 
+vector<string> Computer::getVarList() {
+	vector<string> varList;
+	for (auto &i : variableSet)
+		varList.push_back(i.first);
+
+	return varList;
+}
+
 void Computer::setVar(const string& _varName) {
     string varName = _varName;
 
