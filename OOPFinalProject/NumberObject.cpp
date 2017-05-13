@@ -59,16 +59,16 @@ NumberObject* numberFactory(int _type1, int _type2) {
 	int type = std::max(_type1, _type2);
 
 	switch (type) {
-	case NUM_OBJ:
+	case NUM:
 		return new NumberObject();
 		break;
 	case INTEGER:
 		return new Integer();
 		break;
-	case DECIMAL:
+	case DEC:
 		return new Decimal();
 		break;
-	case COMPLEX:
+	case COM:
 		return new Complex();
 		break;
 	}
@@ -153,7 +153,7 @@ ostream& operator <<(ostream& _ostream, NumberObject& _num) {
 	NumberObject num = _num;
 
 	try {
-		numberFactory(num.numType, NUM_OBJ)->output(num, _ostream);
+		numberFactory(num.numType, NUM)->output(num, _ostream);
 	}
 	catch (const char* errMsg) {
 		throw errMsg;

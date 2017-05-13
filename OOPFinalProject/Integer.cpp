@@ -375,6 +375,7 @@ NumberObject Integer::sqrt() {
 
 void Integer::operator =(const string& _str) {
 	try {
+		this->numType = INTEGER;
 		this->number.clear();
 		this->strToNum(_str);
 		this->encode();
@@ -390,6 +391,7 @@ void Integer::operator =(const string& _str) {
 void Integer::operator =(const char* _str) {
 	string str(_str);
 	try {
+		this->numType = INTEGER;
 		this->number.clear();
 		this->strToNum(str);
 		this->encode();

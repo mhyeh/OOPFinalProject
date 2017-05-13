@@ -17,10 +17,10 @@ using namespace std;
 typedef vector<int> BigNum;
 
 enum NumType {
-	NUM_OBJ,
+	NUM,
 	INTEGER,
-	DECIMAL,
-	COMPLEX
+	DEC,
+	COM
 };
 
 struct NumData {
@@ -52,7 +52,7 @@ protected:
 	virtual void output(const NumberObject&, ostream&) {};
 
 public:
-	NumberObject() : numType(NUM_OBJ) {};
+	NumberObject() : numType(NUM) {};
 	NumberObject(string);
 	NumberObject(const NumberObject&);
 	NumberObject(long long int);
