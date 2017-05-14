@@ -2,19 +2,19 @@
 
 
 Decimal::Decimal() : numerator(Integer()), denominator("1") {
-	this->numType = DECIMAL;
+	this->numType = DEC;
 }
 
 Decimal::Decimal(const NumberObject& _numberObject) {
 	NumberObject numberObject = _numberObject;
-	this->numType = DECIMAL;
+	this->numType = DEC;
 	this->numData = numberObject.getNumData();
 
 	this->decode();
 }
 
 Decimal::Decimal(string _str) : numerator(Integer()), denominator("1") {
-	this->numType = DECIMAL;
+	this->numType = DEC;
 	try {
 		this->strToNum(_str);
 	}
@@ -26,7 +26,7 @@ Decimal::Decimal(string _str) : numerator(Integer()), denominator("1") {
 }
 
 Decimal::Decimal(int _number) {
-	this->numType = DECIMAL;
+	this->numType = DEC;
 	this->numerator = _number;
 	this->denominator = 1;
 
@@ -34,7 +34,7 @@ Decimal::Decimal(int _number) {
 }
 
 Decimal::Decimal(const NumberObject& _numerator, const NumberObject& _denominator) : numerator(_numerator), denominator(_denominator) {
-	this->numType = DECIMAL;
+	this->numType = DEC;
 
 	this->encode();
 }
@@ -279,6 +279,7 @@ Integer Decimal::getFlotingNumber(int _length) {
 
 void Decimal::operator =(const string& _str) {
 	try {
+		this->numType = DEC;
 		this->strToNum(_str);
 		this->encode();
 	}
@@ -290,6 +291,7 @@ void Decimal::operator =(const string& _str) {
 void Decimal::operator =(const char* _str) {
 	string str(_str);
 	try {
+		this->numType = DEC;
 		this->strToNum(_str);
 		this->encode();
 	}
@@ -307,7 +309,7 @@ NumberObject sqrtRoot(const NumberObject& _num) {
 
 		NumberObject ans;
 
-		if (numerator.getNumType() == COMPLEX) 
+		if (numerator.getNumType() == COM) 
 			ans = numerator / denominator;
 		else 
 			ans = Decimal(numerator, denominator);

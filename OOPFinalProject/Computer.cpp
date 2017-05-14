@@ -25,6 +25,25 @@ NumberObject Computer::getVar(const string& _varName) {
     return variableSet[varName];
 }
 
+vector<pair<string, string>> Computer::getVarList() {
+	vector<pair<string,string>> varList;
+	stringstream ss;
+
+	for (auto &i : variableSet) {
+		ss.str("");
+		ss.clear();
+
+		ss << i.second;
+		string str;
+
+		getline(ss, str);
+		varList.push_back(pair<string, string>(i.first, str));
+	}
+		
+
+	return varList;
+}
+
 void Computer::setVar(const string& _varName) {
     string varName = _varName;
 
