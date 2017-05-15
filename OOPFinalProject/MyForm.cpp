@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <fstream>
 #include <msclr\marshal_cppstd.h>
 
 #include "MyForm.h"
@@ -376,7 +377,13 @@ void MyForm::compute() {
 			string value;
 			getline(ss, value);
 
-			this->Show->Text += gcnew String(value.c_str()) + "\r\n";
+            fstream fs;
+
+            fs.open("answer.txt", ios::out | ios::app);
+            fs << "==========================" << endl << endl << value << endl;
+            fs.close();
+
+			this->Show->Text += gcnew String(value.c_str()) + "\r\n\r\n";
 		} else {
 			string tmp;
 
@@ -392,22 +399,34 @@ void MyForm::compute() {
 				Computer::setVar(op, value);
 				this->setList();
 			} else {
-				computer->setFormula(input);
-				computer->caculate();
+                this->computer->setFormula(input);
+                this->computer->caculate();
 
 				ss.str("");
 				ss.clear();
 
-				ss << computer->getResult();
+				ss << this->computer->getResult();
 
 				string value;
 				getline(ss, value);
 
-				this->Show->Text += gcnew String(value.c_str()) + "\r\n";
+                fstream fs;
+
+                fs.open("answer.txt", ios::out | ios::app);
+                fs << "==========================" << endl << endl << value << endl;
+                fs.close();
+
+				this->Show->Text += gcnew String(value.c_str()) + "\r\n\r\n";
 			}
 		}
 	}
 	catch (const char *errMsg) {
+        fstream fs;
+
+        fs.open("answer.txt", ios::out | ios::app);
+        fs << "==========================" << endl << endl << errMsg << endl;
+        fs.close();
+
 		this->Show->Text += gcnew String(errMsg) + "\r\n";
 	}
 }
