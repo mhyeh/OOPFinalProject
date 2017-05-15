@@ -23,6 +23,14 @@ namespace OOPFinalProject {
 			this->textInit();
 
 			this->computer = new Computer();
+
+			this->ValueList->View = View::Details;
+			this->ValueList->GridLines = true;
+			this->ValueList->Columns->Insert(0, "Name", 150, HorizontalAlignment::Center);
+			this->ValueList->Columns->Insert(1, "Value", 150, HorizontalAlignment::Center);
+
+			this->Input->Focus();
+			this->Input->Select();
 		}
 
 	protected:
@@ -529,6 +537,7 @@ namespace OOPFinalProject {
 			this->ValueList->Size = System::Drawing::Size(440, 169);
 			this->ValueList->TabIndex = 28;
 			this->ValueList->UseCompatibleStateImageBehavior = false;
+			this->ValueList->ItemSelectionChanged += gcnew System::Windows::Forms::ListViewItemSelectionChangedEventHandler(this, &MyForm::ValueList_ItemSelectionChanged);
 			// 
 			// label1
 			// 
@@ -732,5 +741,6 @@ private: System::Void Delete_Click(System::Object^  sender, System::EventArgs^  
 private: System::Void Clear_Click(System::Object^  sender, System::EventArgs^  e);
 private: System::Void Input_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 private: System::Void ValueName_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
+private: System::Void ValueList_ItemSelectionChanged(System::Object^  sender, System::Windows::Forms::ListViewItemSelectionChangedEventArgs^  e);
 };
 }

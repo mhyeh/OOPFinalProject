@@ -1,6 +1,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <utility>
 #include <msclr\marshal_cppstd.h>
 
 #include "MyForm.h"
@@ -47,6 +48,8 @@ void MyForm::Int_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Int->Enabled = false;
 	this->Dec->Enabled = false;
 	this->Com->Enabled = false;
+
+	this->ValueName->Focus();
 }
 
 void MyForm::Dec_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -56,6 +59,8 @@ void MyForm::Dec_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Int->Enabled = false;
 	this->Dec->Enabled = false;
 	this->Com->Enabled = false;
+
+	this->ValueName->Focus();
 }
 
 void MyForm::Com_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -65,6 +70,8 @@ void MyForm::Com_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Int->Enabled = false;
 	this->Dec->Enabled = false;
 	this->Com->Enabled = false;
+
+	this->ValueName->Focus();
 }
 
 void MyForm::ValueName_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -82,116 +89,172 @@ void MyForm::Submit_Click(System::Object^  sender, System::EventArgs^  e) {
 
 	this->Input->Text += this->ValueName->Text->ToString() + " ";
 	this->ValueName->Text = "";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num0_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "0";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num1_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "1";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num2_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "2";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num3_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "3";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num4_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "4";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num5_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "5";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num6_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "6";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num7_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "7";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num8_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "8";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Num9_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "9";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Decimal_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += ".";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::ImagePart_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "i";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Add_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "+";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Sub_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "-";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Mul_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "*";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Div_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "/";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Left_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "(";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Right_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += ")";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Pow_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "^";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Fac_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += "!";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Eql_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += " = ";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->compute();
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::ClearAll_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->textInit();
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Help_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->help();
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Delete_Click(System::Object^  sender, System::EventArgs^  e) {
 	if(this->Input->Text->Length > 0)
 		this->Input->Text = this->Input->Text->Substring(0, this->Input->Text->Length - 1);
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Clear_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text = "";
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::Input_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 	if (e->KeyCode == Keys::Enter)
 		this->compute();
+	this->Input->Focus();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::ValueName_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
@@ -200,10 +263,18 @@ void MyForm::ValueName_KeyDown(System::Object^  sender, System::Windows::Forms::
 			this->Set->Enabled = true;
 			this->Get->Enabled = true;
 		}
+		this->Input->Focus();
 
 		this->Input->Text += this->ValueName->Text->ToString() + " ";
 		this->ValueName->Text = "";
+		this->Input->Select(this->Input->Text->Length, 0);
 	}
+}
+
+void MyForm::ValueList_ItemSelectionChanged(System::Object^  sender, System::Windows::Forms::ListViewItemSelectionChangedEventArgs^  e) {
+	this->Input->Focus();
+	this->Input->Text += this->ValueList->SelectedItems[0]->Text->ToString();
+	this->Input->Select(this->Input->Text->Length, 0);
 }
 
 void MyForm::textInit() {
@@ -234,13 +305,14 @@ void MyForm::help() {
 }
 
 void MyForm::setList() {
-	this->ValueList->Clear();
+	this->ValueList->Items->Clear();
 
-	vector<string> varList;
+	vector<pair<string, string>> varList;
 
 	varList = Computer::getVarList();
 	for (int i = 0; i < varList.size(); i++) {
-		this->ValueList->Items->Add(gcnew String(varList[i].c_str()), i);
+		this->ValueList->Items->Add(gcnew String(varList[i].first.c_str()));
+		this->ValueList->Items[i]->SubItems->Add(gcnew String(varList[i].second.c_str()));
 	}
 }
 
