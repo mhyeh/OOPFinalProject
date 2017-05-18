@@ -11,9 +11,6 @@ private:
 	bool sign;
 	long long int length;
 
-	Integer factorial2();
-	Integer factorial2(const Integer&);
-
 protected:
 	virtual void strToNum(const string&) override;
 	virtual void encode() override;

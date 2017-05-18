@@ -59,37 +59,6 @@ Integer::~Integer() {
 
 
 
-Integer Integer::factorial2() {
-	if (*this <= 15) {
-		long long int i = (*this).number[0];
-		long long int ans = 1;
-		for(; i > 0; i -= 2)
-			ans *= i;
-		return ans;
-	}
-}
-
-Integer Integer::factorial2(const Integer& _num) {
-	Integer min = _num;
-	Integer ans = *this;
-
-	for (Integer max = *this - 2; max > min; max = max - 2) {
-		if (max <= 15) {
-			ans = ans * max.factorial2();
-			break;
-		}
-		ans = ans * max;
-	}
-
-	if (min == 15) {
-		ans = ans * min.factorial2();
-	}
-
-	return ans;
-}
-
-
-
 void Integer::strToNum(const string& _str) {
 	regex reg("[-+]?[0-9]+");
 	string str = _str;
@@ -483,78 +452,14 @@ Integer LCM(const Integer& _num1, const Integer& _num2) {
 
 Integer factorial(const Integer& _num) {
 	Integer num = _num;
+    Integer ans = 1;
 
 	if(num < 0)
 		throw "can not caculate the factorial of negative number";
 
-	if (num <= 15) {
-		long long int i = num.getNumData().rNumerator[0];
-		long long int ans = 1;
-		for(; i > 0; i--)
-			ans *= i;
-		return ans;
-	}
-
-	Integer ans = 0;
-	long long int count = 0;
-
-	for (Integer tmp = num / 2; tmp > 7; tmp = tmp / 2, count++) {
-		ans = ans + tmp;
-	}
-	ans = 2 ^ ans;
-
-	Integer x = num * 2;
-	Integer y = num;
-	long long int i = 0;
-	bool xFlag = false;
-	bool yFlag = false;
-	vector<Integer> FVec;
-	while (y > 15) {
-		x = x / 2;
-		if (x % 2 == 0) {
-			x = x - 1;
-			xFlag = true;
-		}
-
-		y = y / 2;
-		if (y % 2 == 0) {
-			y = y - 1;
-			yFlag = true;
-		}
-
-		FVec.push_back(x.factorial2(y));
-
-		if (xFlag) {
-			x = x + 1;
-			xFlag = false;
-		}
-
-		if (yFlag) {
-			y = y + 1;
-			yFlag = false;
-		}
-	}
-
-	for (long long int i = 0; i < FVec.size(); i++) {
-		if(i % 2 == 0)
-			ans = ans * FVec[i];
-	}
-
-	Integer tmp = 1;
-	for (long long int i = FVec.size() - 1; i > 0;) {
-		if (i == FVec.size() - 1 && i % 2 == 1) {
-			tmp = FVec[i] ^ 2;
-			i--;
-		}
-		else {
-			tmp = (tmp * FVec[i] * FVec[i - 1]) ^ 2;
-			i -= 2;
-		}
-	}
-
-	ans = ans * tmp;
-
-	ans = ans * factorial(x / 2);
+    for(; num > 1; num = num - 1)
+        ans = ans * num;
+	
 	return ans;
 }
 

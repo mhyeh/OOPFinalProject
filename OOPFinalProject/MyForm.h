@@ -171,6 +171,7 @@ namespace OOPFinalProject {
             this->Show->Multiline = true;
             this->Show->Name = L"Show";
             this->Show->ReadOnly = true;
+            this->Show->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
             this->Show->Size = System::Drawing::Size(789, 627);
             this->Show->TabIndex = 0;
             // 
