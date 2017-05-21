@@ -71,4 +71,7 @@
   <ItemGroup>
     <None Include="ReadMe.md" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MyForm.resx" />
+  </ItemGroup>
 </Project>

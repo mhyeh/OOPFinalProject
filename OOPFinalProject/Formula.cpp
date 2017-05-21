@@ -150,7 +150,7 @@ void Formula::addSpace() {
 		if (str[i] == '(')
 			ss << str[i] << " ";
 		else if (str[i] == '+' || str[i] == '-') {
-			if (str[i + 1] == '(' && (str[i - 1] == '*' || str[i - 1] == '/' || str[i - 1] == '^'))
+			if (i > 0 && (str[i - 1] == '*' || str[i - 1] == '/' || str[i - 1] == '^'))
 				ss << " " << str[i];
 			else
 				ss << " " << str[i] << " ";
@@ -329,7 +329,13 @@ NumberObject Formula::caculate() {
 				num.push(num1 ^ num2);
 			}
 			else if (!isdigit(f[0])) {
-				num.push(Computer::getVar(f));
+                if(f[0] == '-') {
+                    if(!isdigit(f[1]))
+                        num.push(-Computer::getVar(f));
+                    else
+                        num.push(f);
+                } else
+				    num.push(Computer::getVar(f));
 			}
 			else
 			{
