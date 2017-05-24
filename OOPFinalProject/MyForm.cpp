@@ -7,6 +7,9 @@
 
 #include "MyForm.h"
 #include "Computer.h"
+#include "Complex.h"
+#include "Decimal.h"
+#include "Integer.h"
 
 
 using namespace msclr::interop;
@@ -154,7 +157,7 @@ void MyForm::Num9_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Select(this->Input->Text->Length, 0);
 }
 
-void MyForm::Decimal_Click(System::Object^  sender, System::EventArgs^  e) {
+void MyForm::Point_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Input->Text += ".";
 	this->Input->Focus();
 	this->Input->Select(this->Input->Text->Length, 0);
@@ -339,8 +342,10 @@ void MyForm::compute() {
 			this->textInit();
 		} else if (op == "Set") {
 			string type, name, tmp, value;
+            NumberObject var;
 
 			ss >> type;
+
 			if(type != "Integer" && type != "Decimal" && type != "Complex")
 				throw "syntex error";
 
@@ -359,7 +364,21 @@ void MyForm::compute() {
 			else
 				value = "0";
 
-			Computer::setVar(name, value);
+            computer->setFormula(value);
+            computer->caculate();
+
+            if(type == "Integer") {
+                Integer Int = computer->getResult();
+                var = Int;
+            } else if(type == "Decimal") {
+                BigNumber::Decimal Int = computer->getResult();
+                var = Int;
+            } else if(type == "Complex") {
+                Complex Com = computer->getResult();
+                var = Com;
+            }
+
+			Computer::setVar(name, var);
 			this->setList();
 		} else if(op == "Get"){
 			string name;

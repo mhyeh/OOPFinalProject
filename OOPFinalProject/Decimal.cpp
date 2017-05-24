@@ -1,5 +1,7 @@
 #include "Decimal.h"
 
+using namespace BigNumber;
+
 
 Decimal::Decimal() : numerator(Integer()), denominator("1") {
 	this->numType = DEC;
@@ -300,7 +302,7 @@ void Decimal::operator =(const char* _str) {
 	}
 }
 
-NumberObject sqrtRoot(const NumberObject& _num) {
+NumberObject BigNumber::sqrtRoot(const NumberObject& _num) {
 	Decimal num = _num;
 
 	try{
@@ -322,21 +324,21 @@ NumberObject sqrtRoot(const NumberObject& _num) {
 }
 
 
-bool operator ==(const Decimal& _num1, const Decimal& _num2) {
+bool BigNumber::operator ==(const Decimal& _num1, const Decimal& _num2) {
 	Decimal num1 = _num1;
 	Decimal num2 = _num2;
 
 	return num1.numerator == num2.numerator && num1.denominator == num2.denominator;
 }
 
-bool operator !=(const Decimal& _num1, const Decimal& _num2) {
+bool BigNumber::operator !=(const Decimal& _num1, const Decimal& _num2) {
 	Decimal num1 = _num1;
 	Decimal num2 = _num2;
 
 	return !(num1 == num2);
 }
 
-bool operator <(const Decimal& _num1, const Decimal& _num2) {
+bool BigNumber::operator <(const Decimal& _num1, const Decimal& _num2) {
 	Decimal num1 = _num1;
 	Decimal num2 = _num2;
 
@@ -345,21 +347,21 @@ bool operator <(const Decimal& _num1, const Decimal& _num2) {
 	return Integer(num1.numerator * lcm / num1.denominator) < Integer(num2.numerator * lcm / num2.denominator);
 }
 
-bool operator <=(const Decimal& _num1, const Decimal& _num2) {
+bool BigNumber::operator <=(const Decimal& _num1, const Decimal& _num2) {
 	Decimal num1 = _num1;
 	Decimal num2 = _num2;
 
 	return (num1 < num2 || num1 == num2);
 }
 
-bool operator >(const Decimal& _num1, const Decimal& _num2) {
+bool BigNumber::operator >(const Decimal& _num1, const Decimal& _num2) {
 	Decimal num1 = _num1;
 	Decimal num2 = _num2;
 
 	return !((num1 <= num2));
 }
 
-bool operator >=(const Decimal& _num1, const Decimal& _num2) {
+bool BigNumber::operator >=(const Decimal& _num1, const Decimal& _num2) {
 	Decimal num1 = _num1;
 	Decimal num2 = _num2;
 

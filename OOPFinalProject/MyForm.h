@@ -60,7 +60,8 @@ namespace OOPFinalProject {
 	private: System::Windows::Forms::Button^  Num8;
 	private: System::Windows::Forms::Button^  Num9;
 	private: System::Windows::Forms::Button^  Num0;
-	private: System::Windows::Forms::Button^  Decimal;
+    private: System::Windows::Forms::Button^  Point;
+
 	private: System::Windows::Forms::Button^  ImagePart;
 	private: System::Windows::Forms::Button^  Add;
 	private: System::Windows::Forms::Button^  Sub;
@@ -133,7 +134,7 @@ namespace OOPFinalProject {
             this->Num8 = (gcnew System::Windows::Forms::Button());
             this->Num9 = (gcnew System::Windows::Forms::Button());
             this->Num0 = (gcnew System::Windows::Forms::Button());
-            this->Decimal = (gcnew System::Windows::Forms::Button());
+            this->Point = (gcnew System::Windows::Forms::Button());
             this->ImagePart = (gcnew System::Windows::Forms::Button());
             this->Add = (gcnew System::Windows::Forms::Button());
             this->Sub = (gcnew System::Windows::Forms::Button());
@@ -305,18 +306,18 @@ namespace OOPFinalProject {
             this->Num0->UseVisualStyleBackColor = true;
             this->Num0->Click += gcnew System::EventHandler(this, &MyForm::Num0_Click);
             // 
-            // Decimal
+            // Point
             // 
-            this->Decimal->Font = (gcnew System::Drawing::Font(L"Consolas", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-                                                               static_cast<System::Byte>(0)));
-            this->Decimal->Location = System::Drawing::Point(901, 632);
-            this->Decimal->Margin = System::Windows::Forms::Padding(5);
-            this->Decimal->Name = L"Decimal";
-            this->Decimal->Size = System::Drawing::Size(60, 60);
-            this->Decimal->TabIndex = 11;
-            this->Decimal->Text = L".";
-            this->Decimal->UseVisualStyleBackColor = true;
-            this->Decimal->Click += gcnew System::EventHandler(this, &MyForm::Decimal_Click);
+            this->Point->Font = (gcnew System::Drawing::Font(L"Consolas", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+                                                             static_cast<System::Byte>(0)));
+            this->Point->Location = System::Drawing::Point(901, 632);
+            this->Point->Margin = System::Windows::Forms::Padding(5);
+            this->Point->Name = L"Point";
+            this->Point->Size = System::Drawing::Size(60, 60);
+            this->Point->TabIndex = 11;
+            this->Point->Text = L".";
+            this->Point->UseVisualStyleBackColor = true;
+            this->Point->Click += gcnew System::EventHandler(this, &MyForm::Point_Click);
             // 
             // ImagePart
             // 
@@ -682,7 +683,7 @@ namespace OOPFinalProject {
             this->Controls->Add(this->Sub);
             this->Controls->Add(this->Add);
             this->Controls->Add(this->ImagePart);
-            this->Controls->Add(this->Decimal);
+            this->Controls->Add(this->Point);
             this->Controls->Add(this->Num0);
             this->Controls->Add(this->Num9);
             this->Controls->Add(this->Num8);
@@ -724,7 +725,7 @@ private: System::Void Num7_Click(System::Object^  sender, System::EventArgs^  e)
 private: System::Void Num8_Click(System::Object^  sender, System::EventArgs^  e);
 private: System::Void Num9_Click(System::Object^  sender, System::EventArgs^  e);
 private: System::Void Num0_Click(System::Object^  sender, System::EventArgs^  e);
-private: System::Void Decimal_Click(System::Object^  sender, System::EventArgs^  e);
+private: System::Void Point_Click(System::Object^  sender, System::EventArgs^  e);
 private: System::Void ImagePart_Click(System::Object^  sender, System::EventArgs^  e);
 private: System::Void Add_Click(System::Object^  sender, System::EventArgs^  e);
 private: System::Void Left_Click(System::Object^  sender, System::EventArgs^  e);
