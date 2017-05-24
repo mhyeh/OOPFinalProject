@@ -5,63 +5,64 @@
 
 #include "NumberObject.h"
 
-class Integer : public NumberObject {
-private:
-	BigNum number;
-	bool sign;
-	long long int length;
+namespace BigNumber {
+    class Integer : public NumberObject {
+    private:
+        BigNum number;
+        bool sign;
+        long long int length;
 
-	Integer factorial2();
-	Integer factorial2(const Integer&);
+        void toInt();
 
-protected:
-	virtual void strToNum(const string&) override;
-	virtual void encode() override;
-	virtual void decode() override;
-	
-	virtual NumberObject add(const NumberObject&, const NumberObject&) override;
-	virtual NumberObject sub(const NumberObject&, const NumberObject&) override;
-	virtual NumberObject mul(const NumberObject&, const NumberObject&) override;
-	virtual NumberObject div(const NumberObject&, const NumberObject&) override;
-	virtual NumberObject power(const NumberObject&, const NumberObject&) override;
-	virtual NumberObject minus(const NumberObject&) override;
+    protected:
+        virtual void strToNum(const string&) override;
+        virtual void encode() override;
+        virtual void decode() override;
 
-	virtual void output(const NumberObject&, ostream&) override;
-public:
-	Integer();
-	Integer(const NumberObject&);
-	Integer(string);
-	Integer(long long int);
-	Integer(BigNum& _number, bool _sign);
-	~Integer();
+        virtual NumberObject add(const NumberObject&, const NumberObject&) override;
+        virtual NumberObject sub(const NumberObject&, const NumberObject&) override;
+        virtual NumberObject mul(const NumberObject&, const NumberObject&) override;
+        virtual NumberObject div(const NumberObject&, const NumberObject&) override;
+        virtual NumberObject power(const NumberObject&, const NumberObject&) override;
+        virtual NumberObject minus(const NumberObject&) override;
 
-	bool getSign();
-	void setSign(bool);
-	long long int getLength();
-	void setLength();
+        virtual void output(const NumberObject&, ostream&) override;
+    public:
+        Integer();
+        Integer(const NumberObject&);
+        Integer(string);
+        Integer(long long int);
+        Integer(BigNum& _number, bool _sign);
+        ~Integer();
 
-	NumberObject sqrt();
+        bool getSign();
+        void setSign(bool);
+        long long int getLength();
+        void setLength();
 
-	void operator =(const string&);
-	void operator =(const char*);
+        NumberObject sqrt();
 
-	friend Integer rShift(const Integer&, long long int);
-	friend Integer lShift(const Integer&, long long int);
-	friend Integer abs(const Integer&);
-	friend Integer GCD(const Integer&, const Integer&);
-	friend Integer LCM(const Integer&, const Integer&);
-	friend Integer factorial(const Integer&);
+        void operator =(const string&);
+        void operator =(const char*);
 
-	friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);
-	friend Integer binSearch(const Integer&, Integer&, Integer&);
+        friend Integer rShift(const Integer&, long long int);
+        friend Integer lShift(const Integer&, long long int);
+        friend Integer abs(const Integer&);
+        friend Integer GCD(const Integer&, const Integer&);
+        friend Integer LCM(const Integer&, const Integer&);
+        friend Integer factorial(const Integer&);
 
-	friend Integer operator %(const Integer&, const Integer&);
+        friend long long int binSearch(const Integer&, const Integer&, long long int, long long int);
+        friend Integer binSearch(const Integer&, Integer&, Integer&);
 
-	friend bool operator ==(const Integer&, const Integer&);
-	friend bool operator !=(const Integer&, const Integer&);
-	friend bool operator <(const Integer&, const Integer&);
-	friend bool operator <=(const Integer&, const Integer&);
-	friend bool operator >(const Integer&, const Integer&);
-	friend bool operator >=(const Integer&, const Integer&);
-	
-};
+        friend Integer operator %(const Integer&, const Integer&);
+
+        friend bool operator ==(const Integer&, const Integer&);
+        friend bool operator !=(const Integer&, const Integer&);
+        friend bool operator <(const Integer&, const Integer&);
+        friend bool operator <=(const Integer&, const Integer&);
+        friend bool operator >(const Integer&, const Integer&);
+        friend bool operator >=(const Integer&, const Integer&);
+    };
+}
+

@@ -1,6 +1,8 @@
 #include "Integer.h"
 #include "Complex.h"
 
+using namespace BigNumber;
+
 
 Integer::Integer() : number(BigNum()), sign(false) {
 	this->numType = INTEGER;
@@ -10,7 +12,10 @@ Integer::Integer() : number(BigNum()), sign(false) {
 Integer::Integer(const NumberObject& _numberObject) : number(BigNum(0)), sign(false) {
 	NumberObject numberObject = _numberObject;
 	this->numType = INTEGER;
-	this->numData = numberObject.getNumData();
+
+    this->numData = numberObject.getNumData();
+    if(numberObject.getNumType() != INTEGER)
+        this->toInt();
 
 	this->decode();
 	this->setLength();
@@ -59,33 +64,14 @@ Integer::~Integer() {
 
 
 
-Integer Integer::factorial2() {
-	if (*this <= 15) {
-		long long int i = (*this).number[0];
-		long long int ans = 1;
-		for(; i > 0; i -= 2)
-			ans *= i;
-		return ans;
-	}
-}
+void Integer::toInt() {
+    Integer numerator = Integer(this->numData.rNumerator, false);
+    Integer denominator = Integer(this->numData.rDenominator, false);
 
-Integer Integer::factorial2(const Integer& _num) {
-	Integer min = _num;
-	Integer ans = *this;
-
-	for (Integer max = *this - 2; max > min; max = max - 2) {
-		if (max <= 15) {
-			ans = ans * max.factorial2();
-			break;
-		}
-		ans = ans * max;
-	}
-
-	if (min == 15) {
-		ans = ans * min.factorial2();
-	}
-
-	return ans;
+    this->numData.rNumerator = (numerator / denominator).getNumData().rNumerator;
+    this->numData.rDenominator = BigNum(1, 1);
+    this->numData.iNumerator = BigNum(1, 0);
+    this->numData.iSign = false;
 }
 
 
@@ -405,7 +391,7 @@ void Integer::operator =(const char* _str) {
 }
 
 
-Integer rShift(const Integer& _num, long long int shiftLength) {
+Integer BigNumber::rShift(const Integer& _num, long long int shiftLength) {
 	Integer num = _num;
 	stringstream ss;
 	string str;
@@ -422,7 +408,7 @@ Integer rShift(const Integer& _num, long long int shiftLength) {
 	return Integer(str);
 }
 
-Integer lShift(const Integer& _num, long long int shiftLength) {
+Integer BigNumber::lShift(const Integer& _num, long long int shiftLength) {
 	Integer num = _num;
 	stringstream ss;
 	string str;
@@ -443,13 +429,13 @@ Integer lShift(const Integer& _num, long long int shiftLength) {
 	return Integer(str);
 }
 
-Integer abs(const Integer& _num) {
+Integer BigNumber::abs(const Integer& _num) {
 	Integer num = _num;
 
 	return Integer(num.number, false);
 }
 
-Integer GCD(const Integer& _num1, const Integer& _num2) {
+Integer BigNumber::GCD(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = abs(_num1);
 	Integer num2 = abs(_num2);
 
@@ -466,7 +452,7 @@ Integer GCD(const Integer& _num1, const Integer& _num2) {
 	}
 }
 
-Integer LCM(const Integer& _num1, const Integer& _num2) {
+Integer BigNumber::LCM(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = abs(_num1);
 	Integer num2 = abs(_num2);
 
@@ -481,85 +467,21 @@ Integer LCM(const Integer& _num1, const Integer& _num2) {
 	}
 }
 
-Integer factorial(const Integer& _num) {
+Integer BigNumber::factorial(const Integer& _num) {
 	Integer num = _num;
+    Integer ans = 1;
 
 	if(num < 0)
 		throw "can not caculate the factorial of negative number";
 
-	if (num <= 15) {
-		long long int i = num.getNumData().rNumerator[0];
-		long long int ans = 1;
-		for(; i > 0; i--)
-			ans *= i;
-		return ans;
-	}
-
-	Integer ans = 0;
-	long long int count = 0;
-
-	for (Integer tmp = num / 2; tmp > 7; tmp = tmp / 2, count++) {
-		ans = ans + tmp;
-	}
-	ans = 2 ^ ans;
-
-	Integer x = num * 2;
-	Integer y = num;
-	long long int i = 0;
-	bool xFlag = false;
-	bool yFlag = false;
-	vector<Integer> FVec;
-	while (y > 15) {
-		x = x / 2;
-		if (x % 2 == 0) {
-			x = x - 1;
-			xFlag = true;
-		}
-
-		y = y / 2;
-		if (y % 2 == 0) {
-			y = y - 1;
-			yFlag = true;
-		}
-
-		FVec.push_back(x.factorial2(y));
-
-		if (xFlag) {
-			x = x + 1;
-			xFlag = false;
-		}
-
-		if (yFlag) {
-			y = y + 1;
-			yFlag = false;
-		}
-	}
-
-	for (long long int i = 0; i < FVec.size(); i++) {
-		if(i % 2 == 0)
-			ans = ans * FVec[i];
-	}
-
-	Integer tmp = 1;
-	for (long long int i = FVec.size() - 1; i > 0;) {
-		if (i == FVec.size() - 1 && i % 2 == 1) {
-			tmp = FVec[i] ^ 2;
-			i--;
-		}
-		else {
-			tmp = (tmp * FVec[i] * FVec[i - 1]) ^ 2;
-			i -= 2;
-		}
-	}
-
-	ans = ans * tmp;
-
-	ans = ans * factorial(x / 2);
+    for(; num > 1; num = num - 1)
+        ans = ans * num;
+	
 	return ans;
 }
 
 
-long long int binSearch(const Integer& _num1, const Integer& _num2, long long int lower, long long int upper) {
+long long int BigNumber::binSearch(const Integer& _num1, const Integer& _num2, long long int lower, long long int upper) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
@@ -583,7 +505,7 @@ long long int binSearch(const Integer& _num1, const Integer& _num2, long long in
 	return m;
 }
 
-Integer binSearch(const Integer& _num, Integer& lower, Integer& upper) {
+Integer BigNumber::binSearch(const Integer& _num, Integer& lower, Integer& upper) {
 	Integer num = _num;
 
 	if(lower == upper) {
@@ -602,7 +524,7 @@ Integer binSearch(const Integer& _num, Integer& lower, Integer& upper) {
 }
 
 
-Integer operator %(const Integer& _num1, const Integer& _num2) {
+Integer BigNumber::operator %(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 	BigNum ans;
@@ -648,7 +570,7 @@ Integer operator %(const Integer& _num1, const Integer& _num2) {
 }
 
 
-bool operator ==(const Integer& _num1, const Integer& _num2) {
+bool BigNumber::operator ==(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 	
@@ -665,14 +587,14 @@ bool operator ==(const Integer& _num1, const Integer& _num2) {
 	return true;
 }
 
-bool operator !=(const Integer& _num1, const Integer& _num2) {
+bool BigNumber::operator !=(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
 	return !(num1 == num2);
 }
 
-bool operator <(const Integer& _num1, const Integer& _num2) {
+bool BigNumber::operator <(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
@@ -702,21 +624,21 @@ bool operator <(const Integer& _num1, const Integer& _num2) {
 	return false;
 }
 
-bool operator <=(const Integer& _num1, const Integer& _num2) {
+bool BigNumber::operator <=(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
 	return (num1 < num2 || num1 == num2);
 }
 
-bool operator >(const Integer& _num1, const Integer& _num2) {
+bool BigNumber::operator >(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 
 	return !((num1 <= num2));
 }
 
-bool operator >=(const Integer& _num1, const Integer& _num2) {
+bool BigNumber::operator >=(const Integer& _num1, const Integer& _num2) {
 	Integer num1 = _num1;
 	Integer num2 = _num2;
 

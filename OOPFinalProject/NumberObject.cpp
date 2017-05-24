@@ -3,6 +3,8 @@
 #include "Decimal.h"
 #include "Complex.h"
 
+using namespace BigNumber;
+
 
 NumberObject::NumberObject(string _numStr) {
 	if (_numStr.back() == 'i') {
@@ -55,7 +57,7 @@ void NumberObject::input(istream& _istream) {
 
 
 
-NumberObject* numberFactory(int _type1, int _type2) {
+NumberObject* BigNumber::numberFactory(int _type1, int _type2) {
 	int type = std::max(_type1, _type2);
 
 	switch (type) {
@@ -76,7 +78,8 @@ NumberObject* numberFactory(int _type1, int _type2) {
 
 
 
-NumberObject operator +(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject BigNumber::operator +(const NumberObject& _num1, const NumberObject& _num2) {
+
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
@@ -88,7 +91,7 @@ NumberObject operator +(const NumberObject& _num1, const NumberObject& _num2) {
 	}
 }
 
-NumberObject operator -(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject BigNumber::operator -(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
@@ -100,7 +103,7 @@ NumberObject operator -(const NumberObject& _num1, const NumberObject& _num2) {
 	}
 }
 
-NumberObject operator *(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject BigNumber::operator *(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
@@ -112,7 +115,7 @@ NumberObject operator *(const NumberObject& _num1, const NumberObject& _num2) {
 	}
 }
 
-NumberObject operator /(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject BigNumber::operator /(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
@@ -124,7 +127,7 @@ NumberObject operator /(const NumberObject& _num1, const NumberObject& _num2) {
 	}
 }
 
-NumberObject operator ^(const NumberObject& _num1, const NumberObject& _num2) {
+NumberObject BigNumber::operator ^(const NumberObject& _num1, const NumberObject& _num2) {
 	NumberObject num1 = _num1;
 	NumberObject num2 = _num2;
 
@@ -136,20 +139,20 @@ NumberObject operator ^(const NumberObject& _num1, const NumberObject& _num2) {
 	}
 }
 
-NumberObject operator -(const NumberObject& _num) {
+NumberObject BigNumber::operator -(const NumberObject& _num) {
 	NumberObject num = _num;
 
 	return numberFactory(num.numType, 0)->minus(num);
 }
 
 
-istream& operator >>(istream& _istream, NumberObject& _num) {
+istream& BigNumber::operator >>(istream& _istream, NumberObject& _num) {
 	_num.input(_istream);
 
 	return _istream;
 };
 
-ostream& operator <<(ostream& _ostream, NumberObject& _num) {
+ostream& BigNumber::operator <<(ostream& _ostream, NumberObject& _num) {
 	NumberObject num = _num;
 
 	try {

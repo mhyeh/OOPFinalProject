@@ -1,5 +1,6 @@
 #include "Complex.h"
 
+using namespace BigNumber;
 
 
 Complex::Complex() : realPart(Decimal()), imagePart(Decimal()) {
