@@ -43,6 +43,8 @@ void MyForm::Get_Click(System::Object^  sender, System::EventArgs^  e) {
 	this->Int->Enabled = false;
 	this->Dec->Enabled = false;
 	this->Com->Enabled = false;
+
+    this->ValueName->Focus();
 }
 
 void MyForm::Int_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -255,8 +257,14 @@ void MyForm::Clear_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 
 void MyForm::Input_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-	if (e->KeyCode == Keys::Enter)
-		this->compute();
+    if(e->KeyCode == Keys::Enter) {
+        if (this->Set->Enabled == false) {
+            this->Set->Enabled = true;
+            this->Get->Enabled = true;
+        }
+        this->compute();
+    }
+		
 	this->Input->Focus();
 	this->Input->Select(this->Input->Text->Length, 0);
 }
@@ -332,6 +340,9 @@ void MyForm::compute() {
 
 		ss.str("");
 		ss.clear();
+
+        if(input == "")
+            throw "empty input";
 
 		ss << input;
 		ss >> op;

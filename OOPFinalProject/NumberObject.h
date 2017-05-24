@@ -11,6 +11,8 @@
 
 #define MAX_DIGIT 8
 #define MAX_INT ((long long int)std::pow(10, MAX_DIGIT))
+#define MAX_DIGIT_DOUBLE (MAX_DIGIT * 2)
+#define MAX_INT_DOUBLE ((long long int)std::pow(10, MAX_DIGIT_DOUBLE))
 
 using namespace std;
 

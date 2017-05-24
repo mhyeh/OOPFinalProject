@@ -222,6 +222,8 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 	
 	if(num2 == 0)
 		throw "can not devided by 0";
+    if(num2 == 1)
+        return num1;
 	if(num1 < num2)
 		return Integer(0);
 	if(num1 == num2)
@@ -229,29 +231,26 @@ NumberObject Integer::div(const NumberObject& _num1, const NumberObject& _num2) 
 
 	long long int DigitNum1 = num1.getLength();
 	long long int DigitNum2 = num2.getLength();
-
-	int maxDigit = MAX_DIGIT * 2;
-	long long int maxInt = MAX_INT * MAX_INT;
 	
-	long long int shiftLen = DigitNum1 - DigitNum2 - maxDigit;
+	long long int shiftLen = DigitNum1 - DigitNum2 - MAX_DIGIT_DOUBLE + 1;
 
 	if(shiftLen > 0) {
-		while(shiftLen % maxDigit)
-		shiftLen++;
+		while(shiftLen % MAX_DIGIT_DOUBLE)
+		    shiftLen++;
 
 		num2 = rShift(num2, shiftLen);
 	} else
 		shiftLen = 0;
 	
-	for(long long int i = 0; i < shiftLen / maxDigit + 1; i++) {
-		long long int tmp = binSearch(num1, num2, 0, maxInt);
+	for(long long int i = 0; i < shiftLen / MAX_DIGIT_DOUBLE + 1; i++) {
+		long long int tmp = binSearch(num1, num2, 0, MAX_INT_DOUBLE);
 		if(!ans.size())
 			ans.push_back(tmp / MAX_INT);
 		else
 			ans.insert(ans.begin(), tmp / MAX_INT);
 		ans.insert(ans.begin(), tmp % MAX_INT);
 		num1 = Integer::sub(num1, Integer::mul(num2, tmp));
-		num2 = lShift(num2, maxDigit);
+		num2 = lShift(num2, MAX_DIGIT_DOUBLE);
 	}
 	while(ans.size() > 1 && ans.back() == 0)
 		ans.pop_back();

@@ -203,7 +203,7 @@ NumberObject Decimal::power(const NumberObject& _num1, const NumberObject& _num2
 
 	try {
 		if(num2.denominator == 2)
-			ans = ans * sqrtRoot(num1);
+			ans = ans * sqrtRoot(Decimal(num1));
 	}
 	catch (const char* errMsg) {
 		throw errMsg;
