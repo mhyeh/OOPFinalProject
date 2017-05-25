@@ -1,8 +1,8 @@
-// stdafx.cpp : 僅包含標準 Include 檔的原始程式檔
-// OOPFinalProject.pch 會成為先行編譯標頭檔
-// stdafx.obj 會包含先行編譯類型資訊
+// stdafx.cpp : source file that includes just the standard includes
+// OOPFinalProject.pch will be the pre-compiled header
+// stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
 
-// TODO:  在 STDAFX.H 中參考您需要的任何其他標頭，
-// 而不要在這個檔案中參考
+// TODO: reference any additional headers you need in STDAFX.H
+// and not in this file

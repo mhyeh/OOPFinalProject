@@ -79,7 +79,7 @@ void MyForm::Com_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 
 void MyForm::ValueName_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-	if(this->ValueName->Text->ToString() != "")
+	if (this->ValueName->Text->ToString() != "")
 		this->Submit->Enabled = true;
 	else
 		this->Submit->Enabled = false;
@@ -242,7 +242,7 @@ void MyForm::Help_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 
 void MyForm::Delete_Click(System::Object^  sender, System::EventArgs^  e) {
-	if(this->Input->Text->Length > 0)
+	if (this->Input->Text->Length > 0)
 		this->Input->Text = this->Input->Text->Substring(0, this->Input->Text->Length - 1);
 	this->Input->Focus();
 	this->Input->Select(this->Input->Text->Length, 0);
@@ -338,15 +338,17 @@ void MyForm::compute() {
 
 		if (op == "Help") {
 			this->help();
-		} else if(op == "ClearAll") {
+		}
+		else if (op == "ClearAll") {
 			this->textInit();
-		} else if (op == "Set") {
+		}
+		else if (op == "Set") {
 			string type, name, tmp, value;
-            NumberObject var;
+			NumberObject var;
 
 			ss >> type;
 
-			if(type != "Integer" && type != "Decimal" && type != "Complex")
+			if (type != "Integer" && type != "Decimal" && type != "Complex")
 				throw "syntex error";
 
 			if (!ss.eof())
@@ -354,33 +356,36 @@ void MyForm::compute() {
 			else
 				throw "syntex error";
 
-			if (!ss.eof()) 
+			if (!ss.eof())
 				ss >> tmp;
 			else
 				value = "0";
 
-			if(!ss.eof())
+			if (!ss.eof())
 				getline(ss, value);
 			else
 				value = "0";
 
-            computer->setFormula(value);
-            computer->caculate();
+			computer->setFormula(value);
+			computer->caculate();
 
-            if(type == "Integer") {
-                Integer Int = computer->getResult();
-                var = Int;
-            } else if(type == "Decimal") {
-                BigNumber::Decimal Int = computer->getResult();
-                var = Int;
-            } else if(type == "Complex") {
-                Complex Com = computer->getResult();
-                var = Com;
-            }
+			if (type == "Integer") {
+				Integer Int = computer->getResult();
+				var = Int;
+			}
+			else if (type == "Decimal") {
+				BigNumber::Decimal Int = computer->getResult();
+				var = Int;
+			}
+			else if (type == "Complex") {
+				Complex Com = computer->getResult();
+				var = Com;
+			}
 
 			Computer::setVar(name, var);
 			this->setList();
-		} else if(op == "Get"){
+		}
+		else if (op == "Get") {
 			string name;
 
 			if (!ss.eof())
@@ -396,14 +401,15 @@ void MyForm::compute() {
 			string value;
 			getline(ss, value);
 
-            fstream fs;
+			fstream fs;
 
-            fs.open("answer.txt", ios::out | ios::app);
-            fs << "==========================" << endl << endl << value << endl;
-            fs.close();
+			fs.open("answer.txt", ios::out | ios::app);
+			fs << "==========================" << endl << endl << value << endl;
+			fs.close();
 
 			this->Show->Text += gcnew String(value.c_str()) + "\r\n\r\n";
-		} else {
+		}
+		else {
 			string tmp;
 
 			ss >> tmp;
@@ -417,9 +423,10 @@ void MyForm::compute() {
 
 				Computer::setVar(op, value);
 				this->setList();
-			} else {
-                this->computer->setFormula(input);
-                this->computer->caculate();
+			}
+			else {
+				this->computer->setFormula(input);
+				this->computer->caculate();
 
 				ss.str("");
 				ss.clear();
@@ -429,22 +436,22 @@ void MyForm::compute() {
 				string value;
 				getline(ss, value);
 
-                fstream fs;
+				fstream fs;
 
-                fs.open("answer.txt", ios::out | ios::app);
-                fs << "==========================" << endl << endl << value << endl;
-                fs.close();
+				fs.open("answer.txt", ios::out | ios::app);
+				fs << "==========================" << endl << endl << value << endl;
+				fs.close();
 
 				this->Show->Text += gcnew String(value.c_str()) + "\r\n\r\n";
 			}
 		}
 	}
 	catch (const char *errMsg) {
-        fstream fs;
+		fstream fs;
 
-        fs.open("answer.txt", ios::out | ios::app);
-        fs << "==========================" << endl << endl << errMsg << endl;
-        fs.close();
+		fs.open("answer.txt", ios::out | ios::app);
+		fs << "==========================" << endl << endl << errMsg << endl;
+		fs.close();
 
 		this->Show->Text += gcnew String(errMsg) + "\r\n";
 	}
