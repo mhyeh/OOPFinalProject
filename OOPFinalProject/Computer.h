@@ -11,6 +11,7 @@
 #include "NumberObject.h"
 
 using namespace std;
+using namespace BigNumber;
 
 class Computer {
 private:

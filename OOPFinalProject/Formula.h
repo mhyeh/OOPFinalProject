@@ -6,6 +6,7 @@
 #include "NumberObject.h"
 
 using namespace std;
+using namespace BigNumber;
 
 class Formula {
 private:

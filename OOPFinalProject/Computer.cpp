@@ -1,4 +1,7 @@
 #include "Computer.h"
+#include "Integer.h"
+#include "Decimal.h"
+#include "Complex.h"
 
 
 
@@ -57,6 +60,14 @@ void Computer::setVar(const string& _varName, const string& _varVal) {
 
 	try {
 		Formula f(varVal);
+        if(it != variableSet.end()) {
+            if(variableSet[varName].getNumType() == INTEGER)
+                variableSet[varName] = Integer(f.caculate());
+            else if(variableSet[varName].getNumType() == DEC)
+                variableSet[varName] = Decimal(f.caculate());
+            else
+                variableSet[varName] = Complex(f.caculate());
+        } else
 		variableSet[varName] = f.caculate();
 	}
 	catch (const char* errMsg) {
