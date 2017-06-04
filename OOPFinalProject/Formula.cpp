@@ -73,11 +73,13 @@ string Formula::changePowerFormat(string _str) {
 							result += "(" + changePowerFormat(s) + ")^";
 							s = "";
 							break;
-						} else if (count == -1 && k == 1) {
+						}
+						else if (count == -1 && k == 1) {
 							result += "(" + changePowerFormat(s) + ")";
 							s = "";
 							break;
-						} else {
+						}
+						else {
 							stringstream t;
 							t << str[j];
 							t >> tmp;
@@ -89,7 +91,8 @@ string Formula::changePowerFormat(string _str) {
 				}
 
 				i += j - i;
-			} else
+			}
+			else
 				result += tmp;
 
 			stringstream t;
@@ -97,7 +100,8 @@ string Formula::changePowerFormat(string _str) {
 			t >> tmp;
 			result += tmp;
 			tmp = "";
-		} else
+		}
+		else
 			tmp += str[i];
 	}
 	result += tmp;
@@ -121,18 +125,21 @@ void Formula::replaceSign() {
 			if (!flagContinous && (str[i] == '+' || str[i] == '-')) {
 				flagSign = ((str[i] == '+') ? true : false);
 				flagContinous = true;
-			} else if (flagContinous && (str[i] == '+' || str[i] == '-')) {
+			}
+			else if (flagContinous && (str[i] == '+' || str[i] == '-')) {
 				str.erase(str.begin() + i);
 				i--;
 
 				flagSign = !flagSign ^ flagcurrentSign;
 				str.replace(i, 1, ((flagSign) ? "+" : "-"));
 			}
-		} else if (str[i] == '!') {
-			if (i != str.length() - 1 && str[i + 1] != '+' && str[i + 1] != '-' && str[i + 1] != '*' && str[i + 1] != '/' && str[i + 1] != ')' && str[i + 1] != '!')
+		}
+		else if (str[i] == '!') {
+			if (i != str.length() - 1 && str[i + 1] != '+' && str[i + 1] != '-' && str[i + 1] != '*' && str[i + 1] != '/' && str[i + 1] != ')' && str[i + 1] != '!'&&str[i + 1] != '^')
 				throw "format is illegal";
 			flagContinous = false;
-		} else
+		}
+		else
 			flagContinous = false;
 	}
 
@@ -154,7 +161,8 @@ void Formula::addSpace() {
 				ss << " " << str[i];
 			else
 				ss << " " << str[i] << " ";
-		} else if (str[i] == '*' || str[i] == '/' || str[i] == ')' || str[i] == '!' || str[i] == '^')
+		}
+		else if (str[i] == '*' || str[i] == '/' || str[i] == ')' || str[i] == '!' || str[i] == '^')
 			ss << " " << str[i] << " ";
 		else
 			ss << str[i];
@@ -179,13 +187,13 @@ int Formula::priority(string _opr) {
 void Formula::inToPostfix() {
 	string str = this->formulaStr;
 	stringstream ss;
-	
+
 	ss.str("");
 	ss.clear();
-	
+
 	ss << str;
 	str = "";
-	
+
 	string tmp;
 	stack<string> op;
 
@@ -201,14 +209,16 @@ void Formula::inToPostfix() {
 			}
 
 			op.push(tmp);
-		} else if (tmp == "^") {
+		}
+		else if (tmp == "^") {
 			while (op.size() > 0 && priority(op.top()) > priority(tmp)) {
 				str += " " + op.top() + " ";
 				op.pop();
 			}
 
 			op.push(tmp);
-		} else if (tmp == ")") {
+		}
+		else if (tmp == ")") {
 			while (op.size() > 0 && (op.top() != "(" && op.top() != "@")) {
 				str += " " + op.top() + " ";
 				op.pop();
@@ -217,7 +227,8 @@ void Formula::inToPostfix() {
 			if (op.top() == "@")
 				str += " @ ";
 			op.pop();
-		} else 
+		}
+		else
 			str += " " + tmp + " ";
 	}
 
@@ -246,7 +257,7 @@ Formula Formula::operator=(const string& _formulaStr) {
 
 
 void Formula::setFormula(string& _formulaStr) {
-    this->formulaStr = _formulaStr;
+	this->formulaStr = _formulaStr;
 
 	try {
 		this->processString();
@@ -274,8 +285,7 @@ NumberObject Formula::caculate() {
 				if (num.size() > 0) {
 					num1 = num.top();
 					num.pop();
-				}
-				else
+				} else
 					num1 = 0;
 				num.push(num1 + num2);
 			} else if (f == "-") {
@@ -285,59 +295,55 @@ NumberObject Formula::caculate() {
 				if (num.size() > 0) {
 					num1 = num.top();
 					num.pop();
-				}
-				else
+				} else
 					num1 = 0;
 				num.push(num1 - num2);
-			}
-			else if (f == "*") {
+			} else if (f == "*") {
 				num2 = num.top();
 				num.pop();
 				num1 = num.top();
 				num.pop();
-				
+
 				num.push(num1 * num2);
-			}
-			else if (f == "/") {
+			} else if (f == "/") {
 				num2 = num.top();
 				num.pop();
 				num1 = num.top();
 				num.pop();
 
 				num.push(num1 / num2);
-			}
-			else if (f == "!") {
+			} else if (f == "!") {
 				num1 = num.top();
 				num.pop();
 
-				if(num1.getNumType() != INTEGER)
+				if (num1.getNumType() != INTEGER)
 					throw "syntax error";
 
 				num.push(factorial(num1));
-			}
-			else if (f == "@") {
+			} else if (f == "@") {
 				num1 = num.top();
 				num.pop();
 				num.push(-num1);
-			}
-			else if (f == "^") {
+			} else if (f == "^") {
 				num2 = num.top();
 				num.pop();
 				num1 = num.top();
 				num.pop();
 
 				num.push(num1 ^ num2);
-			}
-			else if (!isdigit(f[0])) {
-                if(f[0] == '-') {
-                    if(!isdigit(f[1]))
-                        num.push(-Computer::getVar(f));
-                    else
-                        num.push(f);
-                } else
-				    num.push(Computer::getVar(f));
-			}
-			else
+			} else if (!isdigit(f[0])) {
+				if (f[0] == '-') {
+					if (!isdigit(f[1]) && (f[1] != 'i' || f.length() > 2))
+						num.push(-Computer::getVar(f));
+					else
+						num.push(f);
+				} else {
+					if (f[0] != 'i' || f.length() > 1)
+						num.push(-Computer::getVar(f));
+					else
+						num.push(f);
+				}
+			} else
 			{
 				num.push(f);
 			}
